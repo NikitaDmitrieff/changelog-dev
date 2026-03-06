@@ -3,9 +3,25 @@ import { notFound } from 'next/navigation'
 import ReactMarkdown from 'react-markdown'
 import SubscribeForm from './subscribe-form'
 import type { Changelog, Entry, Subscriber } from '@/lib/supabase/types'
+import type { Metadata } from 'next'
 
 interface Props {
   params: Promise<{ slug: string }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
+  const supabase = await createClient()
+  const { data } = await supabase.from('changelogs').select('name, description').eq('slug', slug).single()
+  if (!data) return {}
+  const title = `${data.name} — Changelog`
+  const description = data.description ?? `What's new in ${data.name}`
+  return {
+    title,
+    description,
+    openGraph: { title, description, type: 'website' },
+    twitter: { card: 'summary', title, description },
+  }
 }
 
 export default async function PublicChangelogPage({ params }: Props) {
