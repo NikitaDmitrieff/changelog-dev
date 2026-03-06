@@ -187,6 +187,9 @@ export default function LandingPage() {
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <span className="font-semibold text-lg tracking-tight text-white">changelog.dev</span>
           <div className="flex items-center gap-6">
+            <Link href="/blog" className="text-sm text-zinc-500 hover:text-white transition-colors">
+              Blog
+            </Link>
             <Link href="/changelog-dev" className="text-sm text-zinc-500 hover:text-white transition-colors">
               Demo
             </Link>
@@ -498,6 +501,7 @@ export default function LandingPage() {
         <div className="max-w-5xl mx-auto flex items-center justify-between text-sm text-zinc-600">
           <span>changelog.dev</span>
           <div className="flex items-center gap-6">
+            <Link href="/blog" className="hover:text-zinc-400 transition-colors">Blog</Link>
             <Link href="/changelog-dev" className="hover:text-zinc-400 transition-colors">Demo</Link>
             <Link href="/login" className="hover:text-zinc-400 transition-colors">Sign in</Link>
           </div>

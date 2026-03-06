@@ -15,6 +15,15 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: 'how-to-write-release-notes',
+    title: 'How to Write Release Notes: Templates + Examples (2026)',
+    description:
+      'A practical framework for writing release notes your customers actually read — with copy-paste templates and real-world before/after examples.',
+    category: 'Guide',
+    date: 'March 2026',
+    readTime: '10 min read',
+  },
+  {
     slug: 'best-changelog-tools-compared',
     title: 'Best Changelog Tools for SaaS in 2026',
     description:

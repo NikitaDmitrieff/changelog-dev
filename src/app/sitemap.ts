@@ -36,6 +36,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
+      url: `${baseUrl}/blog/how-to-write-release-notes`,
+      lastModified: new Date('2026-03-06'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
       url: `${baseUrl}/blog/best-changelog-tools-compared`,
       lastModified: new Date('2026-03-06'),
       changeFrequency: 'monthly',
