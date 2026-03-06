@@ -20,11 +20,21 @@ export const metadata: Metadata = {
     title: 'Changelog.dev',
     description: 'Beautiful hosted changelogs your customers actually read',
     type: 'website',
+    url: 'https://changelog-dev-production.up.railway.app',
+    images: [
+      {
+        url: 'https://changelog-dev-production.up.railway.app/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'Changelog.dev — Beautiful hosted changelogs your customers actually read',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Changelog.dev',
     description: 'Beautiful hosted changelogs your customers actually read',
+    images: ['https://changelog-dev-production.up.railway.app/opengraph-image'],
   },
 }
 
