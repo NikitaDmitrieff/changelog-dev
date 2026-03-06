@@ -15,6 +15,15 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: 'saas-product-updates',
+    title: 'How to Notify Customers About Product Updates (Email Templates + Examples)',
+    description:
+      'Which channels work, what to write, and how to automate product update emails that customers actually open. Templates for monthly roundups, feature launches, and re-engagement.',
+    category: 'Growth',
+    date: 'March 2026',
+    readTime: '9 min read',
+  },
+  {
     slug: 'how-to-write-release-notes',
     title: 'How to Write Release Notes: Templates + Examples (2026)',
     description:

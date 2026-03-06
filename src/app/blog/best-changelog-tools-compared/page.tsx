@@ -235,13 +235,32 @@ export default function BlogPost() {
           </Link>
         </div>
 
+        {/* Related posts */}
+        <div className="mt-12 pt-8 border-t border-white/[0.06]">
+          <p className="text-xs text-zinc-600 uppercase tracking-widest font-mono mb-4">Related</p>
+          <div className="space-y-3">
+            <Link href="/blog/how-to-write-release-notes" className="block group">
+              <span className="text-zinc-400 group-hover:text-white text-sm transition-colors">
+                How to Write Release Notes: Templates + Examples (2026) →
+              </span>
+            </Link>
+            <Link href="/blog/saas-product-updates" className="block group">
+              <span className="text-zinc-400 group-hover:text-white text-sm transition-colors">
+                How to Notify Customers About Product Updates (Email Templates + Examples) →
+              </span>
+            </Link>
+            <Link href="/blog/why-your-saas-needs-a-changelog" className="block group">
+              <span className="text-zinc-400 group-hover:text-white text-sm transition-colors">
+                Why Your SaaS Needs a Changelog (And How to Write One) →
+              </span>
+            </Link>
+          </div>
+        </div>
+
         {/* Back */}
-        <div className="mt-12 pt-8 border-t border-white/[0.06] flex items-center justify-between">
+        <div className="mt-8">
           <Link href="/blog" className="text-zinc-600 hover:text-zinc-400 text-sm transition-colors">
             ← All articles
-          </Link>
-          <Link href="/" className="text-zinc-600 hover:text-zinc-400 text-sm transition-colors">
-            changelog.dev →
           </Link>
         </div>
       </article>
