@@ -248,9 +248,9 @@ export default function LandingPage() {
           </Link>
           <Link
             href="/changelog-dev"
-            className="text-zinc-500 hover:text-white text-sm transition-colors"
+            className="border border-white/[0.12] hover:border-white/[0.25] bg-white/[0.03] hover:bg-white/[0.06] text-zinc-300 hover:text-white font-medium px-8 py-3.5 rounded-xl transition-all text-base"
           >
-            See a live example →
+            See live demo →
           </Link>
         </motion.div>
 
@@ -262,6 +262,23 @@ export default function LandingPage() {
         >
           Free tier: 1 changelog · 100 subscribers · forever
         </motion.p>
+
+        {/* Tech trust strip */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5, duration: 0.6 }}
+          className="relative z-10 flex items-center gap-3 mt-8 text-zinc-700 text-xs font-mono"
+        >
+          <span>Built with</span>
+          <span className="text-zinc-600">Next.js</span>
+          <span className="text-zinc-800">·</span>
+          <span className="text-zinc-600">Claude AI</span>
+          <span className="text-zinc-800">·</span>
+          <span className="text-zinc-600">Supabase</span>
+          <span className="text-zinc-800">·</span>
+          <span className="text-zinc-600">Stripe</span>
+        </motion.div>
       </section>
 
       {/* Product Preview */}
