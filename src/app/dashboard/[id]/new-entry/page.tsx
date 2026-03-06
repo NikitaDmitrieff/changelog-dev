@@ -1,0 +1,204 @@
+'use client'
+
+import { useState, use } from 'react'
+import { createClient } from '@/lib/supabase/client'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+
+interface Props {
+  params: Promise<{ id: string }>
+}
+
+export default function NewEntryPage({ params }: Props) {
+  const { id } = use(params)
+  const router = useRouter()
+  const supabase = createClient()
+
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
+  const [version, setVersion] = useState('')
+  const [tags, setTags] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [generating, setGenerating] = useState(false)
+  const [error, setError] = useState('')
+  const [hasGithub, setHasGithub] = useState<boolean | null>(null)
+
+  // Check if changelog has github_repo on mount
+  useState(() => {
+    supabase
+      .from('changelogs')
+      .select('github_repo')
+      .eq('id', id)
+      .single()
+      .then(({ data }) => {
+        setHasGithub(!!data?.github_repo)
+      })
+  })
+
+  async function handleGenerate() {
+    setGenerating(true)
+    setError('')
+    try {
+      const res = await fetch('/api/github/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ changelog_id: id }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Generation failed')
+      setTitle(data.title)
+      setContent(data.content)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to generate')
+    }
+    setGenerating(false)
+  }
+
+  async function handleSave(publish: boolean) {
+    setLoading(true)
+    setError('')
+
+    const tagsArray = tags
+      .split(',')
+      .map((t) => t.trim())
+      .filter(Boolean)
+
+    const { error } = await supabase.from('entries').insert({
+      changelog_id: id,
+      title: title.trim(),
+      content: content.trim(),
+      version: version.trim() || null,
+      tags: tagsArray.length > 0 ? tagsArray : null,
+      is_published: publish,
+      published_at: publish ? new Date().toISOString() : null,
+    })
+
+    if (error) {
+      setError(error.message)
+      setLoading(false)
+      return
+    }
+
+    router.push(`/dashboard/${id}`)
+  }
+
+  return (
+    <div className="min-h-screen bg-[#0a0a0a] text-white">
+      <nav className="border-b border-white/10 px-6 py-4">
+        <div className="max-w-4xl mx-auto flex items-center gap-4">
+          <Link href="/dashboard" className="text-white/40 hover:text-white transition-colors text-sm">
+            Dashboard
+          </Link>
+          <span className="text-white/20">/</span>
+          <Link href={`/dashboard/${id}`} className="text-white/40 hover:text-white transition-colors text-sm">
+            Changelog
+          </Link>
+          <span className="text-white/20">/</span>
+          <span className="text-sm">New entry</span>
+        </div>
+      </nav>
+
+      <div className="max-w-2xl mx-auto px-6 py-12">
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-2xl font-bold">New entry</h1>
+          {hasGithub && (
+            <button
+              onClick={handleGenerate}
+              disabled={generating}
+              className="bg-white/10 hover:bg-white/20 disabled:opacity-50 text-white text-sm font-medium px-4 py-2.5 rounded-lg transition-colors flex items-center gap-2"
+            >
+              {generating ? (
+                <>
+                  <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  </svg>
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  Generate from GitHub
+                </>
+              )}
+            </button>
+          )}
+        </div>
+
+        <div className="space-y-6">
+          <div>
+            <label className="block text-sm text-white/60 mb-1.5">
+              Title <span className="text-red-400">*</span>
+            </label>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="What's new?"
+              required
+              className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm text-white/60 mb-1.5">
+              Content <span className="text-red-400">*</span>
+            </label>
+            <textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              placeholder="Describe the changes. Markdown supported."
+              required
+              rows={12}
+              className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm resize-none font-mono"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm text-white/60 mb-1.5">Version</label>
+              <input
+                type="text"
+                value={version}
+                onChange={(e) => setVersion(e.target.value)}
+                placeholder="1.2.0"
+                className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm"
+              />
+            </div>
+            <div>
+              <label className="block text-sm text-white/60 mb-1.5">Tags</label>
+              <input
+                type="text"
+                value={tags}
+                onChange={(e) => setTags(e.target.value)}
+                placeholder="feature, bugfix, ui"
+                className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm"
+              />
+            </div>
+          </div>
+
+          {error && <div className="text-red-400 text-sm">{error}</div>}
+
+          <div className="flex gap-3 pt-2">
+            <button
+              onClick={() => handleSave(false)}
+              disabled={loading || !title.trim() || !content.trim()}
+              className="flex-1 bg-white/10 hover:bg-white/20 disabled:opacity-50 text-white font-medium py-3 rounded-lg transition-colors text-sm"
+            >
+              Save draft
+            </button>
+            <button
+              onClick={() => handleSave(true)}
+              disabled={loading || !title.trim() || !content.trim()}
+              className="flex-1 bg-indigo-500 hover:bg-indigo-400 disabled:opacity-50 text-white font-medium py-3 rounded-lg transition-colors text-sm"
+            >
+              {loading ? 'Publishing...' : 'Publish'}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
