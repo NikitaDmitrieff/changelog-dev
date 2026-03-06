@@ -24,7 +24,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1,
     },
     {
+      url: `${baseUrl}/blog`,
+      lastModified: new Date('2026-03-06'),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/blog/why-your-saas-needs-a-changelog`,
+      lastModified: new Date('2026-03-06'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/blog/best-changelog-tools-compared`,
       lastModified: new Date('2026-03-06'),
       changeFrequency: 'monthly',
       priority: 0.7,
