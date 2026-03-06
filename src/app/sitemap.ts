@@ -23,6 +23,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
       priority: 1,
     },
+    {
+      url: `${baseUrl}/blog/why-your-saas-needs-a-changelog`,
+      lastModified: new Date('2026-03-06'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
     ...changelogUrls,
   ]
 }
