@@ -119,12 +119,7 @@ type ChangelogDevSchema = {
 }
 
 export interface Database {
-  changelog_dev: ChangelogDevSchema
-  public: {
-    Tables: Record<string, never>
-    Views: Record<string, never>
-    Functions: Record<string, never>
-  }
+  public: ChangelogDevSchema
 }
 
 export type Changelog = ChangelogDevSchema['Tables']['changelogs']['Row']
