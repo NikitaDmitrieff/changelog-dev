@@ -210,6 +210,11 @@ export default function BlogPost() {
                 Best Changelog Tools for SaaS in 2026 →
               </span>
             </Link>
+            <Link href="/blog/changelog-best-practices" className="block group">
+              <span className="text-zinc-400 group-hover:text-white text-sm transition-colors">
+                Changelog Best Practices: How to Write a Changelog Users Actually Read →
+              </span>
+            </Link>
           </div>
         </div>
 

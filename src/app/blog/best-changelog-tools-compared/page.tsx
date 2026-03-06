@@ -254,6 +254,11 @@ export default function BlogPost() {
                 Why Your SaaS Needs a Changelog (And How to Write One) →
               </span>
             </Link>
+            <Link href="/blog/changelog-best-practices" className="block group">
+              <span className="text-zinc-400 group-hover:text-white text-sm transition-colors">
+                Changelog Best Practices: How to Write a Changelog Users Actually Read →
+              </span>
+            </Link>
           </div>
         </div>
 

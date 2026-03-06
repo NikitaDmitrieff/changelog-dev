@@ -15,6 +15,15 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: 'changelog-best-practices',
+    title: 'Changelog Best Practices: How to Write a Changelog That Users Actually Read',
+    description:
+      'The definitive guide to changelog format, writing style, and real examples. Learn how to write changelog entries that build trust, reduce churn, and keep users informed.',
+    category: 'Guide',
+    date: 'March 2026',
+    readTime: '11 min read',
+  },
+  {
     slug: 'saas-product-updates',
     title: 'How to Notify Customers About Product Updates (Email Templates + Examples)',
     description:
