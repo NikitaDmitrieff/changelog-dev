@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { WaitlistForm } from '@/components/WaitlistForm'
 
 export default function LandingPage() {
   return (
@@ -13,10 +12,10 @@ export default function LandingPage() {
               Sign in
             </Link>
             <Link
-              href="#waitlist"
+              href="/login"
               className="bg-indigo-500 hover:bg-indigo-400 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
             >
-              Get early access
+              Get started free
             </Link>
           </div>
         </div>
@@ -26,7 +25,7 @@ export default function LandingPage() {
       <section className="px-6 pt-24 pb-20 text-center">
         <div className="max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-medium px-3 py-1.5 rounded-full mb-8">
-            Now in early access
+            Now live — free to use
           </div>
           <h1 className="text-5xl sm:text-6xl font-bold tracking-tight leading-tight mb-6">
             A changelog your customers
@@ -37,10 +36,21 @@ export default function LandingPage() {
             Beautiful hosted changelog pages. Connect GitHub, AI drafts entries,
             your customers stay informed.
           </p>
-          <div id="waitlist" className="max-w-md mx-auto">
-            <WaitlistForm className="w-full" />
-            <p className="text-white/30 text-xs mt-3">No credit card. Free tier forever.</p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              href="/login"
+              className="bg-indigo-500 hover:bg-indigo-400 text-white font-semibold px-8 py-3.5 rounded-xl transition-colors text-base"
+            >
+              Get started free
+            </Link>
+            <Link
+              href="/changelog-dev"
+              className="text-white/50 hover:text-white text-sm transition-colors"
+            >
+              See a live example →
+            </Link>
           </div>
+          <p className="text-white/30 text-xs mt-4">No credit card. Free tier forever.</p>
         </div>
       </section>
 
@@ -118,10 +128,10 @@ export default function LandingPage() {
                 </li>
               </ul>
               <Link
-                href="#waitlist"
+                href="/login"
                 className="mt-8 block text-center bg-white/10 hover:bg-white/20 text-white font-medium py-2.5 rounded-lg transition-colors text-sm"
               >
-                Join waitlist
+                Get started free
               </Link>
             </div>
             <div className="bg-indigo-500/10 border border-indigo-500/30 rounded-2xl p-8 relative">
@@ -146,10 +156,10 @@ export default function LandingPage() {
                 </li>
               </ul>
               <Link
-                href="#waitlist"
+                href="/login"
                 className="mt-8 block text-center bg-indigo-500 hover:bg-indigo-400 text-white font-medium py-2.5 rounded-lg transition-colors text-sm"
               >
-                Join waitlist
+                Get started free
               </Link>
             </div>
           </div>
