@@ -119,4 +119,63 @@ describe('GET /api/changelogs/[id]/export', () => {
     expect(body).toContain('## Draft entry [DRAFT]')
     expect(body).toContain('Work in progress.')
   })
+
+  it('returns JSON when format=json is specified', async () => {
+    mockGetUser.mockResolvedValue({ data: { user: { id: 'user-1' } } })
+    mockFrom.mockImplementation((table: string) => {
+      if (table === 'changelogs') {
+        return {
+          select: vi.fn().mockReturnValue({
+            eq: vi.fn().mockReturnValue({
+              eq: vi.fn().mockReturnValue({
+                single: vi.fn().mockResolvedValue({
+                  data: { name: 'My Product', slug: 'my-product' },
+                  error: null,
+                }),
+              }),
+            }),
+          }),
+        }
+      }
+      if (table === 'entries') {
+        return {
+          select: vi.fn().mockReturnValue({
+            eq: vi.fn().mockReturnValue({
+              order: vi.fn().mockResolvedValue({
+                data: [
+                  {
+                    title: 'v1.0 Release',
+                    content: 'Initial release.',
+                    version: 'v1.0.0',
+                    tags: ['feature'],
+                    is_published: true,
+                    published_at: '2026-03-01T00:00:00.000Z',
+                    created_at: '2026-03-01T00:00:00.000Z',
+                  },
+                ],
+                error: null,
+              }),
+            }),
+          }),
+        }
+      }
+      return {}
+    })
+
+    const req = new NextRequest('http://localhost:3000/api/changelogs/cl-1/export?format=json')
+    const res = await GET(req, { params: mockParams })
+
+    expect(res.status).toBe(200)
+    expect(res.headers.get('Content-Type')).toBe('application/json; charset=utf-8')
+    expect(res.headers.get('Content-Disposition')).toBe('attachment; filename="my-product-changelog.json"')
+
+    const body = await res.json()
+    expect(body.name).toBe('My Product')
+    expect(body.slug).toBe('my-product')
+    expect(body.exported_at).toBeDefined()
+    expect(body.entries).toHaveLength(1)
+    expect(body.entries[0].title).toBe('v1.0 Release')
+    expect(body.entries[0].version).toBe('v1.0.0')
+    expect(body.entries[0].tags).toEqual(['feature'])
+  })
 })

@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 import type { Database } from '@/lib/supabase/types'
 
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -48,6 +48,32 @@ export async function GET(
       .select('title, content, version, tags, is_published, published_at, created_at')
       .eq('changelog_id', id)
       .order('published_at', { ascending: false, nullsFirst: false })
+
+    const format = request.nextUrl.searchParams.get('format')
+
+    if (format === 'json') {
+      const json = {
+        name: changelog.name,
+        slug: changelog.slug,
+        exported_at: new Date().toISOString(),
+        entries: (entries ?? []).map((entry) => ({
+          title: entry.title,
+          content: entry.content,
+          version: entry.version,
+          tags: entry.tags,
+          is_published: entry.is_published,
+          published_at: entry.published_at,
+          created_at: entry.created_at,
+        })),
+      }
+
+      return new NextResponse(JSON.stringify(json, null, 2), {
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Content-Disposition': `attachment; filename="${changelog.slug}-changelog.json"`,
+        },
+      })
+    }
 
     const lines: string[] = [
       `# ${changelog.name}`,
