@@ -31,6 +31,8 @@ export default function ChangelogSettingsPage() {
   const [githubRepo, setGithubRepo] = useState('')
   const [accentColor, setAccentColor] = useState('#6366f1')
   const [logoUrl, setLogoUrl] = useState('')
+  const [slug, setSlug] = useState('')
+  const [snippetCopied, setSnippetCopied] = useState(false)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
@@ -65,6 +67,7 @@ export default function ChangelogSettingsPage() {
       setGithubRepo(changelog.github_repo ?? '')
       setAccentColor(changelog.accent_color ?? '#6366f1')
       setLogoUrl(changelog.logo_url ?? '')
+      setSlug(changelog.slug ?? '')
       setLoading(false)
     }
     load()
@@ -256,6 +259,36 @@ export default function ChangelogSettingsPage() {
             {saving ? 'Saving...' : 'Save settings'}
           </button>
         </form>
+
+        {slug && (
+          <div className="mt-12 border-t border-white/10 pt-8">
+            <h2 className="text-lg font-semibold mb-2">Embed Widget</h2>
+            <p className="text-white/40 text-sm mb-4">
+              Add this snippet to your website to show a changelog widget to your users.
+            </p>
+            <div className="relative">
+              <pre className="bg-white/5 border border-white/10 rounded-lg p-4 text-sm text-white/70 overflow-x-auto whitespace-pre-wrap break-all">
+{`<script src="https://unpkg.com/changelogdev-widget@0.3.0/dist/index.iife.js"></script>
+<changelog-widget project-id="${slug}"${accentColor !== '#6366f1' ? ` accent-color="${accentColor}"` : ''}></changelog-widget>`}
+              </pre>
+              <button
+                type="button"
+                onClick={() => {
+                  const snippet = `<script src="https://unpkg.com/changelogdev-widget@0.3.0/dist/index.iife.js"></script>\n<changelog-widget project-id="${slug}"${accentColor !== '#6366f1' ? ` accent-color="${accentColor}"` : ''}></changelog-widget>`
+                  navigator.clipboard.writeText(snippet)
+                  setSnippetCopied(true)
+                  setTimeout(() => setSnippetCopied(false), 2000)
+                }}
+                className="absolute top-2 right-2 px-3 py-1.5 bg-white/10 hover:bg-white/20 rounded-md text-xs text-white/60 hover:text-white transition-colors"
+              >
+                {snippetCopied ? 'Copied!' : 'Copy'}
+              </button>
+            </div>
+            <p className="text-white/30 text-xs mt-2">
+              The widget auto-applies your accent color. Place it before {'</body>'} in your HTML.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   )
