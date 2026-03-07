@@ -1,4 +1,7 @@
 import { Resend } from 'resend'
+import { createLogger } from './logger'
+
+const log = createLogger('email')
 
 const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
@@ -99,9 +102,7 @@ export async function sendConfirmationEmail(
   params: SendConfirmationParams
 ): Promise<boolean> {
   if (!resend) {
-    console.warn(
-      '[email] RESEND_API_KEY not configured -- skipping confirmation email'
-    )
+    log.warn('RESEND_API_KEY not configured -- skipping confirmation email')
     return false
   }
 
@@ -120,7 +121,7 @@ export async function sendConfirmationEmail(
   })
 
   if (error) {
-    console.error('[email] Confirmation email failed:', error)
+    log.error('Confirmation email failed', { error: String(error), to: params.email })
     return false
   }
 
@@ -131,9 +132,7 @@ export async function sendEntryNotifications(
   params: SendNotificationParams & { changelogId: string }
 ): Promise<{ sent: number; failed: number }> {
   if (!resend) {
-    console.warn(
-      '[email] RESEND_API_KEY not configured -- skipping email notifications'
-    )
+    log.warn('RESEND_API_KEY not configured -- skipping email notifications')
     return { sent: 0, failed: 0 }
   }
 
@@ -176,17 +175,15 @@ export async function sendEntryNotifications(
       } else {
         failed++
         if (result.status === 'rejected') {
-          console.error('[email] Send failed:', result.reason)
+          log.error('Send failed', { reason: String(result.reason) })
         } else if (result.value.error) {
-          console.error('[email] Send error:', result.value.error)
+          log.error('Send error', { error: String(result.value.error) })
         }
       }
     }
   }
 
-  console.info(
-    `[email] Notification results: ${sent} sent, ${failed} failed out of ${subscribers.length}`
-  )
+  log.info('Notification results', { sent, failed, total: subscribers.length })
 
   return { sent, failed }
 }

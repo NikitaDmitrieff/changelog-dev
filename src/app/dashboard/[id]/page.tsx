@@ -13,6 +13,39 @@ interface Props {
   params: Promise<{ id: string }>
 }
 
+function ConfigWarnings() {
+  const warnings: { label: string; detail: string }[] = []
+
+  if (!process.env.RESEND_API_KEY) {
+    warnings.push({
+      label: 'Email notifications disabled',
+      detail: 'Set RESEND_API_KEY to enable subscriber emails.',
+    })
+  }
+  if (!process.env.STRIPE_WEBHOOK_SECRET) {
+    warnings.push({
+      label: 'Stripe webhooks inactive',
+      detail: 'Set STRIPE_WEBHOOK_SECRET to process subscription events.',
+    })
+  }
+
+  if (warnings.length === 0) return null
+
+  return (
+    <div className="mb-6 space-y-2">
+      {warnings.map((w) => (
+        <div
+          key={w.label}
+          className="bg-amber-500/10 border border-amber-500/30 rounded-xl px-5 py-3 text-sm"
+        >
+          <span className="text-amber-400 font-medium">{w.label}</span>
+          <span className="text-amber-400/70 ml-2">{w.detail}</span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export default async function ChangelogManagePage({ params }: Props) {
   const { id } = await params
   const supabase = await createClient()
@@ -60,6 +93,8 @@ export default async function ChangelogManagePage({ params }: Props) {
       </nav>
 
       <div className="max-w-4xl mx-auto px-6 py-12">
+        <ConfigWarnings />
+
         {/* Header */}
         <div className="flex items-start justify-between mb-10">
           <div>
