@@ -104,8 +104,12 @@ export default async function PublicChangelogPage({ params }: Props) {
 
       <main className="max-w-2xl mx-auto px-6 py-12">
         {entries.length === 0 ? (
-          <div className="text-center py-20 text-white/40">
-            No entries published yet.
+          <div className="text-center py-20">
+            <svg className="w-12 h-12 mx-auto mb-4 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5" />
+            </svg>
+            <p className="text-white/40 text-lg font-medium">No updates yet</p>
+            <p className="text-white/25 text-sm mt-1">Stay tuned — new entries will appear here soon.</p>
           </div>
         ) : (
           <>
@@ -122,9 +126,14 @@ export default async function PublicChangelogPage({ params }: Props) {
         {/* Footer */}
         <div className="mt-12 text-center">
           <a
-            href="/"
-            className="text-white/20 hover:text-white/40 text-xs transition-colors"
+            href="https://www.changelogdev.com?ref=powered-by"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-white/25 hover:text-white/50 text-xs transition-colors"
           >
+            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+            </svg>
             Powered by changelog.dev
           </a>
         </div>
