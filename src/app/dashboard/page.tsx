@@ -1,7 +1,12 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import type { Changelog } from '@/lib/supabase/types'
+
+export const metadata: Metadata = {
+  title: 'Dashboard | changelog.dev',
+}
 
 export default async function DashboardPage({
   searchParams,

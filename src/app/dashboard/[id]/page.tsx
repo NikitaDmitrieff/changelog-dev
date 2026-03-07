@@ -1,8 +1,13 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect, notFound } from 'next/navigation'
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import type { Changelog, Entry } from '@/lib/supabase/types'
 import { EntryList } from './entry-list'
+
+export const metadata: Metadata = {
+  title: 'Changelog | changelog.dev',
+}
 
 interface Props {
   params: Promise<{ id: string }>

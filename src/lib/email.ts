@@ -15,6 +15,10 @@ interface SendNotificationParams {
   subscribers: Array<{ id: string; email: string }>
 }
 
+function escapeHtml(str: string): string {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;')
+}
+
 function truncate(text: string, maxLength: number): string {
   if (text.length <= maxLength) return text
   return text.slice(0, maxLength).trimEnd() + '...'
@@ -45,15 +49,15 @@ function buildEmailHtml({
 <html>
 <head><meta charset="utf-8"></head>
 <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 560px; margin: 0 auto; padding: 40px 20px; color: #1a1a1a;">
-  <h2 style="margin: 0 0 4px 0; font-size: 20px;">${entryTitle}</h2>
-  <p style="margin: 0 0 20px 0; font-size: 13px; color: #666;">New update from ${changelogName}</p>
-  <p style="font-size: 15px; line-height: 1.6; color: #333;">${summary}</p>
+  <h2 style="margin: 0 0 4px 0; font-size: 20px;">${escapeHtml(entryTitle)}</h2>
+  <p style="margin: 0 0 20px 0; font-size: 13px; color: #666;">New update from ${escapeHtml(changelogName)}</p>
+  <p style="font-size: 15px; line-height: 1.6; color: #333;">${escapeHtml(summary)}</p>
   <p style="margin: 24px 0;">
     <a href="${changelogUrl}" style="display: inline-block; background: #6366f1; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-size: 14px; font-weight: 500;">Read full update</a>
   </p>
   <hr style="border: none; border-top: 1px solid #eee; margin: 32px 0 16px;" />
   <p style="font-size: 12px; color: #999; margin: 0;">
-    You received this because you subscribed to ${changelogName} updates.
+    You received this because you subscribed to ${escapeHtml(changelogName)} updates.
     <a href="${unsubscribeUrl}" style="color: #999;">Unsubscribe</a>
   </p>
 </body>
@@ -79,7 +83,7 @@ function buildConfirmationHtml({
 <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 560px; margin: 0 auto; padding: 40px 20px; color: #1a1a1a;">
   <h2 style="margin: 0 0 4px 0; font-size: 20px;">Confirm your subscription</h2>
   <p style="margin: 0 0 20px 0; font-size: 15px; line-height: 1.6; color: #333;">
-    You requested to subscribe to <strong>${changelogName}</strong> updates. Click the button below to confirm your subscription.
+    You requested to subscribe to <strong>${escapeHtml(changelogName)}</strong> updates. Click the button below to confirm your subscription.
   </p>
   <p style="margin: 24px 0;">
     <a href="${confirmUrl}" style="display: inline-block; background: #6366f1; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-size: 14px; font-weight: 500;">Confirm subscription</a>
@@ -177,7 +181,7 @@ export async function sendEntryNotifications(
     }
   }
 
-  console.log(
+  console.info(
     `[email] Notification results: ${sent} sent, ${failed} failed out of ${subscribers.length}`
   )
 

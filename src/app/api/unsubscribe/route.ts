@@ -66,18 +66,24 @@ export async function GET(request: NextRequest) {
   }
 }
 
+function escapeHtml(str: string): string {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;')
+}
+
 function htmlPage(title: string, message: string): string {
+  const t = escapeHtml(title)
+  const m = escapeHtml(message)
   return `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>${title}</title>
+  <title>${t}</title>
 </head>
 <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background: #0a0a0a; color: #fff;">
   <div style="text-align: center; max-width: 400px; padding: 20px;">
-    <h1 style="font-size: 24px; margin-bottom: 8px;">${title}</h1>
-    <p style="color: rgba(255,255,255,0.5); font-size: 15px; line-height: 1.5;">${message}</p>
+    <h1 style="font-size: 24px; margin-bottom: 8px;">${t}</h1>
+    <p style="color: rgba(255,255,255,0.5); font-size: 15px; line-height: 1.5;">${m}</p>
   </div>
 </body>
 </html>`
