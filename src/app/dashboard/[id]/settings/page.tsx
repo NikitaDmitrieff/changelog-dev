@@ -179,15 +179,15 @@ export default function ChangelogSettingsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center">
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <div className="text-white/40 text-sm">Loading...</div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <nav className="border-b border-white/10 px-6 py-4">
+    <div className="min-h-screen bg-black text-white">
+      <nav className="border-b border-white/[0.06] px-6 py-4">
         <div className="max-w-4xl mx-auto flex items-center gap-4">
           <Link href="/dashboard" className="text-white/40 hover:text-white transition-colors text-sm">
             Dashboard
@@ -212,7 +212,7 @@ export default function ChangelogSettingsPage() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm"
+              className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-colors text-sm"
             />
           </div>
 
@@ -223,7 +223,7 @@ export default function ChangelogSettingsPage() {
               onChange={(e) => setDescription(e.target.value)}
               placeholder="What is this changelog for?"
               rows={3}
-              className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm resize-none"
+              className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-colors text-sm resize-none"
             />
           </div>
 
@@ -234,7 +234,7 @@ export default function ChangelogSettingsPage() {
               value={githubRepo}
               onChange={(e) => setGithubRepo(e.target.value)}
               placeholder="owner/repo"
-              className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm"
+              className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-colors text-sm"
             />
             <p className="text-white/30 text-xs mt-1.5">
               Optional. Used to generate changelog entries from commits.
@@ -262,7 +262,7 @@ export default function ChangelogSettingsPage() {
                 type="color"
                 value={accentColor}
                 onChange={(e) => setAccentColor(e.target.value)}
-                className="w-8 h-8 rounded cursor-pointer bg-transparent border border-white/20"
+                className="w-8 h-8 rounded cursor-pointer bg-transparent border border-white/[0.08]"
                 title="Custom color"
               />
             </div>
@@ -278,7 +278,7 @@ export default function ChangelogSettingsPage() {
               value={logoUrl}
               onChange={(e) => setLogoUrl(e.target.value)}
               placeholder="https://example.com/logo.png"
-              className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm"
+              className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-colors text-sm"
             />
             {logoUrl && (
               <div className="mt-2 flex items-center gap-2">
@@ -302,20 +302,20 @@ export default function ChangelogSettingsPage() {
           <button
             type="submit"
             disabled={saving}
-            className="w-full bg-indigo-500 hover:bg-indigo-400 disabled:opacity-50 text-white font-medium py-3 rounded-lg transition-colors text-sm"
+            className="w-full bg-white hover:bg-zinc-200 disabled:opacity-50 text-black font-medium py-3 rounded-full transition-colors text-sm"
           >
             {saving ? 'Saving...' : 'Save settings'}
           </button>
         </form>
 
         {slug && (
-          <div className="mt-12 border-t border-white/10 pt-8">
+          <div className="mt-12 border-t border-white/[0.06] pt-8">
             <h2 className="text-lg font-semibold mb-2">Embed Widget</h2>
             <p className="text-white/40 text-sm mb-4">
               Add this snippet to your website to show a changelog widget to your users.
             </p>
             <div className="relative">
-              <pre className="bg-white/5 border border-white/10 rounded-lg p-4 text-sm text-white/70 overflow-x-auto whitespace-pre-wrap break-all">
+              <pre className="bg-white/[0.03] border border-white/[0.08] rounded-lg p-4 text-sm text-white/70 overflow-x-auto whitespace-pre-wrap break-all">
 {`<script src="https://unpkg.com/changelogdev-widget@0.3.0/dist/index.iife.js"></script>
 <changelog-widget project-id="${slug}"${accentColor !== '#6366f1' ? ` accent-color="${accentColor}"` : ''}></changelog-widget>`}
               </pre>
@@ -339,7 +339,7 @@ export default function ChangelogSettingsPage() {
         )}
 
         {/* API Keys */}
-        <div className="mt-12 border-t border-white/10 pt-8">
+        <div className="mt-12 border-t border-white/[0.06] pt-8">
           <h2 className="text-lg font-semibold mb-2">API Keys</h2>
           <p className="text-white/40 text-sm mb-4">
             Use API keys to create changelog entries programmatically from CI/CD pipelines or scripts.
@@ -377,13 +377,13 @@ export default function ChangelogSettingsPage() {
               value={newKeyName}
               onChange={(e) => setNewKeyName(e.target.value)}
               placeholder="Key name (e.g. CI/CD)"
-              className="flex-1 bg-white/5 border border-white/20 rounded-lg px-4 py-2.5 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm"
+              className="flex-1 bg-white/[0.03] border border-white/[0.08] rounded-lg px-4 py-2.5 text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-colors text-sm"
             />
             <button
               type="button"
               onClick={handleCreateKey}
               disabled={creatingKey}
-              className="bg-indigo-500 hover:bg-indigo-400 disabled:opacity-50 text-white font-medium px-4 py-2.5 rounded-lg transition-colors text-sm shrink-0"
+              className="bg-white hover:bg-zinc-200 disabled:opacity-50 text-black font-medium px-4 py-2.5 rounded-full transition-colors text-sm shrink-0"
             >
               {creatingKey ? 'Creating...' : 'Generate key'}
             </button>
@@ -393,7 +393,7 @@ export default function ChangelogSettingsPage() {
           {apiKeys.length > 0 ? (
             <div className="space-y-2">
               {apiKeys.map((k) => (
-                <div key={k.id} className="flex items-center justify-between bg-white/5 border border-white/10 rounded-lg px-4 py-3">
+                <div key={k.id} className="flex items-center justify-between bg-white/[0.03] border border-white/[0.08] rounded-lg px-4 py-3">
                   <div>
                     <span className="text-sm text-white">{k.name}</span>
                     <span className="text-white/30 text-xs ml-3 font-mono">{k.key_prefix}</span>
@@ -420,7 +420,7 @@ export default function ChangelogSettingsPage() {
           {/* Usage example */}
           <div className="mt-6">
             <p className="text-white/40 text-xs mb-2">Example usage:</p>
-            <pre className="bg-white/5 border border-white/10 rounded-lg p-4 text-xs text-white/50 overflow-x-auto whitespace-pre-wrap break-all">
+            <pre className="bg-white/[0.03] border border-white/[0.08] rounded-lg p-4 text-xs text-white/50 overflow-x-auto whitespace-pre-wrap break-all">
 {`curl -X POST https://www.changelogdev.com/api/v1/entries \\
   -H "Authorization: Bearer cldev_YOUR_KEY" \\
   -H "Content-Type: application/json" \\

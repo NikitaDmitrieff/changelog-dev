@@ -88,7 +88,7 @@ export function WebhookEventsPanel() {
       {events.length > 5 && (
         <button
           onClick={() => setExpanded(!expanded)}
-          className="mt-3 text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
+          className="mt-3 text-xs text-zinc-400 hover:text-white transition-colors"
         >
           {expanded ? 'Show less' : `Show all ${events.length} events`}
         </button>

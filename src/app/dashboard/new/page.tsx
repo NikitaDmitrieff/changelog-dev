@@ -124,8 +124,8 @@ export default function NewChangelogPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <nav className="border-b border-white/10 px-6 py-4">
+    <div className="min-h-screen bg-black text-white">
+      <nav className="border-b border-white/[0.06] px-6 py-4">
         <div className="max-w-4xl mx-auto flex items-center gap-4">
           <Link href="/dashboard" className="text-white/40 hover:text-white transition-colors text-sm">
             Dashboard
@@ -149,7 +149,7 @@ export default function NewChangelogPage() {
               onChange={(e) => handleNameChange(e.target.value)}
               placeholder="My Product"
               required
-              className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm"
+              className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-colors text-sm"
             />
           </div>
 
@@ -157,8 +157,8 @@ export default function NewChangelogPage() {
             <label className="block text-sm text-white/60 mb-1.5">
               Slug <span className="text-red-400">*</span>
             </label>
-            <div className="flex items-center bg-white/5 border border-white/20 rounded-lg overflow-hidden focus-within:border-indigo-500 transition-colors">
-              <span className="px-4 py-3 text-white/30 text-sm border-r border-white/10 whitespace-nowrap">
+            <div className="flex items-center bg-white/[0.03] border border-white/[0.08] rounded-lg overflow-hidden focus-within:border-white/20 transition-colors">
+              <span className="px-4 py-3 text-white/30 text-sm border-r border-white/[0.06] whitespace-nowrap">
                 changelog.dev/
               </span>
               <input
@@ -181,7 +181,7 @@ export default function NewChangelogPage() {
               onChange={(e) => setDescription(e.target.value)}
               placeholder="What is this changelog for?"
               rows={3}
-              className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm resize-none"
+              className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-colors text-sm resize-none"
             />
           </div>
 
@@ -194,7 +194,7 @@ export default function NewChangelogPage() {
               value={githubRepo}
               onChange={(e) => setGithubRepo(e.target.value)}
               placeholder="owner/repo"
-              className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm"
+              className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-colors text-sm"
             />
             <p className="text-white/30 text-xs mt-1.5">
               Optional. Used to generate changelog entries from commits.
@@ -208,7 +208,7 @@ export default function NewChangelogPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-indigo-500 hover:bg-indigo-400 disabled:opacity-50 text-white font-medium py-3 rounded-lg transition-colors text-sm"
+            className="w-full bg-white hover:bg-zinc-200 disabled:opacity-50 text-black font-medium py-3 rounded-full transition-colors text-sm"
           >
             {loading ? 'Creating...' : 'Create changelog'}
           </button>

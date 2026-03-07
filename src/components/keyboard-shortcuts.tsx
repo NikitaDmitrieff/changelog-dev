@@ -133,7 +133,7 @@ export function KeyboardShortcuts() {
       onClick={() => setShowHelp(false)}
     >
       <div
-        className="bg-zinc-900 border border-white/10 rounded-2xl p-6 w-full max-w-sm shadow-2xl"
+        className="bg-zinc-900 border border-white/[0.08] rounded-2xl p-6 w-full max-w-sm shadow-2xl"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-label="Keyboard shortcuts"
@@ -167,7 +167,7 @@ export function KeyboardShortcuts() {
             </div>
           ))}
         </div>
-        <div className="mt-5 pt-4 border-t border-white/10 text-xs text-white/30 text-center">
+        <div className="mt-5 pt-4 border-t border-white/[0.08] text-xs text-white/30 text-center">
           Press <kbd className="bg-white/10 border border-white/20 px-1.5 py-0.5 rounded font-mono">Esc</kbd> to close
         </div>
       </div>

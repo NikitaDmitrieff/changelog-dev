@@ -202,15 +202,15 @@ export default function EditEntryPage({ params }: Props) {
 
   if (fetching) {
     return (
-      <div className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center">
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <p className="text-white/40">Loading...</p>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <nav className="border-b border-white/10 px-6 py-4">
+    <div className="min-h-screen bg-black text-white">
+      <nav className="border-b border-white/[0.06] px-6 py-4">
         <div className="max-w-4xl mx-auto flex items-center gap-4">
           <Link href="/dashboard" className="text-white/40 hover:text-white transition-colors text-sm">
             Dashboard
@@ -253,7 +253,7 @@ export default function EditEntryPage({ params }: Props) {
               onChange={(e) => setTitle(e.target.value)}
               placeholder="What's new?"
               required
-              className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm"
+              className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-colors text-sm"
             />
           </div>
 
@@ -267,7 +267,7 @@ export default function EditEntryPage({ params }: Props) {
                 value={version}
                 onChange={(e) => setVersion(e.target.value)}
                 placeholder="1.2.0"
-                className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm"
+                className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-colors text-sm"
               />
             </div>
             <div>
@@ -277,7 +277,7 @@ export default function EditEntryPage({ params }: Props) {
                 value={tags}
                 onChange={(e) => setTags(e.target.value)}
                 placeholder="feature, bugfix, ui"
-                className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm"
+                className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-colors text-sm"
               />
             </div>
           </div>
@@ -292,7 +292,7 @@ export default function EditEntryPage({ params }: Props) {
                     value={scheduledFor}
                     onChange={(e) => setScheduledFor(e.target.value)}
                     min={new Date().toISOString().slice(0, 16)}
-                    className="flex-1 bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors text-sm [color-scheme:dark]"
+                    className="flex-1 bg-white/[0.03] border border-white/[0.08] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white/20 transition-colors text-sm [color-scheme:dark]"
                   />
                   <button
                     onClick={handleCancelSchedule}
@@ -308,7 +308,7 @@ export default function EditEntryPage({ params }: Props) {
                   value={scheduledFor}
                   onChange={(e) => setScheduledFor(e.target.value)}
                   min={new Date().toISOString().slice(0, 16)}
-                  className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm [color-scheme:dark]"
+                  className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-colors text-sm [color-scheme:dark]"
                 />
               )}
               {scheduledFor && (
@@ -345,13 +345,13 @@ export default function EditEntryPage({ params }: Props) {
             <button
               onClick={handleSave}
               disabled={loading || deleting || !title.trim() || !content.trim()}
-              className="flex-1 bg-indigo-500 hover:bg-indigo-400 disabled:opacity-50 text-white font-medium py-3 rounded-lg transition-colors text-sm"
+              className="flex-1 bg-white hover:bg-zinc-200 disabled:opacity-50 text-black font-medium py-3 rounded-full transition-colors text-sm"
             >
               {loading ? 'Saving...' : 'Save changes'}
             </button>
           </div>
 
-          <div className="border-t border-white/10 pt-6">
+          <div className="border-t border-white/[0.06] pt-6">
             <button
               onClick={handleDelete}
               disabled={deleting || loading}

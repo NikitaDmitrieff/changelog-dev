@@ -140,7 +140,7 @@ export default async function DashboardPage({
           </Link>
           <div className="flex items-center gap-4">
             {isPro && (
-              <span className="text-xs font-semibold bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 px-2.5 py-1 rounded-full">
+              <span className="text-xs font-semibold bg-white/10 text-white border border-white/[0.15] px-2.5 py-1 rounded-full">
                 Pro
               </span>
             )}
@@ -155,13 +155,13 @@ export default async function DashboardPage({
 
       <div className="max-w-4xl mx-auto px-6 py-12">
         {justUpgraded && (
-          <div className="mb-6 bg-indigo-500/10 border border-indigo-500/30 rounded-xl px-5 py-4 text-sm text-indigo-300">
+          <div className="mb-6 bg-white/[0.03] border border-white/[0.08] rounded-xl px-5 py-4 text-sm text-zinc-300">
             Welcome to Pro! You now have unlimited changelogs and subscribers.
           </div>
         )}
 
         {!isPro && process.env.STRIPE_SECRET_KEY && (
-          <div className="mb-6 glass-card rounded-xl px-5 py-4 flex items-center justify-between">
+          <div className="mb-6 card rounded-xl px-5 py-4 flex items-center justify-between">
             <div>
               <div className="text-sm font-medium">Free plan — 1 changelog, 100 subscribers</div>
               <div className="text-xs text-zinc-500 mt-0.5">Upgrade to Pro for unlimited everything</div>
@@ -177,7 +177,7 @@ export default async function DashboardPage({
               <p className="text-zinc-500 text-sm mt-1">{user.email} · Free plan</p>
             </div>
             <OnboardingChecklist steps={onboardingSteps} />
-            <div className="glass-card rounded-xl p-5 flex items-center gap-4">
+            <div className="card rounded-xl p-5 flex items-center gap-4">
               <div className="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center shrink-0">
                 <svg className="w-4 h-4 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -190,7 +190,7 @@ export default async function DashboardPage({
               </div>
               <Link
                 href="/changelog-dev"
-                className="text-sm text-indigo-400 hover:text-indigo-300 transition-colors shrink-0"
+                className="text-sm text-zinc-400 hover:text-white transition-colors shrink-0"
               >
                 View demo →
               </Link>
@@ -211,7 +211,7 @@ export default async function DashboardPage({
               ) : (
                 <Link
                   href="/dashboard/new"
-                  className="bg-indigo-500 hover:bg-indigo-400 text-white font-medium px-4 py-2.5 rounded-lg transition-colors text-sm"
+                  className="bg-white hover:bg-zinc-200 text-black font-medium px-4 py-2.5 rounded-full transition-colors text-sm"
                 >
                   New changelog
                 </Link>
@@ -225,11 +225,11 @@ export default async function DashboardPage({
                 <Link
                   key={changelog.id}
                   href={`/dashboard/${changelog.id}`}
-                  className="block glass-card hover:border-white/[0.12] rounded-xl p-5 transition-all group"
+                  className="block card hover:border-white/[0.12] rounded-xl p-5 transition-all group"
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="font-semibold group-hover:text-indigo-300 transition-colors">
+                      <div className="font-semibold group-hover:text-white transition-colors">
                         {changelog.name}
                       </div>
                       <div className="text-sm text-zinc-500 mt-0.5">
@@ -261,8 +261,8 @@ function UpgradeButton({ small }: { small?: boolean }) {
         type="submit"
         className={
           small
-            ? 'bg-indigo-500 hover:bg-indigo-400 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors'
-            : 'bg-indigo-500 hover:bg-indigo-400 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors'
+            ? 'bg-white hover:bg-zinc-200 text-black text-xs font-semibold px-3 py-1.5 rounded-full transition-colors'
+            : 'bg-white hover:bg-zinc-200 text-black text-sm font-semibold px-4 py-2 rounded-full transition-colors'
         }
       >
         Upgrade to Pro — $29/mo

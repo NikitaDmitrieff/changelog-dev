@@ -46,8 +46,8 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col">
-      <nav className="border-b border-white/10 px-6 py-4">
+    <div className="min-h-screen bg-black text-white flex flex-col">
+      <nav className="border-b border-white/[0.06] px-6 py-4">
         <Link href="/" className="font-semibold text-lg tracking-tight">
           changelog.dev
         </Link>
@@ -101,7 +101,7 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm"
+                className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-colors text-sm"
               />
             </div>
             <div>
@@ -116,7 +116,7 @@ export default function LoginPage() {
                 placeholder={mode === 'signup' ? 'At least 6 characters' : '••••••••'}
                 required
                 minLength={6}
-                className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm"
+                className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-colors text-sm"
               />
             </div>
             {error && (
@@ -127,7 +127,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-indigo-500 hover:bg-indigo-400 disabled:opacity-50 text-white font-medium py-3 rounded-lg transition-colors text-sm"
+              className="w-full bg-white hover:bg-zinc-200 disabled:opacity-50 text-black font-medium py-3 rounded-full transition-colors text-sm"
             >
               {loading
                 ? mode === 'signin' ? 'Signing in...' : 'Creating account...'

@@ -115,8 +115,8 @@ export default async function ChangelogManagePage({ params }: Props) {
   ]
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <nav className="border-b border-white/10 px-6 py-4">
+    <div className="min-h-screen bg-black text-white">
+      <nav className="border-b border-white/[0.06] px-6 py-4">
         <div className="max-w-4xl mx-auto flex items-center gap-4">
           <Link href="/dashboard" className="text-white/40 hover:text-white transition-colors text-sm">
             Dashboard
@@ -142,7 +142,7 @@ export default async function ChangelogManagePage({ params }: Props) {
               <Link
                 href={`/${changelog.slug}`}
                 target="_blank"
-                className="text-indigo-400 hover:text-indigo-300 text-sm flex items-center gap-1.5"
+                className="text-zinc-400 hover:text-white text-sm flex items-center gap-1.5"
               >
                 changelog.dev/{changelog.slug}
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -156,7 +156,7 @@ export default async function ChangelogManagePage({ params }: Props) {
             <ExportDropdown changelogId={id} />
             <Link
               href={`/dashboard/${id}/import`}
-              className="text-white/40 hover:text-white transition-colors text-sm border border-white/20 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg flex items-center gap-1.5"
+              className="text-white/40 hover:text-white transition-colors text-sm border border-white/[0.12] px-3 sm:px-4 py-2 sm:py-2.5 rounded-full flex items-center gap-1.5"
             >
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
@@ -165,13 +165,13 @@ export default async function ChangelogManagePage({ params }: Props) {
             </Link>
             <Link
               href={`/dashboard/${id}/settings`}
-              className="text-white/40 hover:text-white transition-colors text-sm border border-white/20 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg"
+              className="text-white/40 hover:text-white transition-colors text-sm border border-white/[0.12] px-3 sm:px-4 py-2 sm:py-2.5 rounded-full"
             >
               Settings
             </Link>
             <Link
               href={`/dashboard/${id}/new-entry`}
-              className="bg-indigo-500 hover:bg-indigo-400 text-white font-medium px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-colors text-sm"
+              className="bg-white hover:bg-zinc-200 text-black font-medium px-3 sm:px-4 py-2 sm:py-2.5 rounded-full transition-colors text-sm"
             >
               New entry
             </Link>
@@ -180,14 +180,14 @@ export default async function ChangelogManagePage({ params }: Props) {
 
         {/* Quick-start hints */}
         {entries.length === 0 && (
-          <div className="mb-8 glass-card rounded-xl p-6">
+          <div className="mb-8 card rounded-xl p-6">
             <div className="text-sm font-medium text-white mb-3">Quick start</div>
             <div className="space-y-3">
               {!changelog.github_repo && (
                 <div className="flex items-center gap-3 text-sm">
                   <div className="w-5 h-5 rounded-full border border-white/20 shrink-0" />
                   <span className="text-zinc-400">
-                    <Link href={`/dashboard/${id}/settings`} className="text-indigo-400 hover:text-indigo-300">Connect a GitHub repo</Link>
+                    <Link href={`/dashboard/${id}/settings`} className="text-zinc-400 hover:text-white">Connect a GitHub repo</Link>
                     {' '}to generate entries with AI
                   </span>
                 </div>
@@ -195,21 +195,21 @@ export default async function ChangelogManagePage({ params }: Props) {
               <div className="flex items-center gap-3 text-sm">
                 <div className="w-5 h-5 rounded-full border border-white/20 shrink-0" />
                 <span className="text-zinc-400">
-                  <Link href={`/dashboard/${id}/new-entry`} className="text-indigo-400 hover:text-indigo-300">Create your first entry</Link>
+                  <Link href={`/dashboard/${id}/new-entry`} className="text-zinc-400 hover:text-white">Create your first entry</Link>
                   {changelog.github_repo ? ' — use "Generate from GitHub" for a head start' : ' — write it manually or connect a repo first'}
                 </span>
               </div>
               <div className="flex items-center gap-3 text-sm">
                 <div className="w-5 h-5 rounded-full border border-white/20 shrink-0" />
                 <span className="text-zinc-400">
-                  <Link href={`/dashboard/${id}/settings`} className="text-indigo-400 hover:text-indigo-300">Generate an API key</Link>
+                  <Link href={`/dashboard/${id}/settings`} className="text-zinc-400 hover:text-white">Generate an API key</Link>
                   {' '}to push entries programmatically
                 </span>
               </div>
               <div className="flex items-center gap-3 text-sm">
                 <div className="w-5 h-5 rounded-full border border-white/20 shrink-0" />
                 <span className="text-zinc-400">
-                  Install the CLI: <code className="bg-white/[0.06] px-1.5 py-0.5 rounded text-xs text-indigo-400">npm install -g changelogdev-cli</code>
+                  Install the CLI: <code className="bg-white/[0.06] px-1.5 py-0.5 rounded text-xs text-zinc-400">npm install -g changelogdev-cli</code>
                 </span>
               </div>
             </div>

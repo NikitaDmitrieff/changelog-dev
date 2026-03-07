@@ -37,7 +37,7 @@ function BarChart({
   data,
   label,
   emptyMessage,
-  color = 'bg-indigo-500',
+  color = 'bg-zinc-400',
 }: {
   data: { label: string; count: number }[]
   label: string
@@ -122,7 +122,7 @@ function TopEntriesChart({ entries }: { entries: Entry[] }) {
               <div className="text-xs text-white/70 truncate">{entry.title}</div>
               <div className="mt-1 h-2 bg-white/5 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-indigo-500 rounded-full opacity-70"
+                  className="h-full bg-zinc-400 rounded-full opacity-70"
                   style={{ width: `${(entry.view_count / max) * 100}%` }}
                 />
               </div>

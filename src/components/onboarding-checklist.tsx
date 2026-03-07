@@ -35,11 +35,11 @@ export function OnboardingChecklist({ steps, changelogId }: Props) {
   const nextStep = steps.find((s) => !s.done)
 
   return (
-    <div className="mb-8 glass-card rounded-2xl p-6">
+    <div className="mb-8 card rounded-2xl p-6">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-indigo-500/20 rounded-lg flex items-center justify-center border border-indigo-500/30">
-            <svg className="w-4 h-4 text-indigo-400" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center border border-white/[0.15]">
+            <svg className="w-4 h-4 text-zinc-400" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
@@ -72,7 +72,7 @@ export function OnboardingChecklist({ steps, changelogId }: Props) {
         aria-label={`Onboarding progress: ${completedCount} of ${steps.length} steps complete`}
       >
         <div
-          className="h-full bg-indigo-500 rounded-full transition-all duration-500"
+          className="h-full bg-white rounded-full transition-all duration-500"
           style={{ width: `${progress}%` }}
         />
       </div>
@@ -106,7 +106,7 @@ export function OnboardingChecklist({ steps, changelogId }: Props) {
               {!step.done && step.href && step.cta && step.key === nextStep?.key && (
                 <Link
                   href={step.href}
-                  className="inline-block mt-2 bg-indigo-500 hover:bg-indigo-400 text-white text-xs font-medium px-3 py-1.5 rounded-md transition-colors"
+                  className="inline-block mt-2 bg-white hover:bg-zinc-200 text-black text-xs font-medium px-3 py-1.5 rounded-full transition-colors"
                 >
                   {step.cta}
                 </Link>

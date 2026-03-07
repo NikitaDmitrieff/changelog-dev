@@ -174,7 +174,7 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
         <p className="text-white/40 mb-4">No entries yet</p>
         <Link
           href={`/dashboard/${changelogId}/new-entry`}
-          className="text-indigo-400 hover:text-indigo-300 text-sm font-medium"
+          className="text-zinc-400 hover:text-white text-sm font-medium"
         >
           Create your first entry
         </Link>
@@ -251,7 +251,7 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search entries by title, version, or tag…"
           aria-label="Search entries"
-          className="w-full bg-white/5 border border-white/10 rounded-lg pl-9 pr-8 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/30 transition-colors"
+          className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg pl-9 pr-8 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-colors"
         />
         {search && (
           <button
@@ -275,7 +275,7 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
               aria-pressed={filter === btn.key}
               className={`text-sm px-3 py-1.5 rounded-lg border transition-colors ${
                 filter === btn.key
-                  ? 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30'
+                  ? 'bg-white/10 text-white border-white/[0.15]'
                   : 'bg-white/5 text-white/50 border-white/10 hover:bg-white/10 hover:text-white/70'
               }`}
             >
@@ -289,7 +289,7 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
             value={sort}
             onChange={(e) => setSort(e.target.value as typeof sort)}
             aria-label="Sort entries"
-            className="text-xs bg-white/5 border border-white/10 rounded-lg px-2 py-1.5 text-white/60 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/30 transition-colors cursor-pointer"
+            className="text-xs bg-white/[0.03] border border-white/[0.08] rounded-lg px-2 py-1.5 text-white/60 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-colors cursor-pointer"
           >
             <option value="newest">Newest first</option>
             <option value="oldest">Oldest first</option>
@@ -305,7 +305,7 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
               type="checkbox"
               checked={allVisibleSelected}
               onChange={toggleSelectAll}
-              className="rounded border-white/20 bg-white/5 text-indigo-500 focus:ring-indigo-500/50 focus:ring-offset-0 cursor-pointer"
+              className="rounded border-white/20 bg-white/5 text-white focus:ring-white/20 focus:ring-offset-0 cursor-pointer"
             />
             Select all
           </label>
@@ -316,11 +316,11 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
       {/* Bulk action bar */}
       {someSelected && (
         <div
-          className="flex items-center gap-3 bg-indigo-500/10 border border-indigo-500/20 rounded-xl px-4 py-3"
+          className="flex items-center gap-3 bg-white/[0.05] border border-white/[0.1] rounded-xl px-4 py-3"
           role="toolbar"
           aria-label="Bulk actions"
         >
-          <span className="text-sm text-indigo-300 font-medium">
+          <span className="text-sm text-zinc-300 font-medium">
             {selectedIds.size} selected
           </span>
           <div className="flex items-center gap-2 ml-auto">
@@ -369,7 +369,7 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
           key={entry.id}
           className={`bg-white/5 border rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 transition-colors ${
             selectedIds.has(entry.id)
-              ? 'border-indigo-500/40 bg-indigo-500/5'
+              ? 'border-white/20 bg-white/[0.03]'
               : 'border-white/10'
           }`}
         >
@@ -379,7 +379,7 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
               checked={selectedIds.has(entry.id)}
               onChange={() => toggleSelect(entry.id)}
               aria-label={`Select ${entry.title}`}
-              className="mt-1 rounded border-white/20 bg-white/5 text-indigo-500 focus:ring-indigo-500/50 focus:ring-offset-0 cursor-pointer shrink-0"
+              className="mt-1 rounded border-white/20 bg-white/5 text-white focus:ring-white/20 focus:ring-offset-0 cursor-pointer shrink-0"
             />
             <div className="min-w-0">
               <div className="flex items-center gap-2 sm:gap-3 mb-1 flex-wrap">

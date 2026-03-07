@@ -44,8 +44,8 @@ export default function ImportPage({ params }: Props) {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <nav className="border-b border-white/10 px-6 py-4">
+    <div className="min-h-screen bg-black text-white">
+      <nav className="border-b border-white/[0.06] px-6 py-4">
         <div className="max-w-4xl mx-auto flex items-center gap-4">
           <Link href="/dashboard" className="text-white/40 hover:text-white transition-colors text-sm">
             Dashboard
@@ -69,7 +69,7 @@ export default function ImportPage({ params }: Props) {
           <div>
             <label
               htmlFor="import-file"
-              className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-white/20 rounded-xl hover:border-indigo-500/50 transition-colors cursor-pointer bg-white/[0.02]"
+              className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-white/20 rounded-xl hover:border-white/30 transition-colors cursor-pointer bg-white/[0.02]"
             >
               {file ? (
                 <div className="text-center">
@@ -101,7 +101,7 @@ export default function ImportPage({ params }: Props) {
             </label>
           </div>
 
-          <div className="bg-white/5 border border-white/10 rounded-xl p-4 text-sm text-white/50 space-y-2">
+          <div className="bg-white/[0.03] border border-white/[0.08] rounded-xl p-4 text-sm text-white/50 space-y-2">
             <div className="font-medium text-white/70">Supported formats</div>
             <div><strong className="text-white/60">Markdown:</strong> Follows the export format -- H2 headings as entry titles, optional (version) and [DRAFT] markers.</div>
             <div><strong className="text-white/60">JSON:</strong> Object with an <code className="bg-white/10 px-1.5 py-0.5 rounded text-xs">entries</code> array, or a plain array. Each entry needs <code className="bg-white/10 px-1.5 py-0.5 rounded text-xs">title</code> and <code className="bg-white/10 px-1.5 py-0.5 rounded text-xs">content</code>.</div>
@@ -130,7 +130,7 @@ export default function ImportPage({ params }: Props) {
             <button
               onClick={handleImport}
               disabled={loading || !file}
-              className="flex-1 bg-indigo-500 hover:bg-indigo-400 disabled:opacity-50 text-white font-medium py-3 rounded-lg transition-colors text-sm"
+              className="flex-1 bg-white hover:bg-zinc-200 disabled:opacity-50 text-black font-medium py-3 rounded-full transition-colors text-sm"
             >
               {loading ? 'Importing...' : 'Import entries'}
             </button>

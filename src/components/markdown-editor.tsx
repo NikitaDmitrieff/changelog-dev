@@ -62,12 +62,12 @@ export default function MarkdownEditor({ value, onChange, placeholder, rows = 12
           placeholder={placeholder ?? 'Describe the changes. Markdown supported.'}
           required
           rows={rows}
-          className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm resize-none font-mono"
+          className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-colors text-sm resize-none font-mono"
         />
       ) : (
-        <div id="md-panel-preview" role="tabpanel" aria-labelledby="md-tab-preview" className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 min-h-[calc(theme(spacing.3)*2+theme(lineHeight.5)*12)] overflow-auto">
+        <div id="md-panel-preview" role="tabpanel" aria-labelledby="md-tab-preview" className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-4 py-3 min-h-[calc(theme(spacing.3)*2+theme(lineHeight.5)*12)] overflow-auto">
           {value.trim() ? (
-            <div className="prose prose-invert prose-sm max-w-none text-white/70 prose-headings:text-white prose-strong:text-white prose-a:text-indigo-400 prose-code:text-indigo-300 prose-pre:bg-white/5 prose-pre:border prose-pre:border-white/10">
+            <div className="prose prose-invert prose-sm max-w-none text-white/70 prose-headings:text-white prose-strong:text-white prose-a:text-zinc-300 prose-code:text-zinc-300 prose-pre:bg-white/[0.03] prose-pre:border prose-pre:border-white/[0.08]">
               <ReactMarkdown>{value}</ReactMarkdown>
             </div>
           ) : (
