@@ -75,6 +75,17 @@ export async function PATCH(
     if (body.content !== undefined) updates.content = body.content
     if (body.version !== undefined) updates.version = body.version || null
     if (body.tags !== undefined) updates.tags = body.tags
+    if (body.is_pinned !== undefined) {
+      updates.is_pinned = body.is_pinned
+      // If pinning this entry, unpin all other entries in the same changelog
+      if (body.is_pinned) {
+        await supabase
+          .from('entries')
+          .update({ is_pinned: false })
+          .eq('changelog_id', entry.changelog_id)
+          .neq('id', entryId)
+      }
+    }
     if (body.scheduled_for !== undefined) {
       if (body.scheduled_for) {
         updates.scheduled_for = body.scheduled_for

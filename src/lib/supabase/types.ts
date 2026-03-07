@@ -56,6 +56,7 @@ type ChangelogDevSchema = {
         version: string | null
         tags: string[] | null
         is_published: boolean
+        is_pinned: boolean
         published_at: string | null
         scheduled_for: string | null
         notified_at: string | null
@@ -71,6 +72,7 @@ type ChangelogDevSchema = {
         version?: string | null
         tags?: string[] | null
         is_published?: boolean
+        is_pinned?: boolean
         published_at?: string | null
         scheduled_for?: string | null
         notified_at?: string | null
@@ -86,6 +88,7 @@ type ChangelogDevSchema = {
         version?: string | null
         tags?: string[] | null
         is_published?: boolean
+        is_pinned?: boolean
         published_at?: string | null
         scheduled_for?: string | null
         notified_at?: string | null
@@ -130,6 +133,36 @@ type ChangelogDevSchema = {
         last_attempted_at?: string
         next_retry_at?: string
         resolved?: boolean
+        created_at?: string
+      }
+      Relationships: []
+    }
+    webhook_events: {
+      Row: {
+        id: string
+        event_id: string
+        event_type: string
+        status: string
+        summary: Record<string, unknown>
+        error_message: string | null
+        created_at: string
+      }
+      Insert: {
+        id?: string
+        event_id: string
+        event_type: string
+        status?: string
+        summary?: Record<string, unknown>
+        error_message?: string | null
+        created_at?: string
+      }
+      Update: {
+        id?: string
+        event_id?: string
+        event_type?: string
+        status?: string
+        summary?: Record<string, unknown>
+        error_message?: string | null
         created_at?: string
       }
       Relationships: []
@@ -182,3 +215,4 @@ export type Changelog = ChangelogDevSchema['Tables']['changelogs']['Row']
 export type Entry = ChangelogDevSchema['Tables']['entries']['Row']
 export type Subscriber = ChangelogDevSchema['Tables']['subscribers']['Row']
 export type NotificationFailure = ChangelogDevSchema['Tables']['notification_failures']['Row']
+export type WebhookEvent = ChangelogDevSchema['Tables']['webhook_events']['Row']

@@ -43,6 +43,30 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
     setLoadingId(null)
   }
 
+  async function handleTogglePin(entry: Entry) {
+    setLoadingId(entry.id)
+    const newPinned = !entry.is_pinned
+
+    const res = await fetch(`/api/entries/${entry.id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ is_pinned: newPinned }),
+    })
+
+    if (res.ok) {
+      setEntries((prev) =>
+        prev.map((e) => {
+          if (e.id === entry.id) return { ...e, is_pinned: newPinned }
+          // If we're pinning this entry, unpin all others
+          if (newPinned && e.is_pinned) return { ...e, is_pinned: false }
+          return e
+        })
+      )
+    }
+
+    setLoadingId(null)
+  }
+
   async function handleDelete(entryId: string) {
     if (!window.confirm('Are you sure you want to delete this entry? This cannot be undone.')) {
       return
@@ -114,6 +138,13 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
         >
           <div>
             <div className="flex items-center gap-3 mb-1">
+              {entry.is_pinned && (
+                <span className="text-amber-400 text-xs" title="Pinned">
+                  <svg className="w-3.5 h-3.5 inline" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/>
+                  </svg>
+                </span>
+              )}
               <span className="font-medium">{entry.title}</span>
               {entry.version && (
                 <span className="bg-white/10 text-white/60 text-xs px-2 py-0.5 rounded-full">
@@ -159,6 +190,18 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
             </div>
           </div>
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => handleTogglePin(entry)}
+              disabled={loadingId === entry.id}
+              className={`text-xs px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${
+                entry.is_pinned
+                  ? 'bg-amber-500/10 hover:bg-amber-500/20 text-amber-400'
+                  : 'bg-white/5 hover:bg-white/10 text-white/30 hover:text-white/50'
+              }`}
+              title={entry.is_pinned ? 'Unpin entry' : 'Pin to top'}
+            >
+              {entry.is_pinned ? 'Unpin' : 'Pin'}
+            </button>
             <button
               onClick={() => handleTogglePublish(entry)}
               disabled={loadingId === entry.id}

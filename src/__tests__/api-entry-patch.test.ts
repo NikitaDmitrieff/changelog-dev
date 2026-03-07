@@ -39,15 +39,18 @@ describe('PATCH /api/entries/[entryId]', () => {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'test-anon-key'
     mockGetUser.mockResolvedValue({ data: { user: { id: 'user-1' } } })
 
-    mockUpdate = vi.fn().mockReturnValue({
-      eq: vi.fn().mockReturnValue({
-        select: vi.fn().mockReturnValue({
-          single: vi.fn().mockResolvedValue({
-            data: { id: 'e1', title: 'Updated' },
-            error: null,
-          }),
+    const mockEqChain = vi.fn().mockReturnValue({
+      select: vi.fn().mockReturnValue({
+        single: vi.fn().mockResolvedValue({
+          data: { id: 'e1', title: 'Updated' },
+          error: null,
         }),
       }),
+      // For unpin-others: .update().eq().neq()
+      neq: vi.fn().mockResolvedValue({ error: null }),
+    })
+    mockUpdate = vi.fn().mockReturnValue({
+      eq: mockEqChain,
     })
 
     mockFrom.mockImplementation((table: string) => {
@@ -121,6 +124,28 @@ describe('PATCH /api/entries/[entryId]', () => {
     expect(mockUpdate).toHaveBeenCalledWith(
       expect.objectContaining({
         scheduled_for: null,
+      })
+    )
+  })
+
+  it('sets is_pinned to true', async () => {
+    const res = await PATCH(makeRequest({ is_pinned: true }), { params: mockParams })
+
+    expect(res.status).toBe(200)
+    expect(mockUpdate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        is_pinned: true,
+      })
+    )
+  })
+
+  it('sets is_pinned to false', async () => {
+    const res = await PATCH(makeRequest({ is_pinned: false }), { params: mockParams })
+
+    expect(res.status).toBe(200)
+    expect(mockUpdate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        is_pinned: false,
       })
     )
   })

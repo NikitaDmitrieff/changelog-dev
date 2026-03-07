@@ -39,10 +39,16 @@ export async function POST(request: NextRequest) {
 
   log.info('Webhook received', { type: event.type, id: event.id })
 
+  let status = 'processed'
+  let errorMessage: string | null = null
+  const summary: Record<string, unknown> = { event_type: event.type }
+
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object
     const userId = session.metadata?.user_id
     const subscriptionId = session.subscription as string | undefined
+    summary.user_id = userId ?? null
+    summary.subscription_id = subscriptionId ?? null
 
     if (userId && supabaseUrl && supabaseServiceKey) {
       const supabase = createClient(supabaseUrl, supabaseServiceKey)
@@ -56,17 +62,21 @@ export async function POST(request: NextRequest) {
 
       if (error) {
         log.error('Failed to upgrade user', { userId, error: error.message })
+        status = 'error'
+        errorMessage = error.message
       } else {
         log.info('User upgraded to Pro', { userId })
+        summary.action = 'upgraded_to_pro'
       }
     } else if (!userId) {
       log.warn('checkout.session.completed missing user_id in metadata')
+      status = 'warning'
+      errorMessage = 'Missing user_id in metadata'
     }
-  }
-
-  if (event.type === 'customer.subscription.deleted') {
+  } else if (event.type === 'customer.subscription.deleted') {
     const subscription = event.data.object
     const userId = subscription.metadata?.user_id
+    summary.user_id = userId ?? null
 
     if (userId && supabaseUrl && supabaseServiceKey) {
       const supabase = createClient(supabaseUrl, supabaseServiceKey)
@@ -80,12 +90,31 @@ export async function POST(request: NextRequest) {
 
       if (error) {
         log.error('Failed to downgrade user', { userId, error: error.message })
+        status = 'error'
+        errorMessage = error.message
       } else {
         log.info('User downgraded from Pro', { userId })
+        summary.action = 'downgraded_from_pro'
       }
     } else if (!userId) {
       log.warn('customer.subscription.deleted missing user_id in metadata')
+      status = 'warning'
+      errorMessage = 'Missing user_id in metadata'
     }
+  } else {
+    summary.action = 'unhandled_event_type'
+  }
+
+  // Log webhook event to database
+  if (supabaseUrl && supabaseServiceKey) {
+    const supabase = createClient(supabaseUrl, supabaseServiceKey)
+    await supabase.from('webhook_events').insert({
+      event_id: event.id,
+      event_type: event.type,
+      status,
+      summary,
+      error_message: errorMessage,
+    })
   }
 
   return NextResponse.json({ received: true })

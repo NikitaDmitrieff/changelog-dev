@@ -51,7 +51,12 @@ export default async function PublicChangelogPage({ params }: Props) {
     .eq('is_published', true)
     .order('published_at', { ascending: false })
 
-  const entries = (entriesData ?? []) as Entry[]
+  const rawEntries = (entriesData ?? []) as Entry[]
+  // Pinned entries first, then chronological order
+  const entries = [
+    ...rawEntries.filter((e) => e.is_pinned),
+    ...rawEntries.filter((e) => !e.is_pinned),
+  ]
 
   const { data: subscribersData } = await supabase
     .from('subscribers')

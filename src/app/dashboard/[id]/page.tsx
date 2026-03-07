@@ -5,6 +5,7 @@ import type { Metadata } from 'next'
 import type { Changelog, Entry } from '@/lib/supabase/types'
 import { EntryList } from './entry-list'
 import { AnalyticsPanel } from './analytics-panel'
+import { WebhookEventsPanel } from './webhook-events-panel'
 
 export const metadata: Metadata = {
   title: 'Changelog | changelog.dev',
@@ -163,6 +164,9 @@ export default async function ChangelogManagePage({ params }: Props) {
         {entries.length > 0 && (
           <AnalyticsPanel entries={entries} subscribers={subscribers} />
         )}
+
+        {/* Webhook Events */}
+        <WebhookEventsPanel />
 
         {/* Entries */}
         <div>

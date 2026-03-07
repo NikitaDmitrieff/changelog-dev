@@ -133,10 +133,18 @@ export default function EntryList({ entries, accentColor = '#6366f1' }: EntryLis
               ? `v${entry.version.replace(/\./g, '-')}`
               : entry.id.slice(0, 8)
             return (
-              <article key={entry.id} id={anchor} className="group scroll-mt-6">
+              <article key={entry.id} id={anchor} className={`group scroll-mt-6${entry.is_pinned ? ' border-l-2 border-amber-400/40 pl-4' : ''}`}>
                 <div className="flex items-start gap-4 mb-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 flex-wrap mb-1">
+                      {entry.is_pinned && (
+                        <span className="text-amber-400 text-xs flex items-center gap-1">
+                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/>
+                          </svg>
+                          Pinned
+                        </span>
+                      )}
                       <a href={`#${anchor}`} className="flex items-center gap-2 group/link">
                         <h2 className="text-lg font-bold">{entry.title}</h2>
                         <span className="text-white/0 group-hover/link:text-white/30 transition-colors text-sm">#</span>
