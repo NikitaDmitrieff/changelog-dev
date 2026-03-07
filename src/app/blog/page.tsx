@@ -15,6 +15,15 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: 'complete-guide-saas-changelogs',
+    title: 'The Complete Guide to SaaS Changelogs (2026)',
+    description:
+      'Everything you need to know about SaaS changelogs: format, writing style, distribution channels, SEO, measuring impact, common mistakes, and tools. The definitive resource.',
+    category: 'Guide',
+    date: 'March 2026',
+    readTime: '15 min read',
+  },
+  {
     slug: 'changelog-best-practices',
     title: 'Changelog Best Practices: How to Write a Changelog That Users Actually Read',
     description:

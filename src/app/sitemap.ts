@@ -59,6 +59,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.7,
     },
+    {
+      url: `${baseUrl}/blog/complete-guide-saas-changelogs`,
+      lastModified: new Date('2026-03-06'),
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
     ...changelogUrls,
   ]
 }
