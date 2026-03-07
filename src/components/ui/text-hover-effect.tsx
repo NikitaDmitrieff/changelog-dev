@@ -27,14 +27,10 @@ export const TextHoverEffect = ({
       setCursor({ x: e.clientX, y: e.clientY });
       setHovered(true);
     };
-
-    const handleMouseLeave = () => {
-      setHovered(false);
-    };
+    const handleMouseLeave = () => setHovered(false);
 
     window.addEventListener("mousemove", handleMouseMove);
     document.documentElement.addEventListener("mouseleave", handleMouseLeave);
-
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       document.documentElement.removeEventListener("mouseleave", handleMouseLeave);
@@ -46,10 +42,7 @@ export const TextHoverEffect = ({
       const svgRect = svgRef.current.getBoundingClientRect();
       const cxPercentage = ((cursor.x - svgRect.left) / svgRect.width) * 100;
       const cyPercentage = ((cursor.y - svgRect.top) / svgRect.height) * 100;
-      setMaskPosition({
-        cx: `${cxPercentage}%`,
-        cy: `${cyPercentage}%`,
-      });
+      setMaskPosition({ cx: `${cxPercentage}%`, cy: `${cyPercentage}%` });
     }
   }, [cursor]);
 
@@ -58,7 +51,7 @@ export const TextHoverEffect = ({
       ref={svgRef}
       width="100%"
       height="100%"
-      viewBox="0 0 700 80"
+      viewBox="0 0 900 80"
       xmlns="http://www.w3.org/2000/svg"
       className="select-none"
     >
@@ -90,58 +83,55 @@ export const TextHoverEffect = ({
           <stop offset="0%" stopColor="white" />
           <stop offset="100%" stopColor="black" />
         </motion.radialGradient>
+
         <mask id={textMaskId}>
-          <rect
-            x="0"
-            y="0"
-            width="100%"
-            height="100%"
-            fill={`url(#${maskId})`}
-          />
+          <rect x="0" y="0" width="100%" height="100%" fill={`url(#${maskId})`} />
         </mask>
       </defs>
-      <text
-        x="50%"
-        y="50%"
-        textAnchor="middle"
-        dominantBaseline="middle"
-        strokeWidth="0.5"
-        className={`fill-transparent stroke-white/80 font-[helvetica] ${textSize} font-bold`}
-        style={{ opacity: hovered ? 0.7 : 0 }}
-      >
-        {text}
-      </text>
+
+      {/* Stroke-draw animation */}
       <motion.text
         x="50%"
         y="50%"
         textAnchor="middle"
         dominantBaseline="middle"
         strokeWidth="0.5"
-        className={`fill-transparent stroke-white/80 font-[helvetica] ${textSize} font-bold`}
+        className={`fill-transparent stroke-white font-[helvetica] ${textSize} font-bold`}
         initial={{ strokeDashoffset: 2000, strokeDasharray: 2000 }}
-        animate={{
-          strokeDashoffset: 0,
-          strokeDasharray: 2000,
-        }}
-        transition={{
-          duration: 4,
-          ease: "easeInOut",
-        }}
-      >
-        {text}
-      </motion.text>
-      <text
+        animate={{ strokeDashoffset: 0, strokeDasharray: 2000 }}
+        transition={{ duration: 4, ease: "easeInOut" }}
+      />
+
+      {/* Permanent white outline — fades in as draw completes */}
+      <motion.text
         x="50%"
         y="50%"
         textAnchor="middle"
         dominantBaseline="middle"
-        stroke={`url(#${gradientId})`}
         strokeWidth="0.5"
-        mask={`url(#${textMaskId})`}
-        className={`fill-transparent font-[helvetica] ${textSize} font-bold`}
+        className={`fill-transparent stroke-white font-[helvetica] ${textSize} font-bold`}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 3.5 }}
       >
         {text}
-      </text>
+      </motion.text>
+
+      {/* Indigo accent — only visible on hover, follows cursor */}
+      {hovered && (
+        <text
+          x="50%"
+          y="50%"
+          textAnchor="middle"
+          dominantBaseline="middle"
+          stroke={`url(#${gradientId})`}
+          strokeWidth="0.5"
+          mask={`url(#${textMaskId})`}
+          className={`fill-transparent font-[helvetica] ${textSize} font-bold`}
+        >
+          {text}
+        </text>
+      )}
     </svg>
   );
 };
