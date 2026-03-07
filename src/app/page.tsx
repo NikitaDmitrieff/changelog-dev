@@ -201,6 +201,9 @@ export default function LandingPage() {
             <Link href="/demo" className="text-sm text-zinc-500 hover:text-white transition-colors">
               Demo
             </Link>
+            <Link href="/docs/api" className="text-sm text-zinc-500 hover:text-white transition-colors">
+              Docs
+            </Link>
             <Link href="/login" className="text-sm text-zinc-500 hover:text-white transition-colors">
               Sign in
             </Link>
@@ -544,6 +547,101 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Developer Tools */}
+      <section className="px-6 py-20 border-t border-white/[0.06]">
+        <div className="max-w-5xl mx-auto">
+          <FadeIn className="text-center mb-14">
+            <span className="text-xs font-semibold text-indigo-400 uppercase tracking-widest font-mono">Developer tools</span>
+            <h2 className="mt-3 text-3xl font-bold text-white">Integrate however you want</h2>
+            <p className="mt-2 text-zinc-500 text-sm max-w-lg mx-auto">
+              CLI, GitHub Actions, REST API, or embeddable widget. Push changelog entries from anywhere in your workflow.
+            </p>
+          </FadeIn>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <FadeIn delay={0.1}>
+              <div className="glass-card rounded-xl p-6 h-full">
+                <h3 className="font-semibold text-white mb-1 flex items-center gap-2">
+                  <svg className="w-4 h-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  CLI
+                </h3>
+                <p className="text-zinc-500 text-sm mb-4">Push entries straight from your terminal or CI scripts.</p>
+                <div className="rounded-md border border-white/[0.06] bg-zinc-950 p-4 font-mono text-[13px] leading-relaxed">
+                  <div className="text-zinc-300">$ npx changelogdev-cli push \</div>
+                  <div className="text-indigo-400 pl-4">&quot;v2.1&quot; &quot;New feature&quot;</div>
+                  <div className="mt-2 text-zinc-300">$ npx changelogdev-cli list \</div>
+                  <div className="text-indigo-400 pl-4">--status published</div>
+                </div>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.15}>
+              <div className="glass-card rounded-xl p-6 h-full">
+                <h3 className="font-semibold text-white mb-1 flex items-center gap-2">
+                  <svg className="w-4 h-4 text-indigo-400" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                  </svg>
+                  GitHub Action
+                </h3>
+                <p className="text-zinc-500 text-sm mb-4">Auto-publish on every release or tag push.</p>
+                <div className="rounded-md border border-white/[0.06] bg-zinc-950 p-4 font-mono text-[13px] leading-relaxed">
+                  <div className="text-zinc-500">- uses: <span className="text-indigo-400">NikitaDmitrieff/changelog-action@v1</span></div>
+                  <div className="text-zinc-500">  with:</div>
+                  <div className="text-zinc-500">    project-id: <span className="text-emerald-400">my-app</span></div>
+                  <div className="text-zinc-500">    api-key: <span className="text-emerald-400">{"${{ secrets.CHANGELOG_KEY }}"}</span></div>
+                </div>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.2}>
+              <div className="glass-card rounded-xl p-6 h-full">
+                <h3 className="font-semibold text-white mb-1 flex items-center gap-2">
+                  <svg className="w-4 h-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                  </svg>
+                  REST API
+                </h3>
+                <p className="text-zinc-500 text-sm mb-4">Full CRUD over your changelog entries via HTTP.</p>
+                <div className="rounded-md border border-white/[0.06] bg-zinc-950 p-4 font-mono text-[13px] leading-relaxed">
+                  <div className="text-zinc-300">$ curl -X POST /api/v1/entries \</div>
+                  <div className="text-indigo-400 pl-4">-H &quot;Authorization: Bearer $KEY&quot; \</div>
+                  <div className="text-indigo-400 pl-4">-d &apos;{'{'}&quot;title&quot;:&quot;v2.1&quot;,&quot;body&quot;:&quot;...&quot;{'}'}&apos;</div>
+                  <div className="mt-2 text-emerald-400">&#10003; 201 Created</div>
+                </div>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.25}>
+              <div className="glass-card rounded-xl p-6 h-full">
+                <h3 className="font-semibold text-white mb-1 flex items-center gap-2">
+                  <svg className="w-4 h-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                  </svg>
+                  Embeddable Widget
+                </h3>
+                <p className="text-zinc-500 text-sm mb-4">Drop-in web component for any site. See the full details above.</p>
+                <div className="rounded-md border border-white/[0.06] bg-zinc-950 p-4 font-mono text-[13px] leading-relaxed">
+                  <div className="text-emerald-400">&lt;script src=&quot;https://unpkg.com/changelogdev-widget&quot;&gt;&lt;/script&gt;</div>
+                  <div className="text-indigo-400">&lt;changelog-widget project-id=&quot;my-app&quot; /&gt;</div>
+                  <div className="mt-2 text-zinc-600">// Shadow DOM, themes, unread badge — 8KB</div>
+                </div>
+              </div>
+            </FadeIn>
+          </div>
+
+          <FadeIn delay={0.3} className="text-center mt-8">
+            <Link
+              href="/docs/api"
+              className="text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors"
+            >
+              Read the full API docs →
+            </Link>
+          </FadeIn>
+        </div>
+      </section>
+
       {/* Final CTA */}
       <section className="px-6 py-24 border-t border-white/[0.06]">
         <FadeIn className="max-w-2xl mx-auto text-center">
@@ -571,6 +669,7 @@ export default function LandingPage() {
           <div className="flex items-center gap-6">
             <Link href="/blog" className="hover:text-zinc-400 transition-colors">Blog</Link>
             <Link href="/demo" className="hover:text-zinc-400 transition-colors">Demo</Link>
+            <Link href="/docs/api" className="hover:text-zinc-400 transition-colors">Docs</Link>
             <Link href="/login" className="hover:text-zinc-400 transition-colors">Sign in</Link>
           </div>
         </div>
