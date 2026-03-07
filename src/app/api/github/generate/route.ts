@@ -54,8 +54,18 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No GitHub repo configured' }, { status: 400 })
     }
 
-    // Fetch commits
-    const commits = await fetchRecentCommits(changelog.github_repo)
+    // Fetch commits -- pass the server-side token explicitly
+    const commits = await fetchRecentCommits(
+      changelog.github_repo,
+      process.env.GITHUB_TOKEN
+    )
+
+    if (commits.length === 0) {
+      return NextResponse.json(
+        { title: 'No recent changes', content: 'No new commits found in this repository.' },
+        { status: 200 }
+      )
+    }
 
     // Generate entry
     const entry = await generateChangelogEntry(commits)
@@ -63,6 +73,15 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(entry, { status: 200 })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Internal server error'
-    return NextResponse.json({ error: message }, { status: 500 })
+
+    // Map known error patterns to appropriate HTTP status codes
+    const status =
+      message.includes('not found') || message.includes('Invalid GitHub repository')
+        ? 404
+        : message.includes('rate limit') || message.includes('access denied')
+          ? 403
+          : 500
+
+    return NextResponse.json({ error: message }, { status })
   }
 }

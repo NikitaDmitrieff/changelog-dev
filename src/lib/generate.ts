@@ -67,7 +67,9 @@ Respond with only the JSON object, no other text.`,
   const text = message.content[0].type === 'text' ? message.content[0].text : ''
 
   try {
-    const parsed = JSON.parse(text)
+    // Strip markdown code fences if the LLM wraps the JSON
+    const cleaned = text.replace(/^```(?:json)?\s*\n?/i, '').replace(/\n?```\s*$/i, '').trim()
+    const parsed = JSON.parse(cleaned)
     return {
       title: parsed.title || 'New updates',
       content: parsed.content || text,

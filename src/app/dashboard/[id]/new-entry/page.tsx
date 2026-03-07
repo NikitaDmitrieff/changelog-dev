@@ -58,6 +58,9 @@ export default function NewEntryPage({ params }: Props) {
     setLoading(true)
     setError('')
 
+    const trimmedTitle = title.trim()
+    const trimmedContent = content.trim()
+
     const tagsArray = tags
       .split(',')
       .map((t) => t.trim())
@@ -65,8 +68,8 @@ export default function NewEntryPage({ params }: Props) {
 
     const { error } = await supabase.from('entries').insert({
       changelog_id: id,
-      title: title.trim(),
-      content: content.trim(),
+      title: trimmedTitle,
+      content: trimmedContent,
       version: version.trim() || null,
       tags: tagsArray.length > 0 ? tagsArray : null,
       is_published: publish,
@@ -77,6 +80,19 @@ export default function NewEntryPage({ params }: Props) {
       setError(error.message)
       setLoading(false)
       return
+    }
+
+    // Fire-and-forget: notify subscribers when publishing
+    if (publish) {
+      fetch('/api/notify-subscribers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          changelog_id: id,
+          entry_title: trimmedTitle,
+          entry_content: trimmedContent,
+        }),
+      }).catch((err) => console.error('Failed to notify subscribers:', err))
     }
 
     router.push(`/dashboard/${id}`)

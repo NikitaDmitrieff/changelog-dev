@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect, notFound } from 'next/navigation'
 import Link from 'next/link'
 import type { Changelog, Entry } from '@/lib/supabase/types'
+import { EntryList } from './entry-list'
 
 interface Props {
   params: Promise<{ id: string }>
@@ -88,53 +89,7 @@ export default async function ChangelogManagePage({ params }: Props) {
             Entries
           </h2>
 
-          {!entries || entries.length === 0 ? (
-            <div className="text-center py-16 border border-dashed border-white/10 rounded-2xl">
-              <p className="text-white/40 mb-4">No entries yet</p>
-              <Link
-                href={`/dashboard/${id}/new-entry`}
-                className="text-indigo-400 hover:text-indigo-300 text-sm font-medium"
-              >
-                Create your first entry
-              </Link>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {entries.map((entry) => (
-                <div
-                  key={entry.id}
-                  className="bg-white/5 border border-white/10 rounded-xl p-5 flex items-center justify-between"
-                >
-                  <div>
-                    <div className="flex items-center gap-3 mb-1">
-                      <span className="font-medium">{entry.title}</span>
-                      {entry.version && (
-                        <span className="bg-white/10 text-white/60 text-xs px-2 py-0.5 rounded-full">
-                          {entry.version}
-                        </span>
-                      )}
-                      <span
-                        className={`text-xs px-2 py-0.5 rounded-full ${
-                          entry.is_published
-                            ? 'bg-green-500/10 text-green-400'
-                            : 'bg-white/10 text-white/40'
-                        }`}
-                      >
-                        {entry.is_published ? 'Published' : 'Draft'}
-                      </span>
-                    </div>
-                    <div className="text-xs text-white/30">
-                      {new Date(entry.created_at).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      })}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+          <EntryList entries={entries} changelogId={id} />
         </div>
       </div>
     </div>
