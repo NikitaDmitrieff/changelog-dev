@@ -13,6 +13,7 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.changelogdev.com'),
   title: 'Changelog.dev — Beautiful hosted changelogs',
   description:
     'Connect GitHub, AI drafts changelog entries, your customers stay informed.',
