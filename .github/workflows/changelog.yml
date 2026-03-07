@@ -1,0 +1,21 @@
+name: Changelog
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: NikitaDmitrieff/changelog-action@v1
+        with:
+          add-to-pr: 'true'
+          add-to-summary: 'true'
