@@ -15,6 +15,15 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: 'open-source-changelog-widget',
+    title: 'Introducing the Open-Source Changelog Widget',
+    description:
+      'A free, zero-dependency Web Component that adds a "What\'s New" bell to any website. Two lines of HTML, under 8KB gzipped, MIT licensed. Works with React, Vue, or vanilla HTML.',
+    category: 'Open Source',
+    date: 'March 2026',
+    readTime: '4 min read',
+  },
+  {
     slug: 'complete-guide-saas-changelogs',
     title: 'The Complete Guide to SaaS Changelogs (2026)',
     description:

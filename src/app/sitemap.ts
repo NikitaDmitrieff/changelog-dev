@@ -65,6 +65,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.9,
     },
+    {
+      url: `${baseUrl}/blog/open-source-changelog-widget`,
+      lastModified: new Date('2026-03-07'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
     ...changelogUrls,
   ]
 }
