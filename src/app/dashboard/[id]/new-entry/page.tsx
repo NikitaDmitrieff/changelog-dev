@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import MarkdownEditor from '@/components/markdown-editor'
+import { entryTemplates, type EntryTemplate } from '@/lib/templates'
 
 interface Props {
   params: Promise<{ id: string }>
@@ -24,6 +25,25 @@ export default function NewEntryPage({ params }: Props) {
   const [generating, setGenerating] = useState(false)
   const [error, setError] = useState('')
   const [hasGithub, setHasGithub] = useState<boolean | null>(null)
+  const [activeTemplate, setActiveTemplate] = useState<string | null>(null)
+
+  const isFormEmpty = !title.trim() && !content.trim() && !version.trim() && !tags.trim()
+
+  function applyTemplate(template: EntryTemplate) {
+    setTitle(template.title)
+    setContent(template.content)
+    setTags(template.tags)
+    setVersion(template.version)
+    setActiveTemplate(template.id)
+  }
+
+  function clearTemplate() {
+    setTitle('')
+    setContent('')
+    setTags('')
+    setVersion('')
+    setActiveTemplate(null)
+  }
 
   useEffect(() => {
     supabase
@@ -156,6 +176,39 @@ export default function NewEntryPage({ params }: Props) {
         </div>
 
         <div className="space-y-6">
+          {isFormEmpty && (
+            <div>
+              <label className="block text-sm text-white/60 mb-2">Start from a template</label>
+              <div className="grid grid-cols-4 gap-3">
+                <button
+                  onClick={clearTemplate}
+                  className={`text-left rounded-lg border px-3 py-3 transition-colors ${
+                    activeTemplate === null
+                      ? 'border-indigo-500 bg-indigo-500/10'
+                      : 'border-white/10 bg-white/5 hover:border-white/20'
+                  }`}
+                >
+                  <span className="block text-sm font-medium text-white">Blank</span>
+                  <span className="block text-xs text-white/40 mt-0.5">Start from scratch</span>
+                </button>
+                {entryTemplates.map((template) => (
+                  <button
+                    key={template.id}
+                    onClick={() => applyTemplate(template)}
+                    className={`text-left rounded-lg border px-3 py-3 transition-colors ${
+                      activeTemplate === template.id
+                        ? 'border-indigo-500 bg-indigo-500/10'
+                        : 'border-white/10 bg-white/5 hover:border-white/20'
+                    }`}
+                  >
+                    <span className="block text-sm font-medium text-white">{template.name}</span>
+                    <span className="block text-xs text-white/40 mt-0.5">{template.description}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div>
             <label className="block text-sm text-white/60 mb-1.5">
               Title <span className="text-red-400">*</span>
