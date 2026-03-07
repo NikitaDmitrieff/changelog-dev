@@ -15,6 +15,7 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
   const [entries, setEntries] = useState(initialEntries)
   const [loadingId, setLoadingId] = useState<string | null>(null)
   const [filter, setFilter] = useState<'all' | 'published' | 'draft'>('all')
+  const [search, setSearch] = useState('')
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
   const [bulkLoading, setBulkLoading] = useState(false)
 
@@ -183,9 +184,19 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
   const publishedCount = entries.filter((e) => e.is_published).length
   const draftCount = entries.filter((e) => !e.is_published).length
 
+  const searchLower = search.toLowerCase().trim()
+
   const filteredEntries = entries.filter((entry) => {
-    if (filter === 'published') return entry.is_published
-    if (filter === 'draft') return !entry.is_published
+    if (filter === 'published' && !entry.is_published) return false
+    if (filter === 'draft' && entry.is_published) return false
+
+    if (searchLower) {
+      const titleMatch = entry.title.toLowerCase().includes(searchLower)
+      const versionMatch = entry.version?.toLowerCase().includes(searchLower) ?? false
+      const tagMatch = entry.tags?.some((t) => t.toLowerCase().includes(searchLower)) ?? false
+      if (!titleMatch && !versionMatch && !tagMatch) return false
+    }
+
     return true
   })
 
@@ -202,6 +213,39 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
 
   return (
     <div className="space-y-3">
+      {/* Search bar */}
+      <div className="relative">
+        <svg
+          className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30 pointer-events-none"
+          aria-hidden="true"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+        </svg>
+        <input
+          type="search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search entries by title, version, or tag…"
+          aria-label="Search entries"
+          className="w-full bg-white/5 border border-white/10 rounded-lg pl-9 pr-8 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/30 transition-colors"
+        />
+        {search && (
+          <button
+            onClick={() => setSearch('')}
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60 transition-colors"
+            aria-label="Clear search"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        )}
+      </div>
+
       <div className="flex items-center justify-between gap-2 flex-wrap">
         <div className="flex items-center gap-2" role="group" aria-label="Filter entries by status">
           {filterButtons.map((btn) => (
@@ -273,6 +317,14 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
               Clear
             </button>
           </div>
+        </div>
+      )}
+
+      {filteredEntries.length === 0 && (
+        <div className="text-center py-10 border border-dashed border-white/10 rounded-xl">
+          <p className="text-white/40 text-sm">
+            {search ? `No entries matching "${search}"` : 'No entries match the current filter'}
+          </p>
         </div>
       )}
 
