@@ -14,6 +14,7 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
   const router = useRouter()
   const [entries, setEntries] = useState(initialEntries)
   const [loadingId, setLoadingId] = useState<string | null>(null)
+  const [filter, setFilter] = useState<'all' | 'published' | 'draft'>('all')
 
   async function handleTogglePublish(entry: Entry) {
     setLoadingId(entry.id)
@@ -74,9 +75,39 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
     )
   }
 
+  const publishedCount = entries.filter((e) => e.is_published).length
+  const draftCount = entries.filter((e) => !e.is_published).length
+
+  const filteredEntries = entries.filter((entry) => {
+    if (filter === 'published') return entry.is_published
+    if (filter === 'draft') return !entry.is_published
+    return true
+  })
+
+  const filterButtons: { key: typeof filter; label: string; count: number }[] = [
+    { key: 'all', label: 'All', count: entries.length },
+    { key: 'published', label: 'Published', count: publishedCount },
+    { key: 'draft', label: 'Draft', count: draftCount },
+  ]
+
   return (
     <div className="space-y-3">
-      {entries.map((entry) => (
+      <div className="flex items-center gap-2">
+        {filterButtons.map((btn) => (
+          <button
+            key={btn.key}
+            onClick={() => setFilter(btn.key)}
+            className={`text-sm px-3 py-1.5 rounded-lg border transition-colors ${
+              filter === btn.key
+                ? 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30'
+                : 'bg-white/5 text-white/50 border-white/10 hover:bg-white/10 hover:text-white/70'
+            }`}
+          >
+            {btn.label} ({btn.count})
+          </button>
+        ))}
+      </div>
+      {filteredEntries.map((entry) => (
         <div
           key={entry.id}
           className="bg-white/5 border border-white/10 rounded-xl p-5 flex items-center justify-between"

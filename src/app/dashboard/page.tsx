@@ -204,7 +204,7 @@ function Onboarding({ email }: { email: string }) {
 
         <div className="space-y-6">
           {steps.map((step, i) => (
-            <div key={step.num} className="flex gap-5">
+            <div key={step.num} className="relative flex gap-5">
               <div className="shrink-0 w-8 h-8 rounded-full border border-indigo-500/40 bg-indigo-500/10 flex items-center justify-center text-indigo-400 text-sm font-semibold mt-0.5">
                 {step.num}
               </div>
@@ -221,7 +221,7 @@ function Onboarding({ email }: { email: string }) {
                 )}
               </div>
               {i < steps.length - 1 && (
-                <div className="absolute ml-4 mt-9 w-px h-6 bg-white/[0.06]" />
+                <div className="absolute left-4 top-9 w-px h-6 bg-white/[0.06]" />
               )}
             </div>
           ))}
