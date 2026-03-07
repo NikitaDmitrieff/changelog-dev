@@ -15,6 +15,15 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: 'why-web-components-over-react',
+    title: 'Why We Chose Web Components Over React for Our Embeddable Widget',
+    description:
+      'Shadow DOM isolation, zero dependencies, and framework-agnostic distribution. The technical trade-offs behind building an embeddable changelog widget with Web Components instead of React.',
+    category: 'Engineering',
+    date: 'March 2026',
+    readTime: '6 min read',
+  },
+  {
     slug: 'open-source-changelog-widget',
     title: 'Introducing the Open-Source Changelog Widget',
     description:
