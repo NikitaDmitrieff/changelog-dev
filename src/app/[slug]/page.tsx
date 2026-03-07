@@ -51,6 +51,7 @@ export default async function PublicChangelogPage({ params }: Props) {
     .from('subscribers')
     .select('id')
     .eq('changelog_id', changelog.id)
+    .eq('confirmed', true)
 
   const subscribers = (subscribersData ?? []) as Pick<Subscriber, 'id'>[]
 

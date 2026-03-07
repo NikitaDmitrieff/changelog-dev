@@ -38,6 +38,7 @@ export default async function ChangelogManagePage({ params }: Props) {
     .from('subscribers')
     .select('id')
     .eq('changelog_id', id)
+    .eq('confirmed', true)
 
   const subscriberCount = subscribersData?.length ?? 0
 

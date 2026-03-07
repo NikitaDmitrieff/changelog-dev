@@ -36,9 +36,9 @@ export default function SubscribeForm({ changelogId }: Props) {
   if (subscribed) {
     return (
       <div className="text-center py-8">
-        <div className="text-indigo-400 font-semibold mb-1">You&apos;re subscribed</div>
+        <div className="text-indigo-400 font-semibold mb-1">Check your email</div>
         <p className="text-white/40 text-sm">
-          We&apos;ll email you when new updates are published.
+          We&apos;ve sent a confirmation link. Click it to start receiving updates.
         </p>
       </div>
     )

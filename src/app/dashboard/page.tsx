@@ -38,6 +38,7 @@ export default async function DashboardPage({
         .from('subscribers')
         .select('changelog_id')
         .in('changelog_id', changelogIds)
+        .eq('confirmed', true)
     : { data: [] }
 
   const entries = (entriesData ?? []) as { changelog_id: string }[]

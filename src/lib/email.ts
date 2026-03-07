@@ -60,6 +60,66 @@ function buildEmailHtml({
 </html>`
 }
 
+interface SendConfirmationParams {
+  email: string
+  changelogName: string
+  confirmationToken: string
+}
+
+function buildConfirmationHtml({
+  changelogName,
+  confirmUrl,
+}: {
+  changelogName: string
+  confirmUrl: string
+}): string {
+  return `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 560px; margin: 0 auto; padding: 40px 20px; color: #1a1a1a;">
+  <h2 style="margin: 0 0 4px 0; font-size: 20px;">Confirm your subscription</h2>
+  <p style="margin: 0 0 20px 0; font-size: 15px; line-height: 1.6; color: #333;">
+    You requested to subscribe to <strong>${changelogName}</strong> updates. Click the button below to confirm your subscription.
+  </p>
+  <p style="margin: 24px 0;">
+    <a href="${confirmUrl}" style="display: inline-block; background: #6366f1; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-size: 14px; font-weight: 500;">Confirm subscription</a>
+  </p>
+  <p style="font-size: 13px; color: #999; margin-top: 32px;">
+    If you didn't request this, you can safely ignore this email.
+  </p>
+</body>
+</html>`
+}
+
+export async function sendConfirmationEmail(
+  params: SendConfirmationParams
+): Promise<void> {
+  if (!resend) {
+    console.warn(
+      '[email] RESEND_API_KEY not configured -- skipping confirmation email'
+    )
+    return
+  }
+
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || 'https://www.changelogdev.com'
+  const confirmUrl = `${siteUrl}/api/confirm?token=${params.confirmationToken}`
+
+  const { error } = await resend.emails.send({
+    from: FROM_EMAIL,
+    to: params.email,
+    subject: `Confirm your subscription to ${params.changelogName}`,
+    html: buildConfirmationHtml({
+      changelogName: params.changelogName,
+      confirmUrl,
+    }),
+  })
+
+  if (error) {
+    console.error('[email] Confirmation email failed:', error)
+  }
+}
+
 export async function sendEntryNotifications(
   params: SendNotificationParams & { changelogId: string }
 ): Promise<{ sent: number; failed: number }> {

@@ -2,6 +2,7 @@ import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { NextResponse, type NextRequest } from 'next/server'
 import type { Database } from '@/lib/supabase/types'
+import { sendConfirmationEmail } from '@/lib/email'
 
 export async function POST(request: NextRequest) {
   try {
@@ -32,26 +33,62 @@ export async function POST(request: NextRequest) {
     // Check if already subscribed
     const { data: existing } = await supabase
       .from('subscribers')
-      .select('id')
+      .select('id, confirmed')
       .eq('changelog_id', changelog_id)
       .eq('email', email)
       .single()
 
-    if (existing) {
+    if (existing?.confirmed) {
       return NextResponse.json({ message: 'Already subscribed' }, { status: 200 })
     }
 
-    const { error } = await supabase.from('subscribers').insert({
-      changelog_id,
-      email,
-      confirmed: true,
-    })
+    // Get changelog name for the confirmation email
+    const { data: changelog } = await supabase
+      .from('changelogs')
+      .select('name, slug')
+      .eq('id', changelog_id)
+      .single()
 
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 })
+    const changelogName = changelog?.name || 'this changelog'
+
+    // Generate confirmation token
+    const confirmationToken = crypto.randomUUID()
+
+    if (existing && !existing.confirmed) {
+      // Re-send confirmation for unconfirmed subscriber
+      const { error } = await supabase
+        .from('subscribers')
+        .update({ confirmation_token: confirmationToken })
+        .eq('id', existing.id)
+
+      if (error) {
+        return NextResponse.json({ error: error.message }, { status: 500 })
+      }
+    } else {
+      // Insert new subscriber as unconfirmed
+      const { error } = await supabase.from('subscribers').insert({
+        changelog_id,
+        email,
+        confirmed: false,
+        confirmation_token: confirmationToken,
+      })
+
+      if (error) {
+        return NextResponse.json({ error: error.message }, { status: 500 })
+      }
     }
 
-    return NextResponse.json({ message: 'Subscribed successfully' }, { status: 200 })
+    // Send confirmation email
+    await sendConfirmationEmail({
+      email,
+      changelogName,
+      confirmationToken,
+    })
+
+    return NextResponse.json({
+      message: 'Check your email to confirm your subscription',
+      needsConfirmation: true,
+    }, { status: 200 })
   } catch {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
