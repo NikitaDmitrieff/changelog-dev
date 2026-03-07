@@ -117,7 +117,7 @@ export default function BlogIndex() {
           </Link>
           <Link
             href="/login"
-            className="bg-indigo-500 hover:bg-indigo-400 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+            className="bg-white text-black text-sm font-medium px-4 py-2 rounded-full hover:bg-zinc-200 transition-colors"
           >
             Start free
           </Link>
@@ -126,7 +126,7 @@ export default function BlogIndex() {
 
       <main className="max-w-2xl mx-auto px-6 py-16">
         <div className="mb-12">
-          <span className="text-xs font-semibold text-indigo-400 uppercase tracking-widest font-mono">
+          <span className="text-xs font-semibold text-zinc-500 uppercase tracking-widest font-mono">
             Blog
           </span>
           <h1 className="text-3xl font-bold mt-3 mb-3">Articles</h1>
@@ -143,7 +143,7 @@ export default function BlogIndex() {
               className="group block rounded-xl p-6 -mx-6 hover:bg-white/[0.03] transition-colors"
             >
               <div className="flex items-center gap-3 mb-2">
-                <span className="text-xs font-semibold text-indigo-400 uppercase tracking-widest font-mono">
+                <span className="text-xs font-semibold text-zinc-500 uppercase tracking-widest font-mono">
                   {post.category}
                 </span>
                 <span className="text-zinc-700 text-xs">·</span>

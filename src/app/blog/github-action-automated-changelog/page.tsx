@@ -30,7 +30,7 @@ export default function GitHubActionChangelogPost() {
           </Link>
           <Link
             href="/login"
-            className="bg-indigo-500 hover:bg-indigo-400 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+            className="bg-white text-black text-sm font-medium px-4 py-2 rounded-full hover:bg-zinc-200 transition-colors"
           >
             Start free
           </Link>
@@ -40,7 +40,7 @@ export default function GitHubActionChangelogPost() {
       <article className="max-w-2xl mx-auto px-6 py-16">
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-3">
-            <span className="text-xs font-semibold text-indigo-400 uppercase tracking-widest font-mono">
+            <span className="text-xs font-semibold text-zinc-500 uppercase tracking-widest font-mono">
               Open Source
             </span>
             <span className="text-zinc-700 text-xs">·</span>
@@ -76,7 +76,7 @@ export default function GitHubActionChangelogPost() {
               href="https://www.conventionalcommits.org/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-indigo-400 hover:text-indigo-300"
+              className="text-zinc-400 hover:text-white"
             >
               conventional commits
             </a>
@@ -91,7 +91,7 @@ export default function GitHubActionChangelogPost() {
               href="https://github.com/NikitaDmitrieff/changelog-action"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-indigo-400 hover:text-indigo-300"
+              className="text-zinc-400 hover:text-white"
             >
               Changelog Generator Action
             </a>{' '}
@@ -101,7 +101,7 @@ export default function GitHubActionChangelogPost() {
               href="https://www.npmjs.com/package/changelogdev-cli"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-indigo-400 hover:text-indigo-300"
+              className="text-zinc-400 hover:text-white"
             >
               changelogdev-cli
             </a>{' '}
@@ -145,7 +145,7 @@ export default function GitHubActionChangelogPost() {
             <div className="text-emerald-400">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; add-to-pr: &apos;true&apos;</div>
           </div>
           <p>
-            The <span className="font-mono text-xs text-indigo-400">fetch-depth: 0</span> flag
+            The <span className="font-mono text-xs text-zinc-400">fetch-depth: 0</span> flag
             is important — it tells the checkout action to pull full git history so the changelog
             generator can see all commits, not just the latest one.
           </p>
@@ -174,15 +174,15 @@ export default function GitHubActionChangelogPost() {
             <div className="text-emerald-400">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; with:</div>
             <div className="text-emerald-400">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; from: &apos;last month&apos;</div>
             <div className="text-emerald-400">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; type: &apos;feat,fix&apos;</div>
-            <div className="text-indigo-400">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - uses: softprops/action-gh-release@v2</div>
-            <div className="text-indigo-400">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; with:</div>
-            <div className="text-indigo-400">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; body: {'${{ steps.changelog.outputs.changelog }}'}</div>
+            <div className="text-zinc-400">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - uses: softprops/action-gh-release@v2</div>
+            <div className="text-zinc-400">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; with:</div>
+            <div className="text-zinc-400">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; body: {'${{ steps.changelog.outputs.changelog }}'}</div>
           </div>
           <p>
-            The <span className="font-mono text-xs text-indigo-400">from</span> input accepts
+            The <span className="font-mono text-xs text-zinc-400">from</span> input accepts
             dates (like <span className="font-mono text-xs text-zinc-400">2026-01-01</span> or{' '}
             <span className="font-mono text-xs text-zinc-400">last month</span>) and git refs.
-            The <span className="font-mono text-xs text-indigo-400">type</span> filter lets you
+            The <span className="font-mono text-xs text-zinc-400">type</span> filter lets you
             include only the commit categories your users care about.
           </p>
 
@@ -210,32 +210,32 @@ export default function GitHubActionChangelogPost() {
               </thead>
               <tbody className="text-zinc-500">
                 <tr className="border-b border-white/[0.04]">
-                  <td className="py-2 pr-4 font-mono text-xs text-indigo-400">from</td>
+                  <td className="py-2 pr-4 font-mono text-xs text-zinc-400">from</td>
                   <td className="py-2 pr-4">(all commits)</td>
                   <td className="py-2">Start date or git ref</td>
                 </tr>
                 <tr className="border-b border-white/[0.04]">
-                  <td className="py-2 pr-4 font-mono text-xs text-indigo-400">to</td>
+                  <td className="py-2 pr-4 font-mono text-xs text-zinc-400">to</td>
                   <td className="py-2 pr-4">(latest)</td>
                   <td className="py-2">End date or git ref</td>
                 </tr>
                 <tr className="border-b border-white/[0.04]">
-                  <td className="py-2 pr-4 font-mono text-xs text-indigo-400">type</td>
+                  <td className="py-2 pr-4 font-mono text-xs text-zinc-400">type</td>
                   <td className="py-2 pr-4">(all types)</td>
                   <td className="py-2">Filter commit types (comma-separated)</td>
                 </tr>
                 <tr className="border-b border-white/[0.04]">
-                  <td className="py-2 pr-4 font-mono text-xs text-indigo-400">output-file</td>
+                  <td className="py-2 pr-4 font-mono text-xs text-zinc-400">output-file</td>
                   <td className="py-2 pr-4">(none)</td>
                   <td className="py-2">Write changelog to file</td>
                 </tr>
                 <tr className="border-b border-white/[0.04]">
-                  <td className="py-2 pr-4 font-mono text-xs text-indigo-400">add-to-summary</td>
+                  <td className="py-2 pr-4 font-mono text-xs text-zinc-400">add-to-summary</td>
                   <td className="py-2 pr-4">true</td>
                   <td className="py-2">Add to job summary</td>
                 </tr>
                 <tr className="border-b border-white/[0.04]">
-                  <td className="py-2 pr-4 font-mono text-xs text-indigo-400">add-to-pr</td>
+                  <td className="py-2 pr-4 font-mono text-xs text-zinc-400">add-to-pr</td>
                   <td className="py-2 pr-4">false</td>
                   <td className="py-2">Post as PR comment</td>
                 </tr>
@@ -253,11 +253,11 @@ export default function GitHubActionChangelogPost() {
               </thead>
               <tbody className="text-zinc-500">
                 <tr className="border-b border-white/[0.04]">
-                  <td className="py-2 pr-4 font-mono text-xs text-indigo-400">changelog</td>
+                  <td className="py-2 pr-4 font-mono text-xs text-zinc-400">changelog</td>
                   <td className="py-2">Generated changelog in markdown</td>
                 </tr>
                 <tr className="border-b border-white/[0.04]">
-                  <td className="py-2 pr-4 font-mono text-xs text-indigo-400">commit-count</td>
+                  <td className="py-2 pr-4 font-mono text-xs text-zinc-400">commit-count</td>
                   <td className="py-2">Number of commits included</td>
                 </tr>
               </tbody>
@@ -271,7 +271,7 @@ export default function GitHubActionChangelogPost() {
               href="https://www.conventionalcommits.org/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-indigo-400 hover:text-indigo-300"
+              className="text-zinc-400 hover:text-white"
             >
               Conventional Commits
             </a>{' '}
@@ -300,11 +300,11 @@ export default function GitHubActionChangelogPost() {
             useful, but it has limits:
           </p>
           <ul className="list-none space-y-2 text-zinc-400">
-            <li><span className="text-indigo-400 mr-2">+</span><strong className="text-zinc-200">No commit-level detail</strong> — it works at the PR level, so squashed PRs with multiple features show as a single line.</li>
-            <li><span className="text-indigo-400 mr-2">+</span><strong className="text-zinc-200">No type filtering</strong> — you cannot exclude chores, CI changes, or docs commits from user-facing notes.</li>
-            <li><span className="text-indigo-400 mr-2">+</span><strong className="text-zinc-200">No PR comments</strong> — the built-in feature only works at release time, not during code review.</li>
-            <li><span className="text-indigo-400 mr-2">+</span><strong className="text-zinc-200">No file output</strong> — you cannot write the result to CHANGELOG.md automatically.</li>
-            <li><span className="text-indigo-400 mr-2">+</span><strong className="text-zinc-200">No date filtering</strong> — you cannot generate a changelog for &quot;the last 30 days&quot; across multiple releases.</li>
+            <li><span className="text-zinc-500 mr-2">+</span><strong className="text-zinc-200">No commit-level detail</strong> — it works at the PR level, so squashed PRs with multiple features show as a single line.</li>
+            <li><span className="text-zinc-500 mr-2">+</span><strong className="text-zinc-200">No type filtering</strong> — you cannot exclude chores, CI changes, or docs commits from user-facing notes.</li>
+            <li><span className="text-zinc-500 mr-2">+</span><strong className="text-zinc-200">No PR comments</strong> — the built-in feature only works at release time, not during code review.</li>
+            <li><span className="text-zinc-500 mr-2">+</span><strong className="text-zinc-200">No file output</strong> — you cannot write the result to CHANGELOG.md automatically.</li>
+            <li><span className="text-zinc-500 mr-2">+</span><strong className="text-zinc-200">No date filtering</strong> — you cannot generate a changelog for &quot;the last 30 days&quot; across multiple releases.</li>
           </ul>
           <p>
             The Changelog Generator Action fills these gaps. Use it alongside GitHub&apos;s release
@@ -317,23 +317,23 @@ export default function GitHubActionChangelogPost() {
           </p>
           <ul className="list-none space-y-2 text-zinc-400">
             <li>
-              <span className="text-indigo-400 mr-2">+</span>
+              <span className="text-zinc-500 mr-2">+</span>
               <strong className="text-zinc-200">
-                <Link href="/" className="text-indigo-400 hover:text-indigo-300">Changelog.dev</Link>
+                <Link href="/" className="text-zinc-400 hover:text-white">Changelog.dev</Link>
               </strong>{' '}
               — Hosted changelog pages for SaaS products. Public pages, subscriber emails, custom domains.
             </li>
             <li>
-              <span className="text-indigo-400 mr-2">+</span>
+              <span className="text-zinc-500 mr-2">+</span>
               <strong className="text-zinc-200">
-                <a href="https://www.npmjs.com/package/changelogdev-cli" target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:text-indigo-300">changelogdev-cli</a>
+                <a href="https://www.npmjs.com/package/changelogdev-cli" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white">changelogdev-cli</a>
               </strong>{' '}
               — The CLI that powers this action. Run it locally or in any CI system.
             </li>
             <li>
-              <span className="text-indigo-400 mr-2">+</span>
+              <span className="text-zinc-500 mr-2">+</span>
               <strong className="text-zinc-200">
-                <Link href="/blog/open-source-changelog-widget" className="text-indigo-400 hover:text-indigo-300">changelogdev-widget</Link>
+                <Link href="/blog/open-source-changelog-widget" className="text-zinc-400 hover:text-white">changelogdev-widget</Link>
               </strong>{' '}
               — An embeddable Web Component that adds a &quot;What&apos;s New&quot; bell to your app. Under 8KB.
             </li>
@@ -341,7 +341,7 @@ export default function GitHubActionChangelogPost() {
           <p>
             Each tool works independently. Use the GitHub Action alone, combine it with the widget,
             or go all-in with a hosted{' '}
-            <Link href="/" className="text-indigo-400 hover:text-indigo-300">Changelog.dev</Link>{' '}
+            <Link href="/" className="text-zinc-400 hover:text-white">Changelog.dev</Link>{' '}
             page. They compose, they do not lock you in.
           </p>
 
@@ -378,7 +378,7 @@ export default function GitHubActionChangelogPost() {
             </a>
             <Link
               href="/login"
-              className="inline-flex items-center gap-2 bg-indigo-500 hover:bg-indigo-400 text-white font-medium px-4 py-2 rounded-lg transition-colors text-sm"
+              className="inline-flex items-center gap-2 bg-white hover:bg-zinc-200 text-black font-medium px-4 py-2 rounded-lg transition-colors text-sm"
             >
               Create a changelog
             </Link>

@@ -31,7 +31,7 @@ export default function BlogPost() {
           </Link>
           <Link
             href="/login"
-            className="bg-indigo-500 hover:bg-indigo-400 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+            className="bg-white text-black text-sm font-medium px-4 py-2 rounded-full hover:bg-zinc-200 transition-colors"
           >
             Start free
           </Link>
@@ -42,7 +42,7 @@ export default function BlogPost() {
         {/* Meta */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-xs font-semibold text-indigo-400 uppercase tracking-widest font-mono">
+            <span className="text-xs font-semibold text-zinc-500 uppercase tracking-widest font-mono">
               Guide
             </span>
             <span className="text-zinc-700 text-xs">·</span>
@@ -59,7 +59,7 @@ export default function BlogPost() {
         </div>
 
         {/* Content */}
-        <div className="prose prose-invert prose-zinc max-w-none prose-headings:text-white prose-p:text-zinc-400 prose-p:leading-relaxed prose-strong:text-white prose-a:text-indigo-400 prose-li:text-zinc-400">
+        <div className="prose prose-invert prose-zinc max-w-none prose-headings:text-white prose-p:text-zinc-400 prose-p:leading-relaxed prose-strong:text-white prose-a:text-zinc-300 prose-li:text-zinc-400">
 
           <h2>Why most release notes fail</h2>
           <p>
@@ -102,7 +102,7 @@ export default function BlogPost() {
               You can now [do X]. [One sentence on why this matters — what problem it solves or what it enables]. [Optional: how to find/use it.]
             </div>
             <div className="mt-3 flex gap-2">
-              <span className="text-xs bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2 py-0.5 rounded">New feature</span>
+              <span className="text-xs bg-zinc-500/10 text-zinc-400 border border-zinc-500/20 px-2 py-0.5 rounded">New feature</span>
             </div>
           </div>
 
@@ -235,14 +235,14 @@ export default function BlogPost() {
         </div>
 
         {/* CTA */}
-        <div className="mt-16 rounded-2xl border border-indigo-500/20 bg-indigo-950/10 p-8 text-center">
+        <div className="mt-16 rounded-2xl border border-white/[0.08] bg-white/[0.02] p-8 text-center">
           <h3 className="text-xl font-bold mb-2">Skip the blank page</h3>
           <p className="text-zinc-500 text-sm mb-6">
             Connect GitHub, let AI draft from your commits, publish in minutes. Free tier — no credit card.
           </p>
           <Link
             href="/login"
-            className="inline-block bg-indigo-500 hover:bg-indigo-400 text-white font-semibold px-8 py-3 rounded-xl transition-colors"
+            className="inline-block bg-white text-black font-semibold px-8 py-3 rounded-full hover:bg-zinc-200 transition-colors"
           >
             Get started free →
           </Link>

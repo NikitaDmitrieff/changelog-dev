@@ -60,7 +60,7 @@ const tools = [
 ]
 
 const verdictStyles: Record<string, string> = {
-  recommended: 'bg-indigo-500/10 border border-indigo-500/30 text-indigo-400',
+  recommended: 'bg-zinc-500/10 border border-zinc-500/30 text-zinc-400',
   ok: 'bg-zinc-800/50 border border-white/[0.06] text-zinc-500',
   skip: 'bg-red-500/5 border border-red-500/20 text-red-500/70',
 }
@@ -82,7 +82,7 @@ export default function BlogPost() {
           </Link>
           <Link
             href="/login"
-            className="bg-indigo-500 hover:bg-indigo-400 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+            className="bg-white text-black text-sm font-medium px-4 py-2 rounded-full hover:bg-zinc-200 transition-colors"
           >
             Start free
           </Link>
@@ -93,7 +93,7 @@ export default function BlogPost() {
         {/* Meta */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-xs font-semibold text-indigo-400 uppercase tracking-widest font-mono">
+            <span className="text-xs font-semibold text-zinc-500 uppercase tracking-widest font-mono">
               Tools
             </span>
             <span className="text-zinc-700 text-xs">·</span>
@@ -110,7 +110,7 @@ export default function BlogPost() {
         </div>
 
         {/* Content */}
-        <div className="prose prose-invert prose-zinc max-w-none prose-headings:text-white prose-p:text-zinc-400 prose-p:leading-relaxed prose-strong:text-white prose-a:text-indigo-400 prose-li:text-zinc-400">
+        <div className="prose prose-invert prose-zinc max-w-none prose-headings:text-white prose-p:text-zinc-400 prose-p:leading-relaxed prose-strong:text-white prose-a:text-zinc-300 prose-li:text-zinc-400">
 
           <h2>Why this comparison exists</h2>
           <p>
@@ -185,7 +185,7 @@ export default function BlogPost() {
           ))}
         </div>
 
-        <div className="prose prose-invert prose-zinc max-w-none prose-headings:text-white prose-p:text-zinc-400 prose-p:leading-relaxed prose-strong:text-white prose-a:text-indigo-400 prose-li:text-zinc-400">
+        <div className="prose prose-invert prose-zinc max-w-none prose-headings:text-white prose-p:text-zinc-400 prose-p:leading-relaxed prose-strong:text-white prose-a:text-zinc-300 prose-li:text-zinc-400">
 
           <h2>The honest verdict</h2>
           <p>
@@ -222,14 +222,14 @@ export default function BlogPost() {
         </div>
 
         {/* CTA */}
-        <div className="mt-16 rounded-2xl border border-indigo-500/20 bg-indigo-950/10 p-8 text-center">
+        <div className="mt-16 rounded-2xl border border-white/[0.08] bg-white/[0.02] p-8 text-center">
           <h3 className="text-xl font-bold mb-2">Try Changelog.dev free</h3>
           <p className="text-zinc-500 text-sm mb-6">
             Connect GitHub, AI drafts entries from your commits, publish in minutes. Free tier — 1 changelog, 100 subscribers, no credit card.
           </p>
           <Link
             href="/login"
-            className="inline-block bg-indigo-500 hover:bg-indigo-400 text-white font-semibold px-8 py-3 rounded-xl transition-colors"
+            className="inline-block bg-white text-black font-semibold px-8 py-3 rounded-full hover:bg-zinc-200 transition-colors"
           >
             Get started free →
           </Link>

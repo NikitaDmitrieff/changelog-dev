@@ -33,14 +33,14 @@ function TimelineItem({
             animate={
               isInView
                 ? {
-                    backgroundColor: "rgba(99, 102, 241, 0.9)",
-                    borderColor: "rgba(129, 140, 248, 0.6)",
-                    boxShadow: "0 0 12px rgba(99, 102, 241, 0.4)",
+                    backgroundColor: "rgba(255, 255, 255, 0.9)",
+                    borderColor: "rgba(255, 255, 255, 0.5)",
+                    boxShadow: "0 0 12px rgba(255, 255, 255, 0.2)",
                   }
                 : {
                     backgroundColor: "rgba(38, 38, 38, 1)",
                     borderColor: "rgba(64, 64, 64, 1)",
-                    boxShadow: "0 0 0px rgba(99, 102, 241, 0)",
+                    boxShadow: "0 0 0px rgba(255, 255, 255, 0)",
                   }
             }
             transition={{ duration: 0.5, ease: "easeOut" }}
@@ -130,7 +130,7 @@ export const Timeline = ({
         >
           <motion.div
             style={{ height: heightTransform, opacity: opacityTransform }}
-            className="absolute inset-x-0 top-0 w-[2px] bg-gradient-to-t from-indigo-500 via-indigo-400 to-transparent from-[0%] via-[10%] rounded-full"
+            className="absolute inset-x-0 top-0 w-[2px] bg-gradient-to-t from-white/60 via-white/30 to-transparent from-[0%] via-[10%] rounded-full"
           />
         </div>
       </div>

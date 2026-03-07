@@ -108,7 +108,7 @@ export default function ApiPlayground() {
   return (
     <section id="try-it" className="mb-16">
       <h2 className="text-2xl font-bold mb-2">
-        <span className="text-indigo-400 mr-2">#</span>Try it
+        <span className="text-zinc-500 mr-2">#</span>Try it
       </h2>
       <div className="h-px bg-white/[0.06] mb-6" />
       <p className="text-zinc-400 leading-relaxed mb-6">
@@ -125,7 +125,7 @@ export default function ApiPlayground() {
           onClick={() => handleTabChange('post')}
           className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
             activeTab === 'post'
-              ? 'bg-indigo-500/15 text-indigo-400 border border-indigo-500/30'
+              ? 'bg-white/[0.06] text-white border border-white/[0.12]'
               : 'text-zinc-400 hover:text-zinc-300 border border-white/[0.06]'
           }`}
         >
@@ -140,7 +140,7 @@ export default function ApiPlayground() {
           onClick={() => handleTabChange('get')}
           className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
             activeTab === 'get'
-              ? 'bg-indigo-500/15 text-indigo-400 border border-indigo-500/30'
+              ? 'bg-white/[0.06] text-white border border-white/[0.12]'
               : 'text-zinc-400 hover:text-zinc-300 border border-white/[0.06]'
           }`}
         >
@@ -173,7 +173,7 @@ export default function ApiPlayground() {
               onChange={(e) => setPostBody(e.target.value)}
               spellCheck={false}
               aria-label="Request body JSON"
-              className="w-full bg-black border border-white/[0.06] rounded-lg p-3 text-sm font-mono text-zinc-300 leading-relaxed resize-y min-h-[160px] focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/30"
+              className="w-full bg-black border border-white/[0.06] rounded-lg p-3 text-sm font-mono text-zinc-300 leading-relaxed resize-y min-h-[160px] focus:outline-none focus:border-white/20"
             />
           </div>
         )}
@@ -183,7 +183,7 @@ export default function ApiPlayground() {
           <button
             onClick={handleSend}
             disabled={requestState === 'loading'}
-            className="bg-indigo-500 hover:bg-indigo-400 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium px-5 py-2 rounded-lg transition-colors"
+            className="bg-white text-black hover:bg-zinc-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium px-5 py-2 rounded-full transition-colors"
           >
             {requestState === 'loading' ? 'Sending...' : 'Send request'}
           </button>
@@ -204,13 +204,13 @@ export default function ApiPlayground() {
             </div>
             {requestState === 'loading' ? (
               <div className="flex items-center gap-2 py-4">
-                <div className="h-1.5 w-1.5 rounded-full bg-indigo-400 animate-pulse" />
+                <div className="h-1.5 w-1.5 rounded-full bg-zinc-400 animate-pulse" />
                 <div
-                  className="h-1.5 w-1.5 rounded-full bg-indigo-400 animate-pulse"
+                  className="h-1.5 w-1.5 rounded-full bg-zinc-400 animate-pulse"
                   style={{ animationDelay: '150ms' }}
                 />
                 <div
-                  className="h-1.5 w-1.5 rounded-full bg-indigo-400 animate-pulse"
+                  className="h-1.5 w-1.5 rounded-full bg-zinc-400 animate-pulse"
                   style={{ animationDelay: '300ms' }}
                 />
               </div>

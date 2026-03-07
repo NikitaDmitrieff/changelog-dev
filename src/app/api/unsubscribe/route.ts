@@ -80,7 +80,7 @@ function htmlPage(title: string, message: string): string {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${t}</title>
 </head>
-<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background: #0a0a0a; color: #fff;">
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background: #000; color: #fff;">
   <div style="text-align: center; max-width: 400px; padding: 20px;">
     <h1 style="font-size: 24px; margin-bottom: 8px;">${t}</h1>
     <p style="color: rgba(255,255,255,0.5); font-size: 15px; line-height: 1.5;">${m}</p>

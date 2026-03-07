@@ -4,10 +4,9 @@ import { useState } from 'react'
 
 interface Props {
   changelogId: string
-  accentColor?: string
 }
 
-export default function SubscribeForm({ changelogId, accentColor = '#6366f1' }: Props) {
+export default function SubscribeForm({ changelogId }: Props) {
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [subscribed, setSubscribed] = useState(false)
@@ -37,7 +36,7 @@ export default function SubscribeForm({ changelogId, accentColor = '#6366f1' }: 
   if (subscribed) {
     return (
       <div className="text-center py-8">
-        <div className="font-semibold mb-1" style={{ color: accentColor }}>Check your email</div>
+        <div className="font-semibold mb-1 text-white">Check your email</div>
         <p className="text-white/40 text-sm">
           We&apos;ve sent a confirmation link. Click it to start receiving updates.
         </p>
@@ -58,15 +57,12 @@ export default function SubscribeForm({ changelogId, accentColor = '#6366f1' }: 
           onChange={(e) => setEmail(e.target.value)}
           placeholder="your@email.com"
           required
-          className="flex-1 bg-white/5 border border-white/20 rounded-lg px-4 py-2.5 text-white placeholder-white/30 focus:outline-none transition-colors text-sm"
-          onFocus={(e) => { e.currentTarget.style.borderColor = accentColor }}
-          onBlur={(e) => { e.currentTarget.style.borderColor = '' }}
+          className="flex-1 bg-white/[0.03] border border-white/[0.08] rounded-full px-4 py-2.5 text-white placeholder-white/30 focus:outline-none focus:border-white/20 transition-colors text-sm"
         />
         <button
           type="submit"
           disabled={loading}
-          className="disabled:opacity-50 text-white font-medium px-5 py-2.5 rounded-lg transition-colors text-sm whitespace-nowrap"
-          style={{ backgroundColor: accentColor }}
+          className="disabled:opacity-50 bg-white text-black font-medium px-5 py-2.5 rounded-full hover:bg-zinc-200 transition-colors text-sm whitespace-nowrap"
         >
           {loading ? 'Subscribing...' : 'Subscribe'}
         </button>

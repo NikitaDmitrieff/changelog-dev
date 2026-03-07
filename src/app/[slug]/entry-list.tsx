@@ -17,10 +17,9 @@ function getTagColor(tag: string): string {
 
 interface EntryListProps {
   entries: Entry[]
-  accentColor?: string
 }
 
-export default function EntryList({ entries, accentColor = '#6366f1' }: EntryListProps) {
+export default function EntryList({ entries }: EntryListProps) {
   const [search, setSearch] = useState('')
   const [activeTag, setActiveTag] = useState<string | null>(null)
 
@@ -60,8 +59,8 @@ export default function EntryList({ entries, accentColor = '#6366f1' }: EntryLis
   return (
     <div>
       <style>{`
-        .changelog-prose a { color: ${accentColor}; }
-        .changelog-prose code:not(pre code) { color: ${accentColor}; }
+        .changelog-prose a { color: #d4d4d8; }
+        .changelog-prose code:not(pre code) { color: #d4d4d8; }
       `}</style>
       {/* Search + Tag Filters */}
       <div className="mb-12 space-y-4">
@@ -86,10 +85,8 @@ export default function EntryList({ entries, accentColor = '#6366f1' }: EntryLis
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search entries..."
             aria-label="Search changelog entries"
-            className="w-full bg-white/5 border border-white/10 rounded-lg py-2.5 pl-10 pr-4 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-1 transition-colors"
-            style={{ '--tw-ring-color': accentColor, borderColor: undefined } as React.CSSProperties}
-            onFocus={(e) => { e.currentTarget.style.borderColor = accentColor }}
-            onBlur={(e) => { e.currentTarget.style.borderColor = '' }}
+            className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg py-2.5 pl-10 pr-4 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-white/20 transition-colors"
+            style={{} as React.CSSProperties}
           />
         </div>
 
@@ -101,9 +98,9 @@ export default function EntryList({ entries, accentColor = '#6366f1' }: EntryLis
               className={`text-xs px-3 py-1 rounded-full border transition-colors ${
                 activeTag === null
                   ? 'border-current'
-                  : 'bg-white/5 text-white/50 border-white/10 hover:border-white/20'
+                  : 'bg-white/[0.03] text-white/50 border-white/[0.08] hover:border-white/20'
               }`}
-              style={activeTag === null ? { backgroundColor: `${accentColor}33`, color: accentColor, borderColor: `${accentColor}80` } : undefined}
+              style={activeTag === null ? { backgroundColor: 'rgba(255,255,255,0.1)', color: '#fff', borderColor: 'rgba(255,255,255,0.3)' } : undefined}
             >
               All
             </button>
@@ -115,7 +112,7 @@ export default function EntryList({ entries, accentColor = '#6366f1' }: EntryLis
                 className={`text-xs px-3 py-1 rounded-full border transition-colors ${
                   activeTag === tag
                     ? `${getTagColor(tag)} border-current`
-                    : 'bg-white/5 text-white/50 border-white/10 hover:border-white/20'
+                    : 'bg-white/[0.03] text-white/50 border-white/[0.08] hover:border-white/20'
                 }`}
               >
                 {tag}
@@ -155,8 +152,7 @@ export default function EntryList({ entries, accentColor = '#6366f1' }: EntryLis
                       </a>
                       {entry.version && (
                         <span
-                          className="text-xs font-medium px-2.5 py-0.5 rounded-full"
-                          style={{ backgroundColor: `${accentColor}33`, color: accentColor }}
+                          className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-white/10 text-white/70"
                         >
                           {entry.version}
                         </span>

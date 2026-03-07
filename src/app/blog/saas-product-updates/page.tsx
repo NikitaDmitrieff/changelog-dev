@@ -31,7 +31,7 @@ export default function BlogPost() {
           </Link>
           <Link
             href="/login"
-            className="bg-indigo-500 hover:bg-indigo-400 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+            className="bg-white text-black text-sm font-medium px-4 py-2 rounded-full hover:bg-zinc-200 transition-colors"
           >
             Start free
           </Link>
@@ -42,7 +42,7 @@ export default function BlogPost() {
         {/* Meta */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-xs font-semibold text-indigo-400 uppercase tracking-widest font-mono">
+            <span className="text-xs font-semibold text-zinc-500 uppercase tracking-widest font-mono">
               Growth
             </span>
             <span className="text-zinc-700 text-xs">·</span>
@@ -59,7 +59,7 @@ export default function BlogPost() {
         </div>
 
         {/* Content */}
-        <div className="prose prose-invert prose-zinc max-w-none prose-headings:text-white prose-p:text-zinc-400 prose-p:leading-relaxed prose-strong:text-white prose-a:text-indigo-400 prose-li:text-zinc-400">
+        <div className="prose prose-invert prose-zinc max-w-none prose-headings:text-white prose-p:text-zinc-400 prose-p:leading-relaxed prose-strong:text-white prose-a:text-zinc-300 prose-li:text-zinc-400">
 
           <h2>The notification gap</h2>
           <p>
@@ -160,11 +160,11 @@ export default function BlogPost() {
               <p>Hi [first name],</p>
               <p>Here is what shipped in [Month]:</p>
               <ul className="space-y-2 list-none pl-0">
-                <li><span className="text-indigo-400">+</span> <strong className="text-zinc-300">[Feature headline]</strong> — one sentence on what changed and why it matters.</li>
+                <li><span className="text-zinc-400">+</span> <strong className="text-zinc-300">[Feature headline]</strong> — one sentence on what changed and why it matters.</li>
                 <li><span className="text-blue-400">~</span> <strong className="text-zinc-300">[Improvement headline]</strong> — one sentence on what got better.</li>
                 <li><span className="text-emerald-400">✓</span> <strong className="text-zinc-300">[Bug fix headline]</strong> — one sentence on what was fixed.</li>
               </ul>
-              <p>See everything on the <span className="text-indigo-400 underline">[full changelog]</span>.</p>
+              <p>See everything on the <span className="text-zinc-400 underline">[full changelog]</span>.</p>
               <p>— [Your name]</p>
             </div>
           </div>
@@ -179,7 +179,7 @@ export default function BlogPost() {
               <p><strong className="text-zinc-300">[Feature name] is live.</strong></p>
               <p>[One paragraph: what it does, why it matters, who asked for it if relevant. Write like you are explaining it to a smart person who does not work in tech.]</p>
               <p>[Optional: how to find it — Settings → X, or &ldquo;you will see a new button in your dashboard.&rdquo;]</p>
-              <p><span className="text-indigo-400 underline">[Try it now →]</span></p>
+              <p><span className="text-zinc-400 underline">[Try it now →]</span></p>
               <p className="text-zinc-600 text-xs mt-4">Questions? Just reply to this email.</p>
             </div>
           </div>
@@ -198,7 +198,7 @@ export default function BlogPost() {
                 <li>→ [Feature 3]</li>
               </ul>
               <p>The [product] you signed up for and the one available today are quite different. Worth another look.</p>
-              <p><span className="text-indigo-400 underline">[See what changed →]</span></p>
+              <p><span className="text-zinc-400 underline">[See what changed →]</span></p>
             </div>
           </div>
 
@@ -257,14 +257,14 @@ export default function BlogPost() {
         </div>
 
         {/* CTA */}
-        <div className="mt-16 rounded-2xl border border-indigo-500/20 bg-indigo-950/10 p-8 text-center">
+        <div className="mt-16 rounded-2xl border border-white/[0.08] bg-white/[0.02] p-8 text-center">
           <h3 className="text-xl font-bold mb-2">Automate your product update emails</h3>
           <p className="text-zinc-500 text-sm mb-6">
             Connect GitHub. AI drafts entries from commits. Subscribers get notified when you publish. Free tier — no credit card.
           </p>
           <Link
             href="/login"
-            className="inline-block bg-indigo-500 hover:bg-indigo-400 text-white font-semibold px-8 py-3 rounded-xl transition-colors"
+            className="inline-block bg-white text-black font-semibold px-8 py-3 rounded-full hover:bg-zinc-200 transition-colors"
           >
             Get started free →
           </Link>

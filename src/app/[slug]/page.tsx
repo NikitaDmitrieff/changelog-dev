@@ -67,12 +67,11 @@ export default async function PublicChangelogPage({ params }: Props) {
   const subscribers = (subscribersData ?? []) as Pick<Subscriber, 'id'>[]
 
   const subscriberCount = subscribers.length
-  const accentColor = changelog.accent_color || '#6366f1'
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-black text-white">
       {/* Header */}
-      <header className="border-b border-white/10 px-6 py-6">
+      <header className="border-b border-white/[0.06] px-6 py-6">
         <div className="max-w-2xl mx-auto">
           <div className="flex items-center gap-3">
             {changelog.logo_url && (
@@ -119,13 +118,13 @@ export default async function PublicChangelogPage({ params }: Props) {
         ) : (
           <>
             <ViewTracker entryIds={entries.map((e) => e.id)} />
-            <EntryList entries={entries} accentColor={accentColor} />
+            <EntryList entries={entries} />
           </>
         )}
 
         {/* Subscribe form */}
-        <div className="mt-20 pt-12 border-t border-white/10">
-          <SubscribeForm changelogId={changelog.id} accentColor={accentColor} />
+        <div className="mt-20 pt-12 border-t border-white/[0.06]">
+          <SubscribeForm changelogId={changelog.id} />
         </div>
 
         {/* Footer */}

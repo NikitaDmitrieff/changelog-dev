@@ -30,7 +30,7 @@ export default function WebComponentsVsReactPost() {
           </Link>
           <Link
             href="/login"
-            className="bg-indigo-500 hover:bg-indigo-400 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+            className="bg-white text-black text-sm font-medium px-4 py-2 rounded-full hover:bg-zinc-200 transition-colors"
           >
             Start free
           </Link>
@@ -40,7 +40,7 @@ export default function WebComponentsVsReactPost() {
       <article className="max-w-2xl mx-auto px-6 py-16">
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-3">
-            <span className="text-xs font-semibold text-indigo-400 uppercase tracking-widest font-mono">
+            <span className="text-xs font-semibold text-zinc-500 uppercase tracking-widest font-mono">
               Engineering
             </span>
             <span className="text-zinc-700 text-xs">·</span>
@@ -67,8 +67,8 @@ export default function WebComponentsVsReactPost() {
             made this harder than it sounds:
           </p>
           <ul className="list-none space-y-2 text-zinc-400">
-            <li><span className="text-indigo-400 mr-2">1.</span>The widget must work on <strong className="text-zinc-200">any website</strong>, regardless of framework, build tool, or CSS methodology.</li>
-            <li><span className="text-indigo-400 mr-2">2.</span>The widget must <strong className="text-zinc-200">never break the host page</strong> &mdash; and the host page must never break the widget.</li>
+            <li><span className="text-zinc-500 mr-2">1.</span>The widget must work on <strong className="text-zinc-200">any website</strong>, regardless of framework, build tool, or CSS methodology.</li>
+            <li><span className="text-zinc-500 mr-2">2.</span>The widget must <strong className="text-zinc-200">never break the host page</strong> &mdash; and the host page must never break the widget.</li>
           </ul>
           <p>
             That second constraint is the killer. If you have ever embedded a third-party script
@@ -83,7 +83,7 @@ export default function WebComponentsVsReactPost() {
           </p>
           <ul className="list-none space-y-2 text-zinc-400">
             <li>
-              <span className="text-indigo-400 mr-2">+</span>
+              <span className="text-zinc-500 mr-2">+</span>
               <strong className="text-zinc-200">Bundle size</strong> &mdash; Even with{' '}
               <span className="font-mono text-xs text-zinc-300">react</span> and{' '}
               <span className="font-mono text-xs text-zinc-300">react-dom</span> marked as
@@ -91,14 +91,14 @@ export default function WebComponentsVsReactPost() {
               host page does not use React, they are downloading an entire framework for a bell icon.
             </li>
             <li>
-              <span className="text-indigo-400 mr-2">+</span>
+              <span className="text-zinc-500 mr-2">+</span>
               <strong className="text-zinc-200">Version conflicts</strong> &mdash; Host page runs
               React 17. Our widget needs React 18. Or worse, the host uses Preact with the compat
               layer. Multiple React instances on a single page cause subtle, maddening bugs with
               event delegation and state.
             </li>
             <li>
-              <span className="text-indigo-400 mr-2">+</span>
+              <span className="text-zinc-500 mr-2">+</span>
               <strong className="text-zinc-200">Style collisions</strong> &mdash; React has no
               built-in style encapsulation. CSS Modules help inside your own app. They do nothing
               when your component is injected into a stranger&apos;s page with a global{' '}
@@ -106,7 +106,7 @@ export default function WebComponentsVsReactPost() {
               or aggressive Tailwind utilities.
             </li>
             <li>
-              <span className="text-indigo-400 mr-2">+</span>
+              <span className="text-zinc-500 mr-2">+</span>
               <strong className="text-zinc-200">Framework lock-in</strong> &mdash; A React widget
               is useless to Vue, Svelte, Angular, Astro, and plain HTML users without a wrapper.
               That is most of the web.
@@ -127,20 +127,20 @@ export default function WebComponentsVsReactPost() {
           <p>Here is what made the decision obvious:</p>
           <ul className="list-none space-y-2 text-zinc-400">
             <li>
-              <span className="text-indigo-400 mr-2">+</span>
+              <span className="text-zinc-500 mr-2">+</span>
               <strong className="text-zinc-200">Shadow DOM isolation</strong> &mdash; The widget&apos;s
               DOM tree and styles are completely encapsulated. The host page&apos;s CSS cannot reach
               in. The widget&apos;s CSS cannot leak out. This is not a convention or a build tool
               trick &mdash; it is enforced by the browser engine.
             </li>
             <li>
-              <span className="text-indigo-400 mr-2">+</span>
+              <span className="text-zinc-500 mr-2">+</span>
               <strong className="text-zinc-200">Zero dependencies</strong> &mdash; No React, no
               Vue, no runtime. The browser <em>is</em> the framework. Our final bundle is 7.2KB
               gzipped.
             </li>
             <li>
-              <span className="text-indigo-400 mr-2">+</span>
+              <span className="text-zinc-500 mr-2">+</span>
               <strong className="text-zinc-200">Framework-agnostic by default</strong> &mdash;{' '}
               <span className="font-mono text-xs text-zinc-300">&lt;changelog-widget&gt;</span>{' '}
               is just an HTML element. It works in React JSX, Vue templates, Svelte markup,
@@ -148,7 +148,7 @@ export default function WebComponentsVsReactPost() {
               wrappers, no adapters.
             </li>
             <li>
-              <span className="text-indigo-400 mr-2">+</span>
+              <span className="text-zinc-500 mr-2">+</span>
               <strong className="text-zinc-200">Native lifecycle</strong> &mdash;{' '}
               <span className="font-mono text-xs text-zinc-300">connectedCallback</span>,{' '}
               <span className="font-mono text-xs text-zinc-300">disconnectedCallback</span>, and{' '}
@@ -157,7 +157,7 @@ export default function WebComponentsVsReactPost() {
               without a virtual DOM diffing layer.
             </li>
             <li>
-              <span className="text-indigo-400 mr-2">+</span>
+              <span className="text-zinc-500 mr-2">+</span>
               <strong className="text-zinc-200">Long-term stability</strong> &mdash; Web Components
               are a W3C standard implemented in every browser. React 18 APIs are not the same as
               React 17 APIs. Web Component APIs from 2020 still work identically in 2026 and will
@@ -172,7 +172,7 @@ export default function WebComponentsVsReactPost() {
           </p>
           <div className="rounded-md border border-white/[0.06] bg-zinc-950 p-4 font-mono text-[13px] leading-relaxed my-4">
             <div className="text-zinc-500">// Register the custom element</div>
-            <div className="text-indigo-400">class ChangelogWidget extends HTMLElement {'{'}</div>
+            <div className="text-zinc-400">class ChangelogWidget extends HTMLElement {'{'}</div>
             <div className="pl-4">
               <div className="text-zinc-500">// Declare which attributes trigger re-renders</div>
               <div className="text-emerald-400">static get observedAttributes() {'{'}</div>
@@ -205,7 +205,7 @@ export default function WebComponentsVsReactPost() {
               <div className="pl-4 text-zinc-300">this.controller?.abort();</div>
               <div className="text-emerald-400">{'}'}</div>
             </div>
-            <div className="text-indigo-400">{'}'}</div>
+            <div className="text-zinc-400">{'}'}</div>
             <div className="mt-3 text-zinc-500">// Register as &lt;changelog-widget&gt;</div>
             <div className="text-zinc-300">customElements.define(&apos;changelog-widget&apos;, ChangelogWidget);</div>
           </div>
@@ -225,13 +225,13 @@ export default function WebComponentsVsReactPost() {
           <div className="rounded-md border border-white/[0.06] bg-zinc-950 p-4 font-mono text-[13px] leading-relaxed my-4">
             <div className="text-emerald-400">render() {'{'}</div>
             <div className="pl-4 text-zinc-300">this.shadow.innerHTML = `</div>
-            <div className="pl-6 text-indigo-400">&lt;style&gt;</div>
+            <div className="pl-6 text-zinc-400">&lt;style&gt;</div>
             <div className="pl-8 text-zinc-500">/* These styles ONLY apply inside the shadow root */</div>
             <div className="pl-8 text-zinc-300">:host {'{'} position: relative; display: inline-block; {'}'}</div>
             <div className="pl-8 text-zinc-300">.trigger {'{'} all: initial; cursor: pointer; ... {'}'}</div>
             <div className="pl-8 text-zinc-300">.popover {'{'} position: absolute; z-index: 999999; ... {'}'}</div>
             <div className="pl-8 text-zinc-300">.entry {'{'} padding: 12px 16px; border-bottom: 1px solid ... {'}'}</div>
-            <div className="pl-6 text-indigo-400">&lt;/style&gt;</div>
+            <div className="pl-6 text-zinc-400">&lt;/style&gt;</div>
             <div className="pl-6 text-emerald-400">&lt;button class=&quot;trigger&quot; aria-label=&quot;View updates&quot;&gt;</div>
             <div className="pl-8 text-zinc-300">${'{'} this.bellIcon {'}'}</div>
             <div className="pl-8 text-zinc-300">${'{'} this.unreadCount &gt; 0 ? this.badgeHTML : &apos;&apos; {'}'}</div>
@@ -292,31 +292,31 @@ export default function WebComponentsVsReactPost() {
           </p>
           <ul className="list-none space-y-2 text-zinc-400">
             <li>
-              <span className="text-indigo-400 mr-2">+</span>
+              <span className="text-zinc-500 mr-2">+</span>
               <strong className="text-zinc-200">7.2KB gzipped</strong> &mdash; down from 43KB
               with the React version. That is a 6x reduction. On slow 3G, this is the difference
               between imperceptible and annoying.
             </li>
             <li>
-              <span className="text-indigo-400 mr-2">+</span>
+              <span className="text-zinc-500 mr-2">+</span>
               <strong className="text-zinc-200">Zero CSS conflicts</strong> &mdash; we have not
               received a single bug report about style collisions since switching to Shadow DOM.
               With the React version, we had a new one every week.
             </li>
             <li>
-              <span className="text-indigo-400 mr-2">+</span>
+              <span className="text-zinc-500 mr-2">+</span>
               <strong className="text-zinc-200">Works everywhere</strong> &mdash; confirmed working
               in React 17/18/19, Vue 3, Svelte 4/5, Angular 17, Astro, WordPress, Shopify Liquid
               templates, Hugo, Jekyll, and plain HTML.
             </li>
             <li>
-              <span className="text-indigo-400 mr-2">+</span>
+              <span className="text-zinc-500 mr-2">+</span>
               <strong className="text-zinc-200">No version conflicts</strong> &mdash; there is no
               runtime to conflict with. If the browser supports Custom Elements (every browser
               since 2020), it works.
             </li>
             <li>
-              <span className="text-indigo-400 mr-2">+</span>
+              <span className="text-zinc-500 mr-2">+</span>
               <strong className="text-zinc-200">Simpler maintenance</strong> &mdash; one file,
               no transpilation required, no JSX, no build step for the widget itself. We use a
               single esbuild invocation to minify and that is it.
@@ -330,26 +330,26 @@ export default function WebComponentsVsReactPost() {
           </p>
           <ul className="list-none space-y-2 text-zinc-400">
             <li>
-              <span className="text-indigo-400 mr-2">+</span>
+              <span className="text-zinc-500 mr-2">+</span>
               <strong className="text-zinc-200">Complex application UIs</strong> &mdash; if you
               are building a dashboard with dozens of interactive views, data tables, forms with
               validation, drag-and-drop, and real-time updates, React&apos;s component model,
               hooks, and ecosystem save enormous amounts of time.
             </li>
             <li>
-              <span className="text-indigo-400 mr-2">+</span>
+              <span className="text-zinc-500 mr-2">+</span>
               <strong className="text-zinc-200">Server-side rendering</strong> &mdash; Web Components
               do not render on the server. If SEO or initial page load performance of the component
               content matters, frameworks with SSR support (Next.js, Nuxt, SvelteKit) are better.
             </li>
             <li>
-              <span className="text-indigo-400 mr-2">+</span>
+              <span className="text-zinc-500 mr-2">+</span>
               <strong className="text-zinc-200">Rich state management</strong> &mdash; once your
               widget needs to manage complex interdependent state, you are essentially rebuilding
               a framework inside your Custom Element. At that point, ship a framework.
             </li>
             <li>
-              <span className="text-indigo-400 mr-2">+</span>
+              <span className="text-zinc-500 mr-2">+</span>
               <strong className="text-zinc-200">Team velocity</strong> &mdash; if your entire team
               knows React and nobody has touched Web Components, the learning curve is a real cost.
               For internal tools, use whatever your team is fastest with.
@@ -368,7 +368,7 @@ export default function WebComponentsVsReactPost() {
           </p>
           <div className="rounded-md border border-white/[0.06] bg-zinc-950 p-4 font-mono text-[13px] leading-relaxed my-4">
             <div className="text-emerald-400">&lt;script src=&quot;https://unpkg.com/changelogdev-widget&quot;&gt;&lt;/script&gt;</div>
-            <div className="text-indigo-400">&lt;changelog-widget project-id=&quot;your-project&quot; /&gt;</div>
+            <div className="text-zinc-400">&lt;changelog-widget project-id=&quot;your-project&quot; /&gt;</div>
           </div>
           <p>Or install from npm:</p>
           <div className="rounded-md border border-white/[0.06] bg-zinc-950 p-4 font-mono text-[13px] leading-relaxed my-4">
@@ -401,7 +401,7 @@ export default function WebComponentsVsReactPost() {
             </a>
             <Link
               href="/login"
-              className="inline-flex items-center gap-2 bg-indigo-500 hover:bg-indigo-400 text-white font-medium px-4 py-2 rounded-lg transition-colors text-sm"
+              className="inline-flex items-center gap-2 bg-white hover:bg-zinc-200 text-black font-medium px-4 py-2 rounded-lg transition-colors text-sm"
             >
               Create a changelog →
             </Link>

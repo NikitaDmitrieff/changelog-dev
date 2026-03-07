@@ -15,7 +15,7 @@ export function CornerFrame({
   lines?: boolean;
 }) {
   const dotBase = cn(
-    "absolute h-2 w-2 rounded-full bg-indigo-500 opacity-40",
+    "absolute h-2 w-2 rounded-full bg-white/20",
     animate && "animate-pulse",
     cornerClassName
   );
@@ -31,14 +31,14 @@ export function CornerFrame({
 
       {lines && (
         <>
-          <div className="absolute -top-px -left-px w-4 h-px bg-indigo-500/30" />
-          <div className="absolute -top-px -left-px w-px h-4 bg-indigo-500/30" />
-          <div className="absolute -top-px -right-px w-4 h-px bg-indigo-500/30" />
-          <div className="absolute -top-px -right-px w-px h-4 bg-indigo-500/30" />
-          <div className="absolute -bottom-px -left-px w-4 h-px bg-indigo-500/30" />
-          <div className="absolute -bottom-px -left-px w-px h-4 bg-indigo-500/30" />
-          <div className="absolute -bottom-px -right-px w-4 h-px bg-indigo-500/30" />
-          <div className="absolute -bottom-px -right-px w-px h-4 bg-indigo-500/30" />
+          <div className="absolute -top-px -left-px w-4 h-px bg-white/10" />
+          <div className="absolute -top-px -left-px w-px h-4 bg-white/10" />
+          <div className="absolute -top-px -right-px w-4 h-px bg-white/10" />
+          <div className="absolute -top-px -right-px w-px h-4 bg-white/10" />
+          <div className="absolute -bottom-px -left-px w-4 h-px bg-white/10" />
+          <div className="absolute -bottom-px -left-px w-px h-4 bg-white/10" />
+          <div className="absolute -bottom-px -right-px w-4 h-px bg-white/10" />
+          <div className="absolute -bottom-px -right-px w-px h-4 bg-white/10" />
         </>
       )}
     </div>

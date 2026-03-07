@@ -31,7 +31,7 @@ export function WaitlistForm({ source = 'landing', className = '' }: { source?: 
 
   if (status === 'success') {
     return (
-      <div className={`flex items-center gap-2 text-indigo-400 font-medium ${className}`}>
+      <div className={`flex items-center gap-2 text-white font-medium ${className}`}>
         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
         </svg>
@@ -48,12 +48,12 @@ export function WaitlistForm({ source = 'landing', className = '' }: { source?: 
         onChange={e => setEmail(e.target.value)}
         placeholder="your@email.com"
         required
-        className="bg-white/10 border border-white/20 text-white placeholder-white/40 text-sm rounded-lg px-4 py-3 flex-1 min-w-0 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+        className="bg-white/[0.03] border border-white/[0.08] text-white placeholder-white/40 text-sm rounded-full px-4 py-3 flex-1 min-w-0 focus:outline-none focus:border-white/20"
       />
       <button
         type="submit"
         disabled={status === 'loading'}
-        className="bg-indigo-500 hover:bg-indigo-400 disabled:opacity-60 text-white font-semibold px-6 py-3 rounded-lg transition-colors text-sm whitespace-nowrap"
+        className="bg-white hover:bg-zinc-200 disabled:opacity-60 text-black font-semibold px-6 py-3 rounded-full transition-colors text-sm whitespace-nowrap"
       >
         {status === 'loading' ? 'Joining...' : 'Get early access'}
       </button>

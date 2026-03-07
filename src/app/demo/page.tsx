@@ -56,7 +56,7 @@ const TAG_COLORS: Record<string, string> = {
   emerald: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
   blue: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
   orange: 'bg-orange-500/10 text-orange-400 border-orange-500/20',
-  indigo: 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20',
+  indigo: 'bg-zinc-500/10 text-zinc-400 border-zinc-500/20',
   purple: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
 }
 
@@ -64,7 +64,7 @@ const ANALYTICS_WEEKS = ['Jan W3', 'Jan W4', 'Feb W1', 'Feb W2', 'Feb W3', 'Feb 
 const PAGEVIEW_DATA = [34, 58, 45, 92, 78, 143, 189]
 const SUBSCRIBER_DATA = [12, 15, 19, 28, 34, 51, 71]
 
-function MiniBar({ value, max, color = 'bg-indigo-500' }: { value: number; max: number; color?: string }) {
+function MiniBar({ value, max, color = 'bg-zinc-400' }: { value: number; max: number; color?: string }) {
   return (
     <div className="flex-1 flex flex-col justify-end h-16">
       <div
@@ -88,7 +88,7 @@ export default function DemoPage() {
   const maxSubs = Math.max(...SUBSCRIBER_DATA)
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col">
+    <div className="min-h-screen bg-black text-white flex flex-col">
       {/* Top nav */}
       <header className="border-b border-white/[0.06] px-6 py-3 flex items-center justify-between bg-black/40 backdrop-blur-sm sticky top-0 z-40">
         <div className="flex items-center gap-4">
@@ -100,7 +100,7 @@ export default function DemoPage() {
           <span className="text-xs text-zinc-600 bg-zinc-900 border border-white/[0.06] px-3 py-1.5 rounded-lg font-mono">demo@acme.com</span>
           <Link
             href="/login"
-            className="text-xs bg-indigo-500 hover:bg-indigo-400 text-white font-medium px-4 py-1.5 rounded-lg transition-colors"
+            className="text-xs bg-white text-black font-medium px-4 py-1.5 rounded-full hover:bg-zinc-200 transition-colors"
           >
             Start free →
           </Link>
@@ -144,7 +144,7 @@ export default function DemoPage() {
                   onClick={() => setActiveTab(item.id)}
                   className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex items-center gap-2 ${
                     activeTab === item.id
-                      ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20'
+                      ? 'bg-white/[0.06] text-white border border-white/[0.12]'
                       : 'text-zinc-500 hover:text-zinc-300 hover:bg-white/[0.03]'
                   }`}
                 >
@@ -156,10 +156,10 @@ export default function DemoPage() {
           </nav>
 
           <div className="p-4 border-t border-white/[0.06]">
-            <div className="rounded-lg bg-indigo-500/5 border border-indigo-500/20 p-3 text-xs text-indigo-300">
+            <div className="rounded-lg bg-white/[0.03] border border-white/[0.08] p-3 text-xs text-zinc-300">
               <div className="font-semibold mb-1">Free plan</div>
-              <div className="text-indigo-400/60">1 of 1 changelog used</div>
-              <Link href="/login" className="mt-2 block text-indigo-400 hover:text-indigo-300 font-medium">
+              <div className="text-zinc-500">1 of 1 changelog used</div>
+              <Link href="/login" className="mt-2 block text-white hover:text-zinc-300 font-medium">
                 Upgrade to Pro →
               </Link>
             </div>
@@ -184,7 +184,7 @@ export default function DemoPage() {
                   >
                     View public page ↗
                   </a>
-                  <button className="text-xs bg-indigo-500 hover:bg-indigo-400 text-white font-medium px-4 py-1.5 rounded-lg transition-colors">
+                  <button className="text-xs bg-white text-black font-medium px-4 py-1.5 rounded-full hover:bg-zinc-200 transition-colors">
                     + New entry
                   </button>
                 </div>
@@ -238,7 +238,7 @@ export default function DemoPage() {
                   <h1 className="text-xl font-semibold text-white">Connected repositories</h1>
                   <p className="text-sm text-zinc-600 mt-0.5">GitHub repos synced to your changelogs</p>
                 </div>
-                <button className="text-xs bg-indigo-500 hover:bg-indigo-400 text-white font-medium px-4 py-1.5 rounded-lg transition-colors">
+                <button className="text-xs bg-white text-black font-medium px-4 py-1.5 rounded-full hover:bg-zinc-200 transition-colors">
                   + Connect repo
                 </button>
               </div>
@@ -290,7 +290,7 @@ export default function DemoPage() {
               <div className="mt-6 rounded-xl border border-dashed border-white/[0.08] p-8 text-center">
                 <div className="text-2xl mb-2">⑂</div>
                 <div className="text-sm text-zinc-500">Connect another GitHub repository</div>
-                <button className="mt-3 text-xs text-indigo-400 hover:text-indigo-300 font-medium">
+                <button className="mt-3 text-xs text-zinc-400 hover:text-white font-medium">
                   + Add repository
                 </button>
               </div>
@@ -328,7 +328,7 @@ export default function DemoPage() {
                 <div className="flex items-end gap-2 h-24">
                   {PAGEVIEW_DATA.map((v, i) => (
                     <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                      <MiniBar value={v} max={maxViews} color="bg-indigo-500" />
+                      <MiniBar value={v} max={maxViews} color="bg-zinc-400" />
                       <span className="text-[10px] text-zinc-700">{ANALYTICS_WEEKS[i].split(' ')[1]}</span>
                     </div>
                   ))}
@@ -376,7 +376,7 @@ export default function DemoPage() {
                         key={c.name}
                         onClick={() => setAccentColor(c.name)}
                         className={`w-8 h-8 rounded-full ${c.class} transition-all ${
-                          accentColor === c.name ? 'ring-2 ring-white ring-offset-2 ring-offset-[#0a0a0a] scale-110' : 'opacity-60 hover:opacity-100'
+                          accentColor === c.name ? 'ring-2 ring-white ring-offset-2 ring-offset-black scale-110' : 'opacity-60 hover:opacity-100'
                         }`}
                       />
                     ))}
@@ -393,7 +393,7 @@ export default function DemoPage() {
                         onClick={() => setHeaderFont(font)}
                         className={`px-4 py-2 rounded-lg text-sm border transition-colors ${
                           headerFont === font
-                            ? 'bg-indigo-500/10 border-indigo-500/30 text-indigo-300'
+                            ? 'bg-white/[0.06] border-white/[0.15] text-white'
                             : 'border-white/[0.08] text-zinc-500 hover:text-white hover:border-white/20 bg-white/[0.02]'
                         }`}
                       >
@@ -412,10 +412,10 @@ export default function DemoPage() {
                     </div>
                     <button
                       onClick={() => setShowSubscribeWidget(!showSubscribeWidget)}
-                      className={`w-11 h-6 rounded-full relative transition-colors ${showSubscribeWidget ? 'bg-indigo-500' : 'bg-white/10'}`}
+                      className={`w-11 h-6 rounded-full relative transition-colors ${showSubscribeWidget ? 'bg-white' : 'bg-white/10'}`}
                     >
                       <span
-                        className={`absolute top-1 h-4 w-4 rounded-full bg-white transition-all ${showSubscribeWidget ? 'left-6' : 'left-1'}`}
+                        className={`absolute top-1 h-4 w-4 rounded-full transition-all ${showSubscribeWidget ? 'left-6 bg-black' : 'left-1 bg-zinc-500'}`}
                       />
                     </button>
                   </div>
@@ -460,7 +460,7 @@ export default function DemoPage() {
                   </div>
                 </div>
 
-                <button className="w-full bg-indigo-500 hover:bg-indigo-400 text-white font-medium py-3 rounded-lg transition-colors text-sm">
+                <button className="w-full bg-white text-black font-medium py-3 rounded-full hover:bg-zinc-200 transition-colors text-sm">
                   Save changes
                 </button>
               </div>
