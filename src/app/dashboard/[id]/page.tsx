@@ -132,7 +132,7 @@ export default async function ChangelogManagePage({ params }: Props) {
         <OnboardingChecklist steps={onboardingSteps} changelogId={id} />
 
         {/* Header */}
-        <div className="flex items-start justify-between mb-10">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-10">
           <div>
             <h1 className="text-2xl font-bold">{changelog.name}</h1>
             {changelog.description && (
@@ -152,11 +152,11 @@ export default async function ChangelogManagePage({ params }: Props) {
               <span className="text-white/30 text-sm">{subscriberCount} subscribers</span>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
             <ExportDropdown changelogId={id} />
             <Link
               href={`/dashboard/${id}/import`}
-              className="text-white/40 hover:text-white transition-colors text-sm border border-white/20 px-4 py-2.5 rounded-lg flex items-center gap-1.5"
+              className="text-white/40 hover:text-white transition-colors text-sm border border-white/20 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg flex items-center gap-1.5"
             >
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
@@ -165,13 +165,13 @@ export default async function ChangelogManagePage({ params }: Props) {
             </Link>
             <Link
               href={`/dashboard/${id}/settings`}
-              className="text-white/40 hover:text-white transition-colors text-sm border border-white/20 px-4 py-2.5 rounded-lg"
+              className="text-white/40 hover:text-white transition-colors text-sm border border-white/20 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg"
             >
               Settings
             </Link>
             <Link
               href={`/dashboard/${id}/new-entry`}
-              className="bg-indigo-500 hover:bg-indigo-400 text-white font-medium px-4 py-2.5 rounded-lg transition-colors text-sm"
+              className="bg-indigo-500 hover:bg-indigo-400 text-white font-medium px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-colors text-sm"
             >
               New entry
             </Link>

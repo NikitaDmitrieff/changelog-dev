@@ -51,7 +51,7 @@ export default function SubscribeForm({ changelogId, accentColor = '#6366f1' }: 
       <p className="text-white/40 text-sm mb-6">
         Get notified when new updates are published.
       </p>
-      <form onSubmit={handleSubmit} className="flex gap-3 max-w-sm mx-auto">
+      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto">
         <input
           type="email"
           value={email}

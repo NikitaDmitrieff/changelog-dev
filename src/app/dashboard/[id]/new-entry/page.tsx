@@ -179,7 +179,7 @@ export default function NewEntryPage({ params }: Props) {
           {isFormEmpty && (
             <div>
               <label className="block text-sm text-white/60 mb-2">Start from a template</label>
-              <div className="grid grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <button
                   onClick={clearTemplate}
                   className={`text-left rounded-lg border px-3 py-3 transition-colors ${

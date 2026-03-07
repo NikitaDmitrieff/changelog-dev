@@ -135,10 +135,10 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
       {filteredEntries.map((entry) => (
         <div
           key={entry.id}
-          className="bg-white/5 border border-white/10 rounded-xl p-5 flex items-center justify-between"
+          className="bg-white/5 border border-white/10 rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
         >
-          <div>
-            <div className="flex items-center gap-3 mb-1">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 sm:gap-3 mb-1 flex-wrap">
               {entry.is_pinned && (
                 <span className="text-amber-400 text-xs" title="Pinned">
                   <svg className="w-3.5 h-3.5 inline" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24">
@@ -146,14 +146,14 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
                   </svg>
                 </span>
               )}
-              <span className="font-medium">{entry.title}</span>
+              <span className="font-medium truncate">{entry.title}</span>
               {entry.version && (
-                <span className="bg-white/10 text-white/60 text-xs px-2 py-0.5 rounded-full">
+                <span className="bg-white/10 text-white/60 text-xs px-2 py-0.5 rounded-full shrink-0">
                   {entry.version}
                 </span>
               )}
               <span
-                className={`text-xs px-2 py-0.5 rounded-full ${
+                className={`text-xs px-2 py-0.5 rounded-full shrink-0 ${
                   entry.is_published
                     ? 'bg-green-500/10 text-green-400'
                     : entry.scheduled_for
@@ -190,7 +190,7 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
               )}
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={() => handleTogglePin(entry)}
               disabled={loadingId === entry.id}
