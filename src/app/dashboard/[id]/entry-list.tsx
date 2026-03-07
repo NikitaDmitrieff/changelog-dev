@@ -116,11 +116,12 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2" role="group" aria-label="Filter entries by status">
         {filterButtons.map((btn) => (
           <button
             key={btn.key}
             onClick={() => setFilter(btn.key)}
+            aria-pressed={filter === btn.key}
             className={`text-sm px-3 py-1.5 rounded-lg border transition-colors ${
               filter === btn.key
                 ? 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30'
@@ -140,7 +141,7 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
             <div className="flex items-center gap-3 mb-1">
               {entry.is_pinned && (
                 <span className="text-amber-400 text-xs" title="Pinned">
-                  <svg className="w-3.5 h-3.5 inline" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-3.5 h-3.5 inline" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/>
                   </svg>
                 </span>
@@ -180,7 +181,7 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
               )}
               {entry.view_count > 0 && (
                 <span className="flex items-center gap-1" title="Views">
-                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg className="w-3 h-3" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>

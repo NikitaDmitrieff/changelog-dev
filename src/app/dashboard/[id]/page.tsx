@@ -8,6 +8,7 @@ import { AnalyticsPanel } from './analytics-panel'
 import { WebhookEventsPanel } from './webhook-events-panel'
 import { OnboardingChecklist } from '@/components/onboarding-checklist'
 import type { OnboardingStep } from '@/components/onboarding-checklist'
+import { ExportDropdown } from './export-dropdown'
 
 export const metadata: Metadata = {
   title: 'Changelog | changelog.dev',
@@ -152,32 +153,7 @@ export default async function ChangelogManagePage({ params }: Props) {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="relative group">
-              <button
-                className="text-white/40 hover:text-white transition-colors text-sm border border-white/20 px-4 py-2.5 rounded-lg flex items-center gap-1.5"
-              >
-                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                Export
-              </button>
-              <div className="absolute right-0 top-full mt-1 bg-zinc-900 border border-white/10 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 min-w-[140px]">
-                <a
-                  href={`/api/changelogs/${id}/export`}
-                  download
-                  className="block px-4 py-2.5 text-sm text-white/60 hover:text-white hover:bg-white/5 rounded-t-lg transition-colors"
-                >
-                  Markdown (.md)
-                </a>
-                <a
-                  href={`/api/changelogs/${id}/export?format=json`}
-                  download
-                  className="block px-4 py-2.5 text-sm text-white/60 hover:text-white hover:bg-white/5 rounded-b-lg transition-colors"
-                >
-                  JSON (.json)
-                </a>
-              </div>
-            </div>
+            <ExportDropdown changelogId={id} />
             <Link
               href={`/dashboard/${id}/import`}
               className="text-white/40 hover:text-white transition-colors text-sm border border-white/20 px-4 py-2.5 rounded-lg flex items-center gap-1.5"

@@ -39,7 +39,7 @@ export function OnboardingChecklist({ steps, changelogId }: Props) {
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-indigo-500/20 rounded-lg flex items-center justify-center border border-indigo-500/30">
-            <svg className="w-4 h-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-4 h-4 text-indigo-400" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
@@ -56,14 +56,21 @@ export function OnboardingChecklist({ steps, changelogId }: Props) {
           className="text-zinc-600 hover:text-zinc-400 transition-colors"
           aria-label="Dismiss checklist"
         >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="w-4 h-4" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
       </div>
 
       {/* Progress bar */}
-      <div className="w-full h-1.5 bg-white/[0.06] rounded-full mb-5">
+      <div
+        className="w-full h-1.5 bg-white/[0.06] rounded-full mb-5"
+        role="progressbar"
+        aria-valuenow={completedCount}
+        aria-valuemin={0}
+        aria-valuemax={steps.length}
+        aria-label={`Onboarding progress: ${completedCount} of ${steps.length} steps complete`}
+      >
         <div
           className="h-full bg-indigo-500 rounded-full transition-all duration-500"
           style={{ width: `${progress}%` }}
@@ -81,7 +88,7 @@ export function OnboardingChecklist({ steps, changelogId }: Props) {
             <div className="shrink-0 mt-0.5">
               {step.done ? (
                 <div className="w-5 h-5 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center">
-                  <svg className="w-3 h-3 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-3 h-3 text-emerald-400" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>

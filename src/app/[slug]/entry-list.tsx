@@ -68,6 +68,7 @@ export default function EntryList({ entries, accentColor = '#6366f1' }: EntryLis
         <div className="relative">
           <svg
             className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30"
+            aria-hidden="true"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -84,6 +85,7 @@ export default function EntryList({ entries, accentColor = '#6366f1' }: EntryLis
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search entries..."
+            aria-label="Search changelog entries"
             className="w-full bg-white/5 border border-white/10 rounded-lg py-2.5 pl-10 pr-4 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-1 transition-colors"
             style={{ '--tw-ring-color': accentColor, borderColor: undefined } as React.CSSProperties}
             onFocus={(e) => { e.currentTarget.style.borderColor = accentColor }}
@@ -92,9 +94,10 @@ export default function EntryList({ entries, accentColor = '#6366f1' }: EntryLis
         </div>
 
         {allTags.length > 0 && (
-          <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-2 flex-wrap" role="group" aria-label="Filter by tag">
             <button
               onClick={() => setActiveTag(null)}
+              aria-pressed={activeTag === null}
               className={`text-xs px-3 py-1 rounded-full border transition-colors ${
                 activeTag === null
                   ? 'border-current'
@@ -108,6 +111,7 @@ export default function EntryList({ entries, accentColor = '#6366f1' }: EntryLis
               <button
                 key={tag}
                 onClick={() => setActiveTag(activeTag === tag ? null : tag)}
+                aria-pressed={activeTag === tag}
                 className={`text-xs px-3 py-1 rounded-full border transition-colors ${
                   activeTag === tag
                     ? `${getTagColor(tag)} border-current`
@@ -139,7 +143,7 @@ export default function EntryList({ entries, accentColor = '#6366f1' }: EntryLis
                     <div className="flex items-center gap-3 flex-wrap mb-1">
                       {entry.is_pinned && (
                         <span className="text-amber-400 text-xs flex items-center gap-1">
-                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-3 h-3" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/>
                           </svg>
                           Pinned

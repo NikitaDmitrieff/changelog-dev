@@ -116,8 +116,12 @@ export default function ApiPlayground() {
       </p>
 
       {/* Tabs */}
-      <div className="flex gap-1 mb-4">
+      <div className="flex gap-1 mb-4" role="tablist" aria-label="API endpoint">
         <button
+          role="tab"
+          aria-selected={activeTab === 'post'}
+          aria-controls="playground-panel"
+          id="playground-tab-post"
           onClick={() => handleTabChange('post')}
           className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
             activeTab === 'post'
@@ -129,6 +133,10 @@ export default function ApiPlayground() {
           /api/v1/entries
         </button>
         <button
+          role="tab"
+          aria-selected={activeTab === 'get'}
+          aria-controls="playground-panel"
+          id="playground-tab-get"
           onClick={() => handleTabChange('get')}
           className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
             activeTab === 'get'
@@ -141,7 +149,7 @@ export default function ApiPlayground() {
         </button>
       </div>
 
-      <div className="border border-white/[0.06] rounded-lg bg-zinc-950 overflow-hidden">
+      <div id="playground-panel" role="tabpanel" aria-labelledby={`playground-tab-${activeTab}`} className="border border-white/[0.06] rounded-lg bg-zinc-950 overflow-hidden">
         {/* Curl command */}
         <div className="border-b border-white/[0.06] p-4">
           <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">
@@ -164,6 +172,7 @@ export default function ApiPlayground() {
               value={postBody}
               onChange={(e) => setPostBody(e.target.value)}
               spellCheck={false}
+              aria-label="Request body JSON"
               className="w-full bg-black border border-white/[0.06] rounded-lg p-3 text-sm font-mono text-zinc-300 leading-relaxed resize-y min-h-[160px] focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/30"
             />
           </div>
