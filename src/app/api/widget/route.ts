@@ -1,7 +1,17 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
+import { rateLimit } from '@/lib/rate-limit'
 
 export async function GET(request: NextRequest) {
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+  const rl = rateLimit(ip, 'widget', { maxRequests: 30, windowSeconds: 60 })
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: 'Too many requests' },
+      { status: 429, headers: { 'Retry-After': String(rl.retryAfter), 'Access-Control-Allow-Origin': '*' } }
+    )
+  }
+
   const slug = request.nextUrl.searchParams.get('project')
   if (!slug) {
     return NextResponse.json(

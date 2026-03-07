@@ -57,6 +57,7 @@ type ChangelogDevSchema = {
         tags: string[] | null
         is_published: boolean
         published_at: string | null
+        notified_at: string | null
         created_at: string
         updated_at: string
       }
@@ -69,6 +70,7 @@ type ChangelogDevSchema = {
         tags?: string[] | null
         is_published?: boolean
         published_at?: string | null
+        notified_at?: string | null
         created_at?: string
         updated_at?: string
       }
@@ -81,6 +83,7 @@ type ChangelogDevSchema = {
         tags?: string[] | null
         is_published?: boolean
         published_at?: string | null
+        notified_at?: string | null
         created_at?: string
         updated_at?: string
       }
@@ -93,6 +96,7 @@ type ChangelogDevSchema = {
         email: string
         confirmed: boolean
         confirmation_token: string | null
+        unsubscribe_token: string | null
         subscribed_at: string
       }
       Insert: {
@@ -101,6 +105,7 @@ type ChangelogDevSchema = {
         email: string
         confirmed?: boolean
         confirmation_token?: string | null
+        unsubscribe_token?: string | null
         subscribed_at?: string
       }
       Update: {
@@ -109,6 +114,7 @@ type ChangelogDevSchema = {
         email?: string
         confirmed?: boolean
         confirmation_token?: string | null
+        unsubscribe_token?: string | null
         subscribed_at?: string
       }
       Relationships: []

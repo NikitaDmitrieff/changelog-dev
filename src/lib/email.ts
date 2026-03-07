@@ -12,7 +12,7 @@ interface SendNotificationParams {
   changelogSlug: string
   entryTitle: string
   entryContent: string
-  subscribers: Array<{ id: string; email: string }>
+  subscribers: Array<{ id: string; email: string; unsubscribe_token: string | null }>
 }
 
 function escapeHtml(str: string): string {
@@ -29,20 +29,20 @@ function buildEmailHtml({
   changelogSlug,
   entryTitle,
   entryContent,
-  subscriberId,
+  unsubscribeToken,
   changelogId,
 }: {
   changelogName: string
   changelogSlug: string
   entryTitle: string
   entryContent: string
-  subscriberId: string
+  unsubscribeToken: string
   changelogId: string
 }): string {
   const siteUrl =
     process.env.NEXT_PUBLIC_SITE_URL || 'https://www.changelogdev.com'
   const changelogUrl = `${siteUrl}/${changelogSlug}`
-  const unsubscribeUrl = `${siteUrl}/api/unsubscribe?token=${subscriberId}&changelog=${changelogId}`
+  const unsubscribeUrl = `${siteUrl}/api/unsubscribe?token=${unsubscribeToken}&changelog=${changelogId}`
   const summary = truncate(entryContent.replace(/[#*`_~\[\]]/g, ''), 200)
 
   return `<!DOCTYPE html>
@@ -97,12 +97,12 @@ function buildConfirmationHtml({
 
 export async function sendConfirmationEmail(
   params: SendConfirmationParams
-): Promise<void> {
+): Promise<boolean> {
   if (!resend) {
     console.warn(
       '[email] RESEND_API_KEY not configured -- skipping confirmation email'
     )
-    return
+    return false
   }
 
   const siteUrl =
@@ -121,7 +121,10 @@ export async function sendConfirmationEmail(
 
   if (error) {
     console.error('[email] Confirmation email failed:', error)
+    return false
   }
+
+  return true
 }
 
 export async function sendEntryNotifications(
@@ -160,7 +163,7 @@ export async function sendEntryNotifications(
             changelogSlug,
             entryTitle,
             entryContent,
-            subscriberId: sub.id,
+            unsubscribeToken: sub.unsubscribe_token || sub.id,
             changelogId,
           }),
         })

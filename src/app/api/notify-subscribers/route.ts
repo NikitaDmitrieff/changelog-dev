@@ -6,7 +6,7 @@ import { sendEntryNotifications } from '@/lib/email'
 
 export async function POST(request: NextRequest) {
   try {
-    const { changelog_id, entry_title, entry_content } = await request.json()
+    const { changelog_id, entry_id, entry_title, entry_content } = await request.json()
 
     if (!changelog_id || !entry_title) {
       return NextResponse.json(
@@ -52,10 +52,29 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
-    // Fetch confirmed subscribers
+    // W1: Idempotency -- check if this entry was already notified
+    if (entry_id) {
+      const { data: entry } = await supabase
+        .from('entries')
+        .select('id, notified_at')
+        .eq('id', entry_id)
+        .eq('changelog_id', changelog_id)
+        .single()
+
+      if (entry?.notified_at) {
+        return NextResponse.json({
+          message: 'Subscribers were already notified for this entry',
+          sent: 0,
+          failed: 0,
+          already_notified: true,
+        })
+      }
+    }
+
+    // Fetch confirmed subscribers (include unsubscribe_token for W5)
     const { data: subscribers } = await supabase
       .from('subscribers')
-      .select('id, email')
+      .select('id, email, unsubscribe_token')
       .eq('changelog_id', changelog_id)
       .eq('confirmed', true)
 
@@ -67,7 +86,7 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    // Send emails (fire and forget style -- we return quickly but log results)
+    // Send emails
     const result = await sendEntryNotifications({
       changelogId: changelog.id,
       changelogName: changelog.name,
@@ -76,6 +95,14 @@ export async function POST(request: NextRequest) {
       entryContent: entry_content || '',
       subscribers,
     })
+
+    // W1: Mark entry as notified
+    if (entry_id && result.sent > 0) {
+      await supabase
+        .from('entries')
+        .update({ notified_at: new Date().toISOString() })
+        .eq('id', entry_id)
+    }
 
     return NextResponse.json({
       message: `Notified ${result.sent} subscriber(s)`,

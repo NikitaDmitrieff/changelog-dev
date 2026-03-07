@@ -3,9 +3,19 @@ import { cookies } from 'next/headers'
 import { NextResponse, type NextRequest } from 'next/server'
 import type { Database } from '@/lib/supabase/types'
 import { sendConfirmationEmail } from '@/lib/email'
+import { rateLimit } from '@/lib/rate-limit'
 
 export async function POST(request: NextRequest) {
   try {
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+    const rl = rateLimit(ip, 'subscribe', { maxRequests: 5, windowSeconds: 60 })
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please try again later.' },
+        { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } }
+      )
+    }
+
     const { changelog_id, email } = await request.json()
 
     if (!changelog_id || !email) {
@@ -104,6 +114,7 @@ export async function POST(request: NextRequest) {
         email,
         confirmed: false,
         confirmation_token: confirmationToken,
+        unsubscribe_token: crypto.randomUUID(),
       })
 
       if (error) {
@@ -113,11 +124,18 @@ export async function POST(request: NextRequest) {
     }
 
     // Send confirmation email
-    await sendConfirmationEmail({
+    const emailSent = await sendConfirmationEmail({
       email,
       changelogName,
       confirmationToken,
     })
+
+    if (!emailSent) {
+      return NextResponse.json({
+        message: 'Subscription registered but we could not send a confirmation email. Please try again.',
+        needsConfirmation: true,
+      }, { status: 200 })
+    }
 
     return NextResponse.json({
       message: 'Check your email to confirm your subscription',

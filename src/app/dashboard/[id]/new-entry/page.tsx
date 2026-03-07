@@ -66,7 +66,7 @@ export default function NewEntryPage({ params }: Props) {
       .map((t) => t.trim())
       .filter(Boolean)
 
-    const { error } = await supabase.from('entries').insert({
+    const { data: newEntry, error } = await supabase.from('entries').insert({
       changelog_id: id,
       title: trimmedTitle,
       content: trimmedContent,
@@ -74,7 +74,7 @@ export default function NewEntryPage({ params }: Props) {
       tags: tagsArray.length > 0 ? tagsArray : null,
       is_published: publish,
       published_at: publish ? new Date().toISOString() : null,
-    })
+    }).select('id').single()
 
     if (error) {
       setError(error.message)
@@ -89,6 +89,7 @@ export default function NewEntryPage({ params }: Props) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           changelog_id: id,
+          entry_id: newEntry?.id,
           entry_title: trimmedTitle,
           entry_content: trimmedContent,
         }),

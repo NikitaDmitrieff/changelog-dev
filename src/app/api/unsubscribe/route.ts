@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
     const { error } = await supabase
       .from('subscribers')
       .delete()
-      .eq('id', token)
+      .eq('unsubscribe_token', token)
       .eq('changelog_id', changelogId)
 
     if (error) {
