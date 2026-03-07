@@ -57,12 +57,28 @@ export async function POST(request: NextRequest) {
     // Get changelog name for the confirmation email
     const { data: changelog } = await supabase
       .from('changelogs')
-      .select('name, slug')
+      .select('name, slug, owner_id')
       .eq('id', changelog_id)
       .single()
 
     if (!changelog) {
       return NextResponse.json({ error: 'Changelog not found' }, { status: 404 })
+    }
+
+    // Enforce subscriber limit for free plan (100 confirmed subscribers per changelog)
+    if (!existing) {
+      const { count } = await supabase
+        .from('subscribers')
+        .select('id', { count: 'exact', head: true })
+        .eq('changelog_id', changelog_id)
+        .eq('confirmed', true)
+
+      if ((count ?? 0) >= 100) {
+        return NextResponse.json(
+          { error: 'This changelog has reached its subscriber limit. Ask the owner to upgrade to Pro.' },
+          { status: 403 }
+        )
+      }
     }
 
     const changelogName = changelog.name

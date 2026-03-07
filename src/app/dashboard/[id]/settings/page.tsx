@@ -1,19 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { useRouter } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
-
-function slugify(str: string) {
-  return str
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '')
-    .slice(0, 50)
-}
+import type { Changelog } from '@/lib/supabase/types'
 
 function normalizeRepo(repo: string): string {
   return repo
@@ -29,98 +20,103 @@ function isValidRepoFormat(repo: string): boolean {
   return parts.length === 2 && parts[0].length > 0 && parts[1].length > 0
 }
 
-export default function NewChangelogPage() {
+export default function ChangelogSettingsPage() {
   const router = useRouter()
+  const params = useParams()
+  const id = params.id as string
   const supabase = createClient()
 
   const [name, setName] = useState('')
-  const [slug, setSlug] = useState('')
   const [description, setDescription] = useState('')
   const [githubRepo, setGithubRepo] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
 
-  function handleNameChange(value: string) {
-    setName(value)
-    setSlug(slugify(value))
-  }
+  useEffect(() => {
+    async function load() {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) { router.push('/login'); return }
+
+      const { data } = await supabase
+        .from('changelogs')
+        .select('*')
+        .eq('id', id)
+        .eq('owner_id', user.id)
+        .single()
+
+      if (!data) { router.push('/dashboard'); return }
+
+      const changelog = data as unknown as Changelog
+      setName(changelog.name)
+      setDescription(changelog.description ?? '')
+      setGithubRepo(changelog.github_repo ?? '')
+      setLoading(false)
+    }
+    load()
+  }, [id, router, supabase])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    setLoading(true)
+    setSaving(true)
     setError('')
+    setSuccess('')
 
     const repoTrimmed = githubRepo.trim()
     if (repoTrimmed) {
       const normalized = normalizeRepo(repoTrimmed)
       if (!isValidRepoFormat(normalized)) {
         setError('Invalid GitHub repository format. Use "owner/repo" (e.g. "vercel/next.js").')
-        setLoading(false)
+        setSaving(false)
         return
       }
-      // Verify repo exists via GitHub API
       try {
         const res = await fetch(`https://api.github.com/repos/${normalized}`, {
           headers: { Accept: 'application/vnd.github.v3+json' },
         })
         if (res.status === 404) {
           setError(`Repository "${normalized}" not found. Check the name or ensure it's public.`)
-          setLoading(false)
+          setSaving(false)
           return
         }
         if (!res.ok) {
           setError(`Could not verify repository "${normalized}". Try again later.`)
-          setLoading(false)
+          setSaving(false)
           return
         }
       } catch {
         setError('Could not reach GitHub to verify the repository. Check your connection.')
-        setLoading(false)
+        setSaving(false)
         return
       }
     }
 
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      router.push('/login')
-      return
-    }
-
-    // Enforce changelog limit for free plan (1 changelog)
-    const isPro = !!(user.user_metadata?.is_pro)
-    if (!isPro) {
-      const { count } = await supabase
-        .from('changelogs')
-        .select('id', { count: 'exact', head: true })
-        .eq('owner_id', user.id)
-
-      if ((count ?? 0) >= 1) {
-        setError('Free plan allows 1 changelog. Upgrade to Pro for unlimited changelogs.')
-        setLoading(false)
-        return
-      }
-    }
-
-    const { data, error } = await supabase
+    const { error: updateError } = await supabase
       .from('changelogs')
-      .insert({
-        owner_id: user.id,
+      .update({
         name: name.trim(),
-        slug: slug.trim(),
         description: description.trim() || null,
         github_repo: repoTrimmed ? normalizeRepo(repoTrimmed) : null,
       })
-      .select()
-      .single()
+      .eq('id', id)
 
-    if (error) {
-      setError(error.message)
-      setLoading(false)
+    if (updateError) {
+      setError(updateError.message)
+      setSaving(false)
       return
     }
 
-    const created = data as unknown as { id: string }
-    router.push(`/dashboard/${created.id}`)
+    setSuccess('Settings saved.')
+    setSaving(false)
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center">
+        <div className="text-white/40 text-sm">Loading...</div>
+      </div>
+    )
   }
 
   return (
@@ -131,51 +127,31 @@ export default function NewChangelogPage() {
             Dashboard
           </Link>
           <span className="text-white/20">/</span>
-          <span className="text-sm">New changelog</span>
+          <Link href={`/dashboard/${id}`} className="text-white/40 hover:text-white transition-colors text-sm">
+            {name}
+          </Link>
+          <span className="text-white/20">/</span>
+          <span className="text-sm">Settings</span>
         </div>
       </nav>
 
       <div className="max-w-lg mx-auto px-6 py-12">
-        <h1 className="text-2xl font-bold mb-8">Create a changelog</h1>
+        <h1 className="text-2xl font-bold mb-8">Changelog Settings</h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm text-white/60 mb-1.5">
-              Name <span className="text-red-400">*</span>
-            </label>
+            <label className="block text-sm text-white/60 mb-1.5">Name</label>
             <input
               type="text"
               value={name}
-              onChange={(e) => handleNameChange(e.target.value)}
-              placeholder="My Product"
+              onChange={(e) => setName(e.target.value)}
               required
               className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm"
             />
           </div>
 
           <div>
-            <label className="block text-sm text-white/60 mb-1.5">
-              Slug <span className="text-red-400">*</span>
-            </label>
-            <div className="flex items-center bg-white/5 border border-white/20 rounded-lg overflow-hidden focus-within:border-indigo-500 transition-colors">
-              <span className="px-4 py-3 text-white/30 text-sm border-r border-white/10 whitespace-nowrap">
-                changelog.dev/
-              </span>
-              <input
-                type="text"
-                value={slug}
-                onChange={(e) => setSlug(slugify(e.target.value))}
-                placeholder="my-product"
-                required
-                className="flex-1 bg-transparent px-4 py-3 text-white placeholder-white/30 focus:outline-none text-sm"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm text-white/60 mb-1.5">
-              Description
-            </label>
+            <label className="block text-sm text-white/60 mb-1.5">Description</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -186,9 +162,7 @@ export default function NewChangelogPage() {
           </div>
 
           <div>
-            <label className="block text-sm text-white/60 mb-1.5">
-              GitHub repository
-            </label>
+            <label className="block text-sm text-white/60 mb-1.5">GitHub repository</label>
             <input
               type="text"
               value={githubRepo}
@@ -201,16 +175,15 @@ export default function NewChangelogPage() {
             </p>
           </div>
 
-          {error && (
-            <div className="text-red-400 text-sm">{error}</div>
-          )}
+          {error && <div className="text-red-400 text-sm">{error}</div>}
+          {success && <div className="text-green-400 text-sm">{success}</div>}
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={saving}
             className="w-full bg-indigo-500 hover:bg-indigo-400 disabled:opacity-50 text-white font-medium py-3 rounded-lg transition-colors text-sm"
           >
-            {loading ? 'Creating...' : 'Create changelog'}
+            {saving ? 'Saving...' : 'Save settings'}
           </button>
         </form>
       </div>

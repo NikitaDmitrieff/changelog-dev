@@ -76,12 +76,20 @@ export default async function ChangelogManagePage({ params }: Props) {
               <span className="text-white/30 text-sm">{subscriberCount} subscribers</span>
             </div>
           </div>
-          <Link
-            href={`/dashboard/${id}/new-entry`}
-            className="bg-indigo-500 hover:bg-indigo-400 text-white font-medium px-4 py-2.5 rounded-lg transition-colors text-sm"
-          >
-            New entry
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              href={`/dashboard/${id}/settings`}
+              className="text-white/40 hover:text-white transition-colors text-sm border border-white/20 px-4 py-2.5 rounded-lg"
+            >
+              Settings
+            </Link>
+            <Link
+              href={`/dashboard/${id}/new-entry`}
+              className="bg-indigo-500 hover:bg-indigo-400 text-white font-medium px-4 py-2.5 rounded-lg transition-colors text-sm"
+            >
+              New entry
+            </Link>
+          </div>
         </div>
 
         {/* Entries */}
