@@ -12,6 +12,18 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      return NextResponse.json({ error: 'Invalid email address' }, { status: 400 })
+    }
+
+    // Validate changelog_id is a UUID
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+    if (!uuidRegex.test(changelog_id)) {
+      return NextResponse.json({ error: 'Invalid changelog' }, { status: 400 })
+    }
+
     const cookieStore = await cookies()
     const supabase = createServerClient<Database>(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -49,7 +61,11 @@ export async function POST(request: NextRequest) {
       .eq('id', changelog_id)
       .single()
 
-    const changelogName = changelog?.name || 'this changelog'
+    if (!changelog) {
+      return NextResponse.json({ error: 'Changelog not found' }, { status: 404 })
+    }
+
+    const changelogName = changelog.name
 
     // Generate confirmation token
     const confirmationToken = crypto.randomUUID()
@@ -62,7 +78,8 @@ export async function POST(request: NextRequest) {
         .eq('id', existing.id)
 
       if (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 })
+        console.error('[subscribe] Update error:', error)
+        return NextResponse.json({ error: 'Failed to process subscription' }, { status: 500 })
       }
     } else {
       // Insert new subscriber as unconfirmed
@@ -74,7 +91,8 @@ export async function POST(request: NextRequest) {
       })
 
       if (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 })
+        console.error('[subscribe] Insert error:', error)
+        return NextResponse.json({ error: 'Failed to process subscription' }, { status: 500 })
       }
     }
 
