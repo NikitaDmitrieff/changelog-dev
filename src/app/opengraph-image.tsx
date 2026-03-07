@@ -35,7 +35,7 @@ export default async function Image() {
               width: '40px',
               height: '40px',
               borderRadius: '8px',
-              background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+              background: '#ffffff',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -87,7 +87,7 @@ export default async function Image() {
             padding: '12px 24px',
           }}
         >
-          <span style={{ color: '#6366f1', fontSize: '20px' }}>★</span>
+          <span style={{ color: '#ffffff', fontSize: '20px' }}>★</span>
           <span style={{ color: '#d1d5db', fontSize: '18px' }}>Free 14-day trial · $29/mo Pro</span>
         </div>
       </div>

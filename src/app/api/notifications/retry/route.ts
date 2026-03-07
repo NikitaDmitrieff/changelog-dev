@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
 <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 560px; margin: 0 auto; padding: 40px 20px; color: #1a1a1a;">
   <h2 style="margin: 0 0 4px 0; font-size: 20px;">${entry.title}</h2>
   <p style="margin: 0 0 20px 0; font-size: 13px; color: #666;">New update from ${changelog.name}</p>
-  <p style="margin: 24px 0;"><a href="${siteUrl}/${changelog.slug}" style="display: inline-block; background: #6366f1; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-size: 14px; font-weight: 500;">Read full update</a></p>
+  <p style="margin: 24px 0;"><a href="${siteUrl}/${changelog.slug}" style="display: inline-block; background: #ffffff; color: #000000; text-decoration: none; padding: 10px 20px; border-radius: 999px; font-size: 14px; font-weight: 500;">Read full update</a></p>
   <hr style="border: none; border-top: 1px solid #eee; margin: 32px 0 16px;" />
   <p style="font-size: 12px; color: #999; margin: 0;">You received this because you subscribed to ${changelog.name} updates. <a href="${unsubscribeUrl}" style="color: #999;">Unsubscribe</a></p>
 </body></html>`,

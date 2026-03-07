@@ -56,7 +56,7 @@ function buildEmailHtml({
   <p style="margin: 0 0 20px 0; font-size: 13px; color: #666;">New update from ${escapeHtml(changelogName)}</p>
   <p style="font-size: 15px; line-height: 1.6; color: #333;">${escapeHtml(summary)}</p>
   <p style="margin: 24px 0;">
-    <a href="${changelogUrl}" style="display: inline-block; background: #6366f1; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-size: 14px; font-weight: 500;">Read full update</a>
+    <a href="${changelogUrl}" style="display: inline-block; background: #ffffff; color: #000000; text-decoration: none; padding: 10px 20px; border-radius: 999px; font-size: 14px; font-weight: 500;">Read full update</a>
   </p>
   <hr style="border: none; border-top: 1px solid #eee; margin: 32px 0 16px;" />
   <p style="font-size: 12px; color: #999; margin: 0;">
@@ -89,7 +89,7 @@ function buildConfirmationHtml({
     You requested to subscribe to <strong>${escapeHtml(changelogName)}</strong> updates. Click the button below to confirm your subscription.
   </p>
   <p style="margin: 24px 0;">
-    <a href="${confirmUrl}" style="display: inline-block; background: #6366f1; color: #fff; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-size: 14px; font-weight: 500;">Confirm subscription</a>
+    <a href="${confirmUrl}" style="display: inline-block; background: #ffffff; color: #000000; text-decoration: none; padding: 10px 20px; border-radius: 999px; font-size: 14px; font-weight: 500;">Confirm subscription</a>
   </p>
   <p style="font-size: 13px; color: #999; margin-top: 32px;">
     If you didn't request this, you can safely ignore this email.
