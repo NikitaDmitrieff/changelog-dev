@@ -15,6 +15,15 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: 'keep-a-changelog-guide',
+    title: 'Keep a Changelog: 9 Rules for Writing Changelogs Developers and Users Actually Read',
+    description:
+      'A practical guide to the Keep a Changelog standard and 9 rules for writing changelogs that developers and product managers can follow consistently. Good vs. bad examples included.',
+    category: 'Guide',
+    date: 'March 2026',
+    readTime: '12 min read',
+  },
+  {
     slug: 'why-web-components-over-react',
     title: 'Why We Chose Web Components Over React for Our Embeddable Widget',
     description:
