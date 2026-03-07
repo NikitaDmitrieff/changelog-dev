@@ -33,20 +33,25 @@ export default async function DashboardPage({
   const changelogs = (changelogsData ?? []) as unknown as Changelog[]
 
   const changelogIds = changelogs.map((c) => c.id)
-  const { data: entriesData } = changelogIds.length
-    ? await supabase
-        .from('entries')
-        .select('changelog_id, is_published')
-        .in('changelog_id', changelogIds)
-    : { data: [] }
-
-  const { data: subscribersData } = changelogIds.length
-    ? await supabase
-        .from('subscribers')
-        .select('changelog_id')
-        .in('changelog_id', changelogIds)
-        .eq('confirmed', true)
-    : { data: [] }
+  const [{ data: entriesData }, { data: subscribersData }, { data: apiKeysData }] = changelogIds.length
+    ? await Promise.all([
+        supabase
+          .from('entries')
+          .select('changelog_id, is_published')
+          .in('changelog_id', changelogIds),
+        supabase
+          .from('subscribers')
+          .select('changelog_id')
+          .in('changelog_id', changelogIds)
+          .eq('confirmed', true),
+        supabase
+          .from('api_keys')
+          .select('changelog_id')
+          .in('changelog_id', changelogIds)
+          .is('revoked_at', null)
+          .limit(1),
+      ])
+    : [{ data: [] }, { data: [] }, { data: [] }]
 
   const entries = (entriesData ?? []) as { changelog_id: string; is_published: boolean }[]
   const subscribers = (subscribersData ?? []) as { changelog_id: string }[]
@@ -60,15 +65,6 @@ export default async function DashboardPage({
   subscribers.forEach((s) => {
     subscriberCounts[s.changelog_id] = (subscriberCounts[s.changelog_id] ?? 0) + 1
   })
-
-  const { data: apiKeysData } = changelogIds.length
-    ? await supabase
-        .from('api_keys')
-        .select('changelog_id')
-        .in('changelog_id', changelogIds)
-        .is('revoked_at', null)
-        .limit(1)
-    : { data: [] }
 
   const hasApiKey = (apiKeysData ?? []).length > 0
 

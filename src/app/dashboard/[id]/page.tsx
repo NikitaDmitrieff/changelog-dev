@@ -68,28 +68,28 @@ export default async function ChangelogManagePage({ params }: Props) {
 
   const changelog = changelogData as unknown as Changelog
 
-  const { data: entriesData } = await supabase
-    .from('entries')
-    .select('*')
-    .eq('changelog_id', id)
-    .order('created_at', { ascending: false })
+  const [{ data: entriesData }, { data: subscribersData }, { count: apiKeyCount }] = await Promise.all([
+    supabase
+      .from('entries')
+      .select('*')
+      .eq('changelog_id', id)
+      .order('created_at', { ascending: false }),
+    supabase
+      .from('subscribers')
+      .select('id, subscribed_at')
+      .eq('changelog_id', id)
+      .eq('confirmed', true),
+    supabase
+      .from('api_keys')
+      .select('id', { count: 'exact', head: true })
+      .eq('changelog_id', id)
+      .is('revoked_at', null),
+  ])
 
   const entries = (entriesData ?? []) as unknown as Entry[]
 
-  const { data: subscribersData } = await supabase
-    .from('subscribers')
-    .select('id, subscribed_at')
-    .eq('changelog_id', id)
-    .eq('confirmed', true)
-
   const subscribers = subscribersData ?? []
   const subscriberCount = subscribers.length
-
-  const { count: apiKeyCount } = await supabase
-    .from('api_keys')
-    .select('id', { count: 'exact', head: true })
-    .eq('changelog_id', id)
-    .is('revoked_at', null)
 
   const hasApiKey = (apiKeyCount ?? 0) > 0
   const hasPublishedEntry = entries.some((e) => e.is_published)
