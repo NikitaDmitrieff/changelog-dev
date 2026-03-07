@@ -49,6 +49,7 @@ export async function POST(request: NextRequest) {
     cancel_url: `${baseUrl}/dashboard`,
     customer_email: user.email ?? undefined,
     metadata: { user_id: user.id },
+    subscription_data: { metadata: { user_id: user.id } },
   })
 
   return NextResponse.redirect(session.url!)

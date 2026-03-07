@@ -15,6 +15,20 @@ function slugify(str: string) {
     .slice(0, 50)
 }
 
+function normalizeRepo(repo: string): string {
+  return repo
+    .replace(/^https?:\/\/(www\.)?github\.com\//, '')
+    .replace(/\.git$/, '')
+    .replace(/\/$/, '')
+    .trim()
+    .split('/').filter(Boolean).slice(0, 2).join('/')
+}
+
+function isValidRepoFormat(repo: string): boolean {
+  const parts = repo.split('/')
+  return parts.length === 2 && parts[0].length > 0 && parts[1].length > 0
+}
+
 export default function NewChangelogPage() {
   const router = useRouter()
   const supabase = createClient()
@@ -36,6 +50,36 @@ export default function NewChangelogPage() {
     setLoading(true)
     setError('')
 
+    const repoTrimmed = githubRepo.trim()
+    if (repoTrimmed) {
+      const normalized = normalizeRepo(repoTrimmed)
+      if (!isValidRepoFormat(normalized)) {
+        setError('Invalid GitHub repository format. Use "owner/repo" (e.g. "vercel/next.js").')
+        setLoading(false)
+        return
+      }
+      // Verify repo exists via GitHub API
+      try {
+        const res = await fetch(`https://api.github.com/repos/${normalized}`, {
+          headers: { Accept: 'application/vnd.github.v3+json' },
+        })
+        if (res.status === 404) {
+          setError(`Repository "${normalized}" not found. Check the name or ensure it's public.`)
+          setLoading(false)
+          return
+        }
+        if (!res.ok) {
+          setError(`Could not verify repository "${normalized}". Try again later.`)
+          setLoading(false)
+          return
+        }
+      } catch {
+        setError('Could not reach GitHub to verify the repository. Check your connection.')
+        setLoading(false)
+        return
+      }
+    }
+
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) {
       router.push('/login')
@@ -49,7 +93,7 @@ export default function NewChangelogPage() {
         name: name.trim(),
         slug: slug.trim(),
         description: description.trim() || null,
-        github_repo: githubRepo.trim() || null,
+        github_repo: repoTrimmed ? normalizeRepo(repoTrimmed) : null,
       })
       .select()
       .single()

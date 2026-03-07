@@ -54,10 +54,22 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No GitHub repo configured' }, { status: 400 })
     }
 
+    // Find the most recent entry to avoid generating duplicates
+    const { data: latestEntry } = await supabase
+      .from('entries')
+      .select('created_at')
+      .eq('changelog_id', changelog_id)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .single()
+
+    const since = latestEntry?.created_at ?? undefined
+
     // Fetch commits -- pass the server-side token explicitly
     const commits = await fetchRecentCommits(
       changelog.github_repo,
-      process.env.GITHUB_TOKEN
+      process.env.GITHUB_TOKEN,
+      since
     )
 
     if (commits.length === 0) {
