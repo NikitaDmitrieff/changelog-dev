@@ -1,7 +1,7 @@
 "use client";
 import Link from 'next/link'
 import { motion, useInView } from 'motion/react'
-import { useRef } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { TextHoverEffect } from '@/components/ui/text-hover-effect'
 import { Timeline } from '@/components/ui/timeline'
 
@@ -163,6 +163,14 @@ function FadeIn({ children, delay = 0, className = '' }: { children: React.React
 }
 
 export default function LandingPage() {
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
 
@@ -183,14 +191,14 @@ export default function LandingPage() {
       </div>
 
       {/* Nav */}
-      <nav className="relative z-40 border-b border-white/[0.06] px-6 py-4 backdrop-blur-sm bg-black/60">
+      <nav className={`sticky top-0 z-50 border-b border-white/[0.06] backdrop-blur-md bg-black/60 transition-all duration-200 ${scrolled ? 'py-2.5' : 'py-4'} px-6`}>
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <span className="font-semibold text-lg tracking-tight text-white">changelog.dev</span>
           <div className="flex items-center gap-6">
             <Link href="/blog" className="text-sm text-zinc-500 hover:text-white transition-colors">
               Blog
             </Link>
-            <Link href="/changelog-dev" className="text-sm text-zinc-500 hover:text-white transition-colors">
+            <Link href="/demo" className="text-sm text-zinc-500 hover:text-white transition-colors">
               Demo
             </Link>
             <Link href="/login" className="text-sm text-zinc-500 hover:text-white transition-colors">
@@ -281,77 +289,33 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
-      {/* Product Preview */}
+      {/* Live Demo */}
       <section className="px-6 py-20 border-t border-white/[0.06]">
         <div className="max-w-5xl mx-auto">
-          <FadeIn className="text-center mb-12">
-            <span className="text-xs font-semibold text-indigo-400 uppercase tracking-widest font-mono">The product</span>
-            <h2 className="mt-3 text-3xl font-bold text-white">See what your customers will see</h2>
-            <p className="mt-2 text-zinc-500 text-sm max-w-md mx-auto">A clean, focused page that keeps users informed — not a raw GitHub Releases dump.</p>
+          <FadeIn className="text-center mb-4">
+            <span className="text-xs font-semibold text-indigo-400 uppercase tracking-widest font-mono">Live demo</span>
+            <h2 className="mt-3 text-3xl font-bold text-white">This dashboard is live. Scroll and explore.</h2>
+            <p className="mt-2 text-zinc-500 text-sm max-w-md mx-auto">Real UI, fake data. Navigate tabs, switch changelogs, customize appearance.</p>
           </FadeIn>
 
-          <FadeIn delay={0.1}>
-            {/* Product mockup */}
-            <div className="glass-card rounded-2xl overflow-hidden">
-              {/* Browser chrome */}
-              <div className="flex items-center gap-2 px-4 py-3 border-b border-white/[0.06] bg-white/[0.02]">
-                <div className="flex gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-red-500/40" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-500/40" />
-                  <div className="w-3 h-3 rounded-full bg-green-500/40" />
+          <FadeIn delay={0.1} className="mt-8">
+            <div className="rounded-lg border border-white/10 overflow-hidden shadow-2xl">
+              <div className="flex items-center gap-2 bg-zinc-900 border-b border-white/[0.06] px-4 py-2.5">
+                <div className="flex items-center gap-1.5">
+                  <div className="h-3 w-3 rounded-full bg-zinc-700" />
+                  <div className="h-3 w-3 rounded-full bg-zinc-700" />
+                  <div className="h-3 w-3 rounded-full bg-zinc-700" />
                 </div>
                 <div className="flex-1 mx-4">
-                  <div className="bg-white/[0.05] rounded px-3 py-1 text-xs text-zinc-600 font-mono max-w-xs mx-auto text-center">
-                    changelog.dev/your-product
+                  <div className="mx-auto max-w-sm flex items-center gap-2 rounded bg-zinc-800 px-3 py-1 text-xs text-zinc-500 font-mono">
+                    changelog-dev-production.up.railway.app/demo
                   </div>
                 </div>
+                <a href="/demo" target="_blank" className="text-xs text-emerald-400 hover:text-emerald-300 font-medium whitespace-nowrap">
+                  Open full screen →
+                </a>
               </div>
-
-              {/* Mock changelog content */}
-              <div className="p-8 grid md:grid-cols-[200px_1fr] gap-8">
-                <div>
-                  <h3 className="text-sm font-semibold text-white mb-1">Your Product</h3>
-                  <p className="text-xs text-zinc-600 mb-4">3 updates this month</p>
-                  <div className="space-y-1 text-xs text-zinc-600">
-                    <div className="text-indigo-400 cursor-pointer">v2.4 — Mar 2026</div>
-                    <div className="cursor-pointer hover:text-zinc-400">v2.3 — Feb 2026</div>
-                    <div className="cursor-pointer hover:text-zinc-400">v2.2 — Jan 2026</div>
-                  </div>
-                </div>
-                <div className="space-y-6">
-                  <div className="border-l border-indigo-500/30 pl-6">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="text-xs bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2 py-0.5 rounded font-mono">v2.4.0</span>
-                      <span className="text-xs text-zinc-600">March 5, 2026</span>
-                    </div>
-                    <h4 className="font-semibold text-white mb-1">Dashboard redesign + 3x performance boost</h4>
-                    <p className="text-sm text-zinc-500 leading-relaxed">
-                      The dashboard now loads significantly faster thanks to query optimization. We&apos;ve also redesigned the navigation with a cleaner layout and added keyboard shortcuts for power users.
-                    </p>
-                    <div className="flex gap-2 mt-3">
-                      <span className="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded">Performance</span>
-                      <span className="text-xs bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded">UI</span>
-                    </div>
-                  </div>
-                  <div className="border-l border-white/[0.06] pl-6 opacity-60">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="text-xs bg-white/5 text-zinc-500 border border-white/[0.06] px-2 py-0.5 rounded font-mono">v2.3.2</span>
-                      <span className="text-xs text-zinc-700">Feb 18, 2026</span>
-                    </div>
-                    <h4 className="font-semibold text-zinc-300 mb-1">Bug fixes + dark mode improvements</h4>
-                    <p className="text-sm text-zinc-600 leading-relaxed">Fixed an issue with dark mode on Safari. Improved contrast on several UI elements.</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Subscribe bar */}
-              <div className="border-t border-white/[0.06] px-8 py-4 flex items-center justify-between bg-white/[0.01]">
-                <p className="text-xs text-zinc-600">Get notified when we ship</p>
-                <div className="flex gap-2">
-                  <div className="bg-white/[0.05] border border-white/[0.06] rounded px-3 py-1.5 text-xs text-zinc-600 font-mono w-48">you@example.com</div>
-                  <div className="bg-indigo-500 text-white text-xs px-3 py-1.5 rounded cursor-pointer">Subscribe</div>
-                </div>
-              </div>
+              <iframe src="/demo" className="w-full border-0" style={{ height: '650px' }} title="Changelog.dev Demo" />
             </div>
           </FadeIn>
         </div>
@@ -519,7 +483,7 @@ export default function LandingPage() {
           <span>changelog.dev</span>
           <div className="flex items-center gap-6">
             <Link href="/blog" className="hover:text-zinc-400 transition-colors">Blog</Link>
-            <Link href="/changelog-dev" className="hover:text-zinc-400 transition-colors">Demo</Link>
+            <Link href="/demo" className="hover:text-zinc-400 transition-colors">Demo</Link>
             <Link href="/login" className="hover:text-zinc-400 transition-colors">Sign in</Link>
           </div>
         </div>

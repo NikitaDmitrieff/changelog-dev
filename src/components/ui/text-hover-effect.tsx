@@ -58,7 +58,7 @@ export const TextHoverEffect = ({
       ref={svgRef}
       width="100%"
       height="100%"
-      viewBox="0 0 550 80"
+      viewBox="0 0 700 80"
       xmlns="http://www.w3.org/2000/svg"
       className="select-none"
     >
@@ -118,10 +118,10 @@ export const TextHoverEffect = ({
         dominantBaseline="middle"
         strokeWidth="0.5"
         className={`fill-transparent stroke-white/80 font-[helvetica] ${textSize} font-bold`}
-        initial={{ strokeDashoffset: 1000, strokeDasharray: 1000 }}
+        initial={{ strokeDashoffset: 2000, strokeDasharray: 2000 }}
         animate={{
           strokeDashoffset: 0,
-          strokeDasharray: 1000,
+          strokeDasharray: 2000,
         }}
         transition={{
           duration: 4,
