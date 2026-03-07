@@ -4,6 +4,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import type { Changelog, Entry } from '@/lib/supabase/types'
 import { EntryList } from './entry-list'
+import { AnalyticsPanel } from './analytics-panel'
 
 export const metadata: Metadata = {
   title: 'Changelog | changelog.dev',
@@ -74,11 +75,12 @@ export default async function ChangelogManagePage({ params }: Props) {
 
   const { data: subscribersData } = await supabase
     .from('subscribers')
-    .select('id')
+    .select('id, subscribed_at')
     .eq('changelog_id', id)
     .eq('confirmed', true)
 
-  const subscriberCount = subscribersData?.length ?? 0
+  const subscribers = subscribersData ?? []
+  const subscriberCount = subscribers.length
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
@@ -155,6 +157,11 @@ export default async function ChangelogManagePage({ params }: Props) {
               </div>
             </div>
           </div>
+        )}
+
+        {/* Analytics */}
+        {entries.length > 0 && (
+          <AnalyticsPanel entries={entries} subscribers={subscribers} />
         )}
 
         {/* Entries */}
