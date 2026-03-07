@@ -18,6 +18,7 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
   const [search, setSearch] = useState('')
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
   const [bulkLoading, setBulkLoading] = useState(false)
+  const [sort, setSort] = useState<'newest' | 'oldest' | 'most-viewed' | 'least-viewed' | 'title-az' | 'title-za'>('newest')
 
   async function handleTogglePublish(entry: Entry) {
     setLoadingId(entry.id)
@@ -200,13 +201,32 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
     return true
   })
 
+  const sortedEntries = [...filteredEntries].sort((a, b) => {
+    switch (sort) {
+      case 'newest':
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      case 'oldest':
+        return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      case 'most-viewed':
+        return b.view_count - a.view_count
+      case 'least-viewed':
+        return a.view_count - b.view_count
+      case 'title-az':
+        return a.title.localeCompare(b.title)
+      case 'title-za':
+        return b.title.localeCompare(a.title)
+      default:
+        return 0
+    }
+  })
+
   const filterButtons: { key: typeof filter; label: string; count: number }[] = [
     { key: 'all', label: 'All', count: entries.length },
     { key: 'published', label: 'Published', count: publishedCount },
     { key: 'draft', label: 'Draft', count: draftCount },
   ]
 
-  const visibleIds = filteredEntries.map((e) => e.id)
+  const visibleIds = sortedEntries.map((e) => e.id)
   const selectedVisible = visibleIds.filter((id) => selectedIds.has(id))
   const allVisibleSelected = visibleIds.length > 0 && selectedVisible.length === visibleIds.length
   const someSelected = selectedIds.size > 0
@@ -264,7 +284,22 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
           ))}
         </div>
 
-        {filteredEntries.length > 0 && (
+        <div className="flex items-center gap-3">
+          <select
+            value={sort}
+            onChange={(e) => setSort(e.target.value as typeof sort)}
+            aria-label="Sort entries"
+            className="text-xs bg-white/5 border border-white/10 rounded-lg px-2 py-1.5 text-white/60 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/30 transition-colors cursor-pointer"
+          >
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="most-viewed">Most viewed</option>
+            <option value="least-viewed">Least viewed</option>
+            <option value="title-az">Title A-Z</option>
+            <option value="title-za">Title Z-A</option>
+          </select>
+
+        {sortedEntries.length > 0 && (
           <label className="flex items-center gap-2 text-xs text-white/40 cursor-pointer select-none hover:text-white/60 transition-colors">
             <input
               type="checkbox"
@@ -275,6 +310,7 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
             Select all
           </label>
         )}
+        </div>
       </div>
 
       {/* Bulk action bar */}
@@ -320,7 +356,7 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
         </div>
       )}
 
-      {filteredEntries.length === 0 && (
+      {sortedEntries.length === 0 && (
         <div className="text-center py-10 border border-dashed border-white/10 rounded-xl">
           <p className="text-white/40 text-sm">
             {search ? `No entries matching "${search}"` : 'No entries match the current filter'}
@@ -328,7 +364,7 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
         </div>
       )}
 
-      {filteredEntries.map((entry) => (
+      {sortedEntries.map((entry) => (
         <div
           key={entry.id}
           className={`bg-white/5 border rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 transition-colors ${
