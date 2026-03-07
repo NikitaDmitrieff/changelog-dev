@@ -29,10 +29,21 @@ export default function ChangelogSettingsPage() {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [githubRepo, setGithubRepo] = useState('')
+  const [accentColor, setAccentColor] = useState('#6366f1')
+  const [logoUrl, setLogoUrl] = useState('')
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
+
+  const presetColors = [
+    { name: 'Indigo', value: '#6366f1' },
+    { name: 'Blue', value: '#3b82f6' },
+    { name: 'Green', value: '#22c55e' },
+    { name: 'Purple', value: '#a855f7' },
+    { name: 'Rose', value: '#f43f5e' },
+    { name: 'Orange', value: '#f97316' },
+  ]
 
   useEffect(() => {
     async function load() {
@@ -52,6 +63,8 @@ export default function ChangelogSettingsPage() {
       setName(changelog.name)
       setDescription(changelog.description ?? '')
       setGithubRepo(changelog.github_repo ?? '')
+      setAccentColor(changelog.accent_color ?? '#6366f1')
+      setLogoUrl(changelog.logo_url ?? '')
       setLoading(false)
     }
     load()
@@ -98,6 +111,8 @@ export default function ChangelogSettingsPage() {
         name: name.trim(),
         description: description.trim() || null,
         github_repo: repoTrimmed ? normalizeRepo(repoTrimmed) : null,
+        accent_color: accentColor || null,
+        logo_url: logoUrl.trim() || null,
       })
       .eq('id', id)
 
@@ -172,6 +187,61 @@ export default function ChangelogSettingsPage() {
             />
             <p className="text-white/30 text-xs mt-1.5">
               Optional. Used to generate changelog entries from commits.
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm text-white/60 mb-1.5">Accent color</label>
+            <div className="flex items-center gap-2 mb-2">
+              {presetColors.map((c) => (
+                <button
+                  key={c.value}
+                  type="button"
+                  onClick={() => setAccentColor(c.value)}
+                  className="w-8 h-8 rounded-full border-2 transition-all"
+                  style={{
+                    backgroundColor: c.value,
+                    borderColor: accentColor === c.value ? 'white' : 'transparent',
+                    transform: accentColor === c.value ? 'scale(1.15)' : 'scale(1)',
+                  }}
+                  title={c.name}
+                />
+              ))}
+              <input
+                type="color"
+                value={accentColor}
+                onChange={(e) => setAccentColor(e.target.value)}
+                className="w-8 h-8 rounded cursor-pointer bg-transparent border border-white/20"
+                title="Custom color"
+              />
+            </div>
+            <p className="text-white/30 text-xs">
+              Used for buttons, links, and highlights on your public page.
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm text-white/60 mb-1.5">Logo URL</label>
+            <input
+              type="url"
+              value={logoUrl}
+              onChange={(e) => setLogoUrl(e.target.value)}
+              placeholder="https://example.com/logo.png"
+              className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm"
+            />
+            {logoUrl && (
+              <div className="mt-2 flex items-center gap-2">
+                <img
+                  src={logoUrl}
+                  alt="Logo preview"
+                  className="w-8 h-8 rounded-lg object-cover"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
+                />
+                <span className="text-white/30 text-xs">Preview</span>
+              </div>
+            )}
+            <p className="text-white/30 text-xs mt-1.5">
+              Optional. Displayed next to your changelog name.
             </p>
           </div>
 

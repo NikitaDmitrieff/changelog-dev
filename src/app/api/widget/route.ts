@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
 
   const { data: changelog } = await supabase
     .from('changelogs')
-    .select('id, name, slug')
+    .select('id, name, slug, accent_color')
     .eq('slug', slug)
     .single()
 
@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
 
   const { data: entries } = await supabase
     .from('entries')
-    .select('id, title, content, version, tags, published_at')
+    .select('id, title, content, version, tags, published_at, view_count')
     .eq('changelog_id', changelog.id)
     .eq('is_published', true)
     .order('published_at', { ascending: false })
@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.json(
     {
-      project: { name: changelog.name, slug: changelog.slug },
+      project: { name: changelog.name, slug: changelog.slug, accentColor: changelog.accent_color },
       entries: (entries ?? []).map((e) => ({
         id: e.id,
         title: e.title,
@@ -50,6 +50,7 @@ export async function GET(request: NextRequest) {
         version: e.version,
         type: e.tags?.[0] ?? 'added',
         date: e.published_at,
+        viewCount: e.view_count ?? 0,
       })),
     },
     {

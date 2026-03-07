@@ -4,9 +4,10 @@ import { useState } from 'react'
 
 interface Props {
   changelogId: string
+  accentColor?: string
 }
 
-export default function SubscribeForm({ changelogId }: Props) {
+export default function SubscribeForm({ changelogId, accentColor = '#6366f1' }: Props) {
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [subscribed, setSubscribed] = useState(false)
@@ -36,7 +37,7 @@ export default function SubscribeForm({ changelogId }: Props) {
   if (subscribed) {
     return (
       <div className="text-center py-8">
-        <div className="text-indigo-400 font-semibold mb-1">Check your email</div>
+        <div className="font-semibold mb-1" style={{ color: accentColor }}>Check your email</div>
         <p className="text-white/40 text-sm">
           We&apos;ve sent a confirmation link. Click it to start receiving updates.
         </p>
@@ -57,12 +58,15 @@ export default function SubscribeForm({ changelogId }: Props) {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="your@email.com"
           required
-          className="flex-1 bg-white/5 border border-white/20 rounded-lg px-4 py-2.5 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm"
+          className="flex-1 bg-white/5 border border-white/20 rounded-lg px-4 py-2.5 text-white placeholder-white/30 focus:outline-none transition-colors text-sm"
+          onFocus={(e) => { e.currentTarget.style.borderColor = accentColor }}
+          onBlur={(e) => { e.currentTarget.style.borderColor = '' }}
         />
         <button
           type="submit"
           disabled={loading}
-          className="bg-indigo-500 hover:bg-indigo-400 disabled:opacity-50 text-white font-medium px-5 py-2.5 rounded-lg transition-colors text-sm whitespace-nowrap"
+          className="disabled:opacity-50 text-white font-medium px-5 py-2.5 rounded-lg transition-colors text-sm whitespace-nowrap"
+          style={{ backgroundColor: accentColor }}
         >
           {loading ? 'Subscribing...' : 'Subscribe'}
         </button>

@@ -17,9 +17,10 @@ function getTagColor(tag: string): string {
 
 interface EntryListProps {
   entries: Entry[]
+  accentColor?: string
 }
 
-export default function EntryList({ entries }: EntryListProps) {
+export default function EntryList({ entries, accentColor = '#6366f1' }: EntryListProps) {
   const [search, setSearch] = useState('')
   const [activeTag, setActiveTag] = useState<string | null>(null)
 
@@ -58,6 +59,10 @@ export default function EntryList({ entries }: EntryListProps) {
 
   return (
     <div>
+      <style>{`
+        .changelog-prose a { color: ${accentColor}; }
+        .changelog-prose code:not(pre code) { color: ${accentColor}; }
+      `}</style>
       {/* Search + Tag Filters */}
       <div className="mb-12 space-y-4">
         <div className="relative">
@@ -79,7 +84,10 @@ export default function EntryList({ entries }: EntryListProps) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search entries..."
-            className="w-full bg-white/5 border border-white/10 rounded-lg py-2.5 pl-10 pr-4 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+            className="w-full bg-white/5 border border-white/10 rounded-lg py-2.5 pl-10 pr-4 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-1 transition-colors"
+            style={{ '--tw-ring-color': accentColor, borderColor: undefined } as React.CSSProperties}
+            onFocus={(e) => { e.currentTarget.style.borderColor = accentColor }}
+            onBlur={(e) => { e.currentTarget.style.borderColor = '' }}
           />
         </div>
 
@@ -89,9 +97,10 @@ export default function EntryList({ entries }: EntryListProps) {
               onClick={() => setActiveTag(null)}
               className={`text-xs px-3 py-1 rounded-full border transition-colors ${
                 activeTag === null
-                  ? 'bg-indigo-500/20 text-indigo-300 border-indigo-500/50'
+                  ? 'border-current'
                   : 'bg-white/5 text-white/50 border-white/10 hover:border-white/20'
               }`}
+              style={activeTag === null ? { backgroundColor: `${accentColor}33`, color: accentColor, borderColor: `${accentColor}80` } : undefined}
             >
               All
             </button>
@@ -133,7 +142,10 @@ export default function EntryList({ entries }: EntryListProps) {
                         <span className="text-white/0 group-hover/link:text-white/30 transition-colors text-sm">#</span>
                       </a>
                       {entry.version && (
-                        <span className="bg-indigo-500/20 text-indigo-300 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                        <span
+                          className="text-xs font-medium px-2.5 py-0.5 rounded-full"
+                          style={{ backgroundColor: `${accentColor}33`, color: accentColor }}
+                        >
                           {entry.version}
                         </span>
                       )}
@@ -161,7 +173,9 @@ export default function EntryList({ entries }: EntryListProps) {
                     </div>
                   </div>
                 </div>
-                <div className="prose prose-invert prose-sm max-w-none text-white/70 prose-headings:text-white prose-strong:text-white prose-a:text-indigo-400 prose-code:text-indigo-300 prose-pre:bg-white/5 prose-pre:border prose-pre:border-white/10">
+                <div
+                  className="changelog-prose prose prose-invert prose-sm max-w-none text-white/70 prose-headings:text-white prose-strong:text-white prose-pre:bg-white/5 prose-pre:border prose-pre:border-white/10"
+                >
                   <ReactMarkdown>{entry.content}</ReactMarkdown>
                 </div>
               </article>
