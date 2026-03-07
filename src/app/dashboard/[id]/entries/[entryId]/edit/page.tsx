@@ -4,6 +4,7 @@ import { useState, useEffect, use } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import MarkdownEditor from '@/components/markdown-editor'
 import type { Entry } from '@/lib/supabase/types'
 
 interface Props {
@@ -202,19 +203,7 @@ export default function EditEntryPage({ params }: Props) {
             />
           </div>
 
-          <div>
-            <label className="block text-sm text-white/60 mb-1.5">
-              Content <span className="text-red-400">*</span>
-            </label>
-            <textarea
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              placeholder="Describe the changes. Markdown supported."
-              required
-              rows={12}
-              className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm resize-none font-mono"
-            />
-          </div>
+          <MarkdownEditor value={content} onChange={setContent} />
 
           <div className="grid grid-cols-2 gap-4">
             <div>

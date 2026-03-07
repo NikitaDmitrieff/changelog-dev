@@ -24,6 +24,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
+function getTagColor(tag: string): string {
+  const t = tag.toLowerCase()
+  if (t === 'feature' || t === 'new') return 'bg-green-500/15 text-green-400'
+  if (t === 'fix' || t === 'bugfix' || t === 'bug') return 'bg-red-500/15 text-red-400'
+  if (t === 'improvement' || t === 'enhancement') return 'bg-blue-500/15 text-blue-400'
+  if (t === 'breaking' || t === 'deprecated') return 'bg-orange-500/15 text-orange-400'
+  if (t === 'security') return 'bg-yellow-500/15 text-yellow-400'
+  if (t === 'performance') return 'bg-purple-500/15 text-purple-400'
+  return 'bg-white/10 text-white/50'
+}
+
 export default async function PublicChangelogPage({ params }: Props) {
   const { slug } = await params
   const supabase = await createClient()
@@ -81,12 +92,19 @@ export default async function PublicChangelogPage({ params }: Props) {
           </div>
         ) : (
           <div className="space-y-16">
-            {entries.map((entry) => (
-              <article key={entry.id}>
+            {entries.map((entry) => {
+              const anchor = entry.version
+                ? `v${entry.version.replace(/\./g, '-')}`
+                : entry.id.slice(0, 8)
+              return (
+              <article key={entry.id} id={anchor} className="group scroll-mt-6">
                 <div className="flex items-start gap-4 mb-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 flex-wrap mb-1">
-                      <h2 className="text-lg font-bold">{entry.title}</h2>
+                      <a href={`#${anchor}`} className="flex items-center gap-2 group/link">
+                        <h2 className="text-lg font-bold">{entry.title}</h2>
+                        <span className="text-white/0 group-hover/link:text-white/30 transition-colors text-sm">#</span>
+                      </a>
                       {entry.version && (
                         <span className="bg-indigo-500/20 text-indigo-300 text-xs font-medium px-2.5 py-0.5 rounded-full">
                           {entry.version}
@@ -106,7 +124,7 @@ export default async function PublicChangelogPage({ params }: Props) {
                           {entry.tags.map((tag) => (
                             <span
                               key={tag}
-                              className="bg-white/10 text-white/50 text-xs px-2 py-0.5 rounded-full"
+                              className={`${getTagColor(tag)} text-xs px-2 py-0.5 rounded-full`}
                             >
                               {tag}
                             </span>
@@ -120,7 +138,8 @@ export default async function PublicChangelogPage({ params }: Props) {
                   <ReactMarkdown>{entry.content}</ReactMarkdown>
                 </div>
               </article>
-            ))}
+              )
+            })}
           </div>
         )}
 
