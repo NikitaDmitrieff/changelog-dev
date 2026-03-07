@@ -167,6 +167,42 @@ type ChangelogDevSchema = {
       }
       Relationships: []
     }
+    api_keys: {
+      Row: {
+        id: string
+        changelog_id: string
+        owner_id: string
+        name: string
+        key_hash: string
+        key_prefix: string
+        last_used_at: string | null
+        created_at: string
+        revoked_at: string | null
+      }
+      Insert: {
+        id?: string
+        changelog_id: string
+        owner_id: string
+        name?: string
+        key_hash: string
+        key_prefix: string
+        last_used_at?: string | null
+        created_at?: string
+        revoked_at?: string | null
+      }
+      Update: {
+        id?: string
+        changelog_id?: string
+        owner_id?: string
+        name?: string
+        key_hash?: string
+        key_prefix?: string
+        last_used_at?: string | null
+        created_at?: string
+        revoked_at?: string | null
+      }
+      Relationships: []
+    }
     subscribers: {
       Row: {
         id: string
@@ -216,3 +252,4 @@ export type Entry = ChangelogDevSchema['Tables']['entries']['Row']
 export type Subscriber = ChangelogDevSchema['Tables']['subscribers']['Row']
 export type NotificationFailure = ChangelogDevSchema['Tables']['notification_failures']['Row']
 export type WebhookEvent = ChangelogDevSchema['Tables']['webhook_events']['Row']
+export type ApiKey = ChangelogDevSchema['Tables']['api_keys']['Row']

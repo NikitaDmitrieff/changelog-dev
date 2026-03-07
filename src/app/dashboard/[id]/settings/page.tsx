@@ -1,10 +1,18 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import type { Changelog } from '@/lib/supabase/types'
+
+interface ApiKeyDisplay {
+  id: string
+  name: string
+  key_prefix: string
+  last_used_at: string | null
+  created_at: string
+}
 
 function normalizeRepo(repo: string): string {
   return repo
@@ -38,6 +46,13 @@ export default function ChangelogSettingsPage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
+  // API Keys state
+  const [apiKeys, setApiKeys] = useState<ApiKeyDisplay[]>([])
+  const [newKeyName, setNewKeyName] = useState('')
+  const [creatingKey, setCreatingKey] = useState(false)
+  const [newKeySecret, setNewKeySecret] = useState('')
+  const [keyCopied, setKeyCopied] = useState(false)
+
   const presetColors = [
     { name: 'Indigo', value: '#6366f1' },
     { name: 'Blue', value: '#3b82f6' },
@@ -46,6 +61,11 @@ export default function ChangelogSettingsPage() {
     { name: 'Rose', value: '#f43f5e' },
     { name: 'Orange', value: '#f97316' },
   ]
+
+  const loadApiKeys = useCallback(async () => {
+    const res = await fetch(`/api/api-keys?changelog_id=${id}`)
+    if (res.ok) setApiKeys(await res.json())
+  }, [id])
 
   useEffect(() => {
     async function load() {
@@ -69,9 +89,37 @@ export default function ChangelogSettingsPage() {
       setLogoUrl(changelog.logo_url ?? '')
       setSlug(changelog.slug ?? '')
       setLoading(false)
+      loadApiKeys()
     }
     load()
-  }, [id, router, supabase])
+  }, [id, router, supabase, loadApiKeys])
+
+  async function handleCreateKey() {
+    setCreatingKey(true)
+    setNewKeySecret('')
+    const res = await fetch('/api/api-keys', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ changelog_id: id, name: newKeyName || 'Default' }),
+    })
+    if (res.ok) {
+      const data = await res.json()
+      setNewKeySecret(data.key)
+      setNewKeyName('')
+      loadApiKeys()
+    }
+    setCreatingKey(false)
+  }
+
+  async function handleRevokeKey(keyId: string) {
+    await fetch('/api/api-keys', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: keyId }),
+    })
+    loadApiKeys()
+    if (newKeySecret) setNewKeySecret('')
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -289,6 +337,97 @@ export default function ChangelogSettingsPage() {
             </p>
           </div>
         )}
+
+        {/* API Keys */}
+        <div className="mt-12 border-t border-white/10 pt-8">
+          <h2 className="text-lg font-semibold mb-2">API Keys</h2>
+          <p className="text-white/40 text-sm mb-4">
+            Use API keys to create changelog entries programmatically from CI/CD pipelines or scripts.
+          </p>
+
+          {/* New key revealed */}
+          {newKeySecret && (
+            <div className="mb-4 bg-green-500/10 border border-green-500/30 rounded-lg p-4">
+              <p className="text-green-400 text-sm font-medium mb-2">
+                Copy your API key now — it won&apos;t be shown again.
+              </p>
+              <div className="flex items-center gap-2">
+                <code className="flex-1 bg-black/30 px-3 py-2 rounded text-sm text-green-300 font-mono break-all">
+                  {newKeySecret}
+                </code>
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigator.clipboard.writeText(newKeySecret)
+                    setKeyCopied(true)
+                    setTimeout(() => setKeyCopied(false), 2000)
+                  }}
+                  className="px-3 py-2 bg-white/10 hover:bg-white/20 rounded text-xs text-white/60 hover:text-white transition-colors shrink-0"
+                >
+                  {keyCopied ? 'Copied!' : 'Copy'}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Create key */}
+          <div className="flex items-center gap-2 mb-4">
+            <input
+              type="text"
+              value={newKeyName}
+              onChange={(e) => setNewKeyName(e.target.value)}
+              placeholder="Key name (e.g. CI/CD)"
+              className="flex-1 bg-white/5 border border-white/20 rounded-lg px-4 py-2.5 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm"
+            />
+            <button
+              type="button"
+              onClick={handleCreateKey}
+              disabled={creatingKey}
+              className="bg-indigo-500 hover:bg-indigo-400 disabled:opacity-50 text-white font-medium px-4 py-2.5 rounded-lg transition-colors text-sm shrink-0"
+            >
+              {creatingKey ? 'Creating...' : 'Generate key'}
+            </button>
+          </div>
+
+          {/* Key list */}
+          {apiKeys.length > 0 ? (
+            <div className="space-y-2">
+              {apiKeys.map((k) => (
+                <div key={k.id} className="flex items-center justify-between bg-white/5 border border-white/10 rounded-lg px-4 py-3">
+                  <div>
+                    <span className="text-sm text-white">{k.name}</span>
+                    <span className="text-white/30 text-xs ml-3 font-mono">{k.key_prefix}</span>
+                    {k.last_used_at && (
+                      <span className="text-white/20 text-xs ml-3">
+                        Last used {new Date(k.last_used_at).toLocaleDateString()}
+                      </span>
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleRevokeKey(k.id)}
+                    className="text-red-400/60 hover:text-red-400 text-xs transition-colors"
+                  >
+                    Revoke
+                  </button>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-white/20 text-sm">No API keys yet.</p>
+          )}
+
+          {/* Usage example */}
+          <div className="mt-6">
+            <p className="text-white/40 text-xs mb-2">Example usage:</p>
+            <pre className="bg-white/5 border border-white/10 rounded-lg p-4 text-xs text-white/50 overflow-x-auto whitespace-pre-wrap break-all">
+{`curl -X POST https://www.changelogdev.com/api/v1/entries \\
+  -H "Authorization: Bearer cldev_YOUR_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{"title": "v1.2.0", "content": "Bug fixes and improvements", "version": "1.2.0", "tags": ["improvement"], "is_published": true}'`}
+            </pre>
+          </div>
+        </div>
       </div>
     </div>
   )
