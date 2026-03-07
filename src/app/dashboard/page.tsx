@@ -61,6 +61,17 @@ export default async function DashboardPage({
     subscriberCounts[s.changelog_id] = (subscriberCounts[s.changelog_id] ?? 0) + 1
   })
 
+  const { data: apiKeysData } = changelogIds.length
+    ? await supabase
+        .from('api_keys')
+        .select('changelog_id')
+        .in('changelog_id', changelogIds)
+        .is('revoked_at', null)
+        .limit(1)
+    : { data: [] }
+
+  const hasApiKey = (apiKeysData ?? []).length > 0
+
   const atFreeLimit = !isPro && changelogs.length >= 1
   const isNewUser = changelogs.length === 0
 
@@ -105,6 +116,22 @@ export default async function DashboardPage({
       done: hasBranding,
       href: firstChangelogId ? `/dashboard/${firstChangelogId}/settings` : undefined,
       cta: 'Customize',
+    },
+    {
+      key: 'api-key',
+      title: 'Generate an API key',
+      description: 'Create an API key to push entries via the CLI or REST API.',
+      done: hasApiKey,
+      href: firstChangelogId ? `/dashboard/${firstChangelogId}/settings` : undefined,
+      cta: 'Go to settings',
+    },
+    {
+      key: 'cli-push',
+      title: 'Push your first entry via CLI or API',
+      description: 'Install the CLI with npm install -g changelogdev-cli, then push an entry.',
+      done: hasPublishedEntry,
+      href: firstChangelogId ? `/dashboard/${firstChangelogId}` : undefined,
+      cta: 'View changelog',
     },
   ]
 

@@ -6,6 +6,8 @@ import type { Changelog, Entry } from '@/lib/supabase/types'
 import { EntryList } from './entry-list'
 import { AnalyticsPanel } from './analytics-panel'
 import { WebhookEventsPanel } from './webhook-events-panel'
+import { OnboardingChecklist } from '@/components/onboarding-checklist'
+import type { OnboardingStep } from '@/components/onboarding-checklist'
 
 export const metadata: Metadata = {
   title: 'Changelog | changelog.dev',
@@ -83,6 +85,34 @@ export default async function ChangelogManagePage({ params }: Props) {
   const subscribers = subscribersData ?? []
   const subscriberCount = subscribers.length
 
+  const { count: apiKeyCount } = await supabase
+    .from('api_keys')
+    .select('id', { count: 'exact', head: true })
+    .eq('changelog_id', id)
+    .is('revoked_at', null)
+
+  const hasApiKey = (apiKeyCount ?? 0) > 0
+  const hasPublishedEntry = entries.some((e) => e.is_published)
+
+  const onboardingSteps: OnboardingStep[] = [
+    {
+      key: 'api-key',
+      title: 'Generate an API key',
+      description: 'Create an API key to push entries via the CLI or REST API.',
+      done: hasApiKey,
+      href: `/dashboard/${id}/settings`,
+      cta: 'Go to settings',
+    },
+    {
+      key: 'cli-push',
+      title: 'Push your first entry via CLI or API',
+      description: 'Install the CLI with npm install -g changelogdev-cli, then push an entry.',
+      done: hasPublishedEntry,
+      href: `/${changelog.slug}`,
+      cta: 'View changelog',
+    },
+  ]
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
       <nav className="border-b border-white/10 px-6 py-4">
@@ -97,6 +127,8 @@ export default async function ChangelogManagePage({ params }: Props) {
 
       <div className="max-w-4xl mx-auto px-6 py-12">
         <ConfigWarnings />
+
+        <OnboardingChecklist steps={onboardingSteps} changelogId={id} />
 
         {/* Header */}
         <div className="flex items-start justify-between mb-10">
@@ -189,6 +221,19 @@ export default async function ChangelogManagePage({ params }: Props) {
                 <span className="text-zinc-400">
                   <Link href={`/dashboard/${id}/new-entry`} className="text-indigo-400 hover:text-indigo-300">Create your first entry</Link>
                   {changelog.github_repo ? ' — use "Generate from GitHub" for a head start' : ' — write it manually or connect a repo first'}
+                </span>
+              </div>
+              <div className="flex items-center gap-3 text-sm">
+                <div className="w-5 h-5 rounded-full border border-white/20 shrink-0" />
+                <span className="text-zinc-400">
+                  <Link href={`/dashboard/${id}/settings`} className="text-indigo-400 hover:text-indigo-300">Generate an API key</Link>
+                  {' '}to push entries programmatically
+                </span>
+              </div>
+              <div className="flex items-center gap-3 text-sm">
+                <div className="w-5 h-5 rounded-full border border-white/20 shrink-0" />
+                <span className="text-zinc-400">
+                  Install the CLI: <code className="bg-white/[0.06] px-1.5 py-0.5 rounded text-xs text-indigo-400">npm install -g changelogdev-cli</code>
                 </span>
               </div>
             </div>

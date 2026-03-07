@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import ApiPlayground from '@/components/api-playground'
 
 export const metadata: Metadata = {
   title: 'API Documentation — Changelog.dev',
@@ -89,6 +90,11 @@ export default function ApiDocsPage() {
             <li>
               <a href="#error-codes" className="text-indigo-400 hover:text-indigo-300 transition-colors">
                 Error Codes
+              </a>
+            </li>
+            <li>
+              <a href="#try-it" className="text-indigo-400 hover:text-indigo-300 transition-colors">
+                Try it
               </a>
             </li>
           </ul>
@@ -339,6 +345,9 @@ changelogdev-cli list --status published --api-key cldev_abc123`}</code>
             </table>
           </div>
         </section>
+
+        {/* API Playground */}
+        <ApiPlayground />
 
         {/* Footer CTA */}
         <div className="border border-white/[0.06] rounded-lg p-8 text-center bg-zinc-950">
