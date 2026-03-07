@@ -128,23 +128,30 @@ export async function sendConfirmationEmail(
   return true
 }
 
+export interface FailedNotification {
+  subscriberId: string
+  email: string
+  error: string
+}
+
 export async function sendEntryNotifications(
   params: SendNotificationParams & { changelogId: string }
-): Promise<{ sent: number; failed: number }> {
+): Promise<{ sent: number; failed: number; failures: FailedNotification[] }> {
   if (!resend) {
     log.warn('RESEND_API_KEY not configured -- skipping email notifications')
-    return { sent: 0, failed: 0 }
+    return { sent: 0, failed: 0, failures: [] }
   }
 
   const { subscribers, changelogName, changelogSlug, entryTitle, entryContent, changelogId } =
     params
 
   if (subscribers.length === 0) {
-    return { sent: 0, failed: 0 }
+    return { sent: 0, failed: 0, failures: [] }
   }
 
   let sent = 0
   let failed = 0
+  const failures: FailedNotification[] = []
 
   // Send emails in batches of 10 to stay well within rate limits
   const batchSize = 10
@@ -169,21 +176,23 @@ export async function sendEntryNotifications(
       )
     )
 
-    for (const result of results) {
+    for (let j = 0; j < results.length; j++) {
+      const result = results[j]
+      const sub = batch[j]
       if (result.status === 'fulfilled' && !result.value.error) {
         sent++
       } else {
         failed++
-        if (result.status === 'rejected') {
-          log.error('Send failed', { reason: String(result.reason) })
-        } else if (result.value.error) {
-          log.error('Send error', { error: String(result.value.error) })
-        }
+        const errorMsg = result.status === 'rejected'
+          ? String(result.reason)
+          : String(result.value.error)
+        log.error('Send failed', { subscriberId: sub.id, error: errorMsg })
+        failures.push({ subscriberId: sub.id, email: sub.email, error: errorMsg })
       }
     }
   }
 
   log.info('Notification results', { sent, failed, total: subscribers.length })
 
-  return { sent, failed }
+  return { sent, failed, failures }
 }

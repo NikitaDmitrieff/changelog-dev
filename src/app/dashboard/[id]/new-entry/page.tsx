@@ -19,6 +19,7 @@ export default function NewEntryPage({ params }: Props) {
   const [content, setContent] = useState('')
   const [version, setVersion] = useState('')
   const [tags, setTags] = useState('')
+  const [scheduledFor, setScheduledFor] = useState('')
   const [loading, setLoading] = useState(false)
   const [generating, setGenerating] = useState(false)
   const [error, setError] = useState('')
@@ -54,7 +55,7 @@ export default function NewEntryPage({ params }: Props) {
     setGenerating(false)
   }
 
-  async function handleSave(publish: boolean) {
+  async function handleSave(mode: 'draft' | 'publish' | 'schedule') {
     setLoading(true)
     setError('')
 
@@ -66,14 +67,24 @@ export default function NewEntryPage({ params }: Props) {
       .map((t) => t.trim())
       .filter(Boolean)
 
+    const isPublish = mode === 'publish'
+    const isSchedule = mode === 'schedule'
+
+    if (isSchedule && !scheduledFor) {
+      setError('Please select a date and time to schedule')
+      setLoading(false)
+      return
+    }
+
     const { data: newEntry, error } = await supabase.from('entries').insert({
       changelog_id: id,
       title: trimmedTitle,
       content: trimmedContent,
       version: version.trim() || null,
       tags: tagsArray.length > 0 ? tagsArray : null,
-      is_published: publish,
-      published_at: publish ? new Date().toISOString() : null,
+      is_published: isPublish,
+      published_at: isPublish ? new Date().toISOString() : null,
+      scheduled_for: isSchedule ? new Date(scheduledFor).toISOString() : null,
     }).select('id').single()
 
     if (error) {
@@ -83,7 +94,7 @@ export default function NewEntryPage({ params }: Props) {
     }
 
     // Fire-and-forget: notify subscribers when publishing
-    if (publish) {
+    if (isPublish) {
       fetch('/api/notify-subscribers', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -184,23 +195,49 @@ export default function NewEntryPage({ params }: Props) {
             </div>
           </div>
 
+          <div>
+            <label className="block text-sm text-white/60 mb-1.5">Schedule for later</label>
+            <input
+              type="datetime-local"
+              value={scheduledFor}
+              onChange={(e) => setScheduledFor(e.target.value)}
+              min={new Date().toISOString().slice(0, 16)}
+              className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-indigo-500 transition-colors text-sm [color-scheme:dark]"
+            />
+            {scheduledFor && (
+              <p className="text-xs text-white/40 mt-1">
+                Will auto-publish on {new Date(scheduledFor).toLocaleString()}
+              </p>
+            )}
+          </div>
+
           {error && <div className="text-red-400 text-sm">{error}</div>}
 
           <div className="flex gap-3 pt-2">
             <button
-              onClick={() => handleSave(false)}
+              onClick={() => handleSave('draft')}
               disabled={loading || !title.trim() || !content.trim()}
               className="flex-1 bg-white/10 hover:bg-white/20 disabled:opacity-50 text-white font-medium py-3 rounded-lg transition-colors text-sm"
             >
               Save draft
             </button>
-            <button
-              onClick={() => handleSave(true)}
-              disabled={loading || !title.trim() || !content.trim()}
-              className="flex-1 bg-indigo-500 hover:bg-indigo-400 disabled:opacity-50 text-white font-medium py-3 rounded-lg transition-colors text-sm"
-            >
-              {loading ? 'Publishing...' : 'Publish'}
-            </button>
+            {scheduledFor ? (
+              <button
+                onClick={() => handleSave('schedule')}
+                disabled={loading || !title.trim() || !content.trim()}
+                className="flex-1 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-white font-medium py-3 rounded-lg transition-colors text-sm"
+              >
+                {loading ? 'Scheduling...' : 'Schedule'}
+              </button>
+            ) : (
+              <button
+                onClick={() => handleSave('publish')}
+                disabled={loading || !title.trim() || !content.trim()}
+                className="flex-1 bg-indigo-500 hover:bg-indigo-400 disabled:opacity-50 text-white font-medium py-3 rounded-lg transition-colors text-sm"
+              >
+                {loading ? 'Publishing...' : 'Publish'}
+              </button>
+            )}
           </div>
         </div>
       </div>

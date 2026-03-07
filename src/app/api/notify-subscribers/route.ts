@@ -104,9 +104,23 @@ export async function POST(request: NextRequest) {
         .eq('id', entry_id)
     }
 
+    // Record failures for retry
+    if (entry_id && result.failures.length > 0) {
+      const failureRows = result.failures.map((f) => ({
+        entry_id,
+        subscriber_id: f.subscriberId,
+        changelog_id,
+        error_message: f.error.slice(0, 500),
+      }))
+      await supabase.from('notification_failures').upsert(failureRows, {
+        onConflict: 'entry_id,subscriber_id',
+      })
+    }
+
     return NextResponse.json({
       message: `Notified ${result.sent} subscriber(s)`,
-      ...result,
+      sent: result.sent,
+      failed: result.failed,
     })
   } catch (err) {
     console.error('[notify-subscribers] Error:', err)

@@ -124,10 +124,12 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
                 className={`text-xs px-2 py-0.5 rounded-full ${
                   entry.is_published
                     ? 'bg-green-500/10 text-green-400'
+                    : entry.scheduled_for
+                    ? 'bg-amber-500/10 text-amber-400'
                     : 'bg-white/10 text-white/40'
                 }`}
               >
-                {entry.is_published ? 'Published' : 'Draft'}
+                {entry.is_published ? 'Published' : entry.scheduled_for ? 'Scheduled' : 'Draft'}
               </span>
             </div>
             <div className="flex items-center gap-3 text-xs text-white/30">
@@ -138,6 +140,13 @@ export function EntryList({ entries: initialEntries, changelogId }: Props) {
                   day: 'numeric',
                 })}
               </span>
+              {entry.scheduled_for && !entry.is_published && (
+                <span className="text-amber-400/60">
+                  Publishes {new Date(entry.scheduled_for).toLocaleString('en-US', {
+                    month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit',
+                  })}
+                </span>
+              )}
               {entry.view_count > 0 && (
                 <span className="flex items-center gap-1" title="Views">
                   <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

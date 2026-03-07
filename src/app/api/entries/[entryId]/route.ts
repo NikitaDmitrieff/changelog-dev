@@ -75,10 +75,20 @@ export async function PATCH(
     if (body.content !== undefined) updates.content = body.content
     if (body.version !== undefined) updates.version = body.version || null
     if (body.tags !== undefined) updates.tags = body.tags
+    if (body.scheduled_for !== undefined) {
+      if (body.scheduled_for) {
+        updates.scheduled_for = body.scheduled_for
+        updates.is_published = false
+        updates.published_at = null
+      } else {
+        updates.scheduled_for = null
+      }
+    }
     if (body.is_published !== undefined) {
       updates.is_published = body.is_published
       if (body.is_published) {
         updates.published_at = body.published_at || new Date().toISOString()
+        updates.scheduled_for = null
       } else {
         updates.published_at = null
       }
