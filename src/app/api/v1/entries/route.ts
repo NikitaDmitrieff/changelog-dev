@@ -5,6 +5,58 @@ import type { Database } from '@/lib/supabase/types'
 
 type EntryInsert = Database['public']['Tables']['entries']['Insert']
 
+/** GET /api/v1/entries — List changelog entries via API key */
+export async function GET(request: NextRequest) {
+  try {
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+    const rl = rateLimit(ip, 'v1-entries-get', { maxRequests: 60, windowSeconds: 60 })
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: 'Too many requests' },
+        { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } }
+      )
+    }
+
+    const auth = await validateApiKey(request.headers.get('authorization'))
+    if (!auth) {
+      return NextResponse.json(
+        { error: 'Invalid or missing API key. Use Authorization: Bearer cldev_...' },
+        { status: 401 }
+      )
+    }
+
+    const admin = createAdminClient()
+    const { searchParams } = new URL(request.url)
+
+    const limit = Math.min(parseInt(searchParams.get('limit') || '50', 10), 100)
+    const offset = Math.max(parseInt(searchParams.get('offset') || '0', 10), 0)
+    const status = searchParams.get('status') // 'published' | 'draft' | null (all)
+
+    let query = admin
+      .from('entries')
+      .select('*', { count: 'exact' })
+      .eq('changelog_id', auth.changelog_id)
+      .order('created_at', { ascending: false })
+      .range(offset, offset + limit - 1)
+
+    if (status === 'published') {
+      query = query.eq('is_published', true)
+    } else if (status === 'draft') {
+      query = query.eq('is_published', false)
+    }
+
+    const { data, error, count } = await query
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 400 })
+    }
+
+    return NextResponse.json({ entries: data, total: count, limit, offset })
+  } catch {
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+  }
+}
+
 /** POST /api/v1/entries — Create a changelog entry via API key */
 export async function POST(request: NextRequest) {
   try {

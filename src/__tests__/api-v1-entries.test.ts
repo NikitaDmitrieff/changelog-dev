@@ -15,9 +15,9 @@ vi.mock('@/lib/rate-limit', () => ({
   rateLimit: vi.fn(() => ({ allowed: true })),
 }))
 
-import { POST } from '@/app/api/v1/entries/route'
+import { GET, POST } from '@/app/api/v1/entries/route'
 
-function makeRequest(body: Record<string, unknown>, authHeader?: string) {
+function makePostRequest(body: Record<string, unknown>, authHeader?: string) {
   const headers: Record<string, string> = { 'Content-Type': 'application/json' }
   if (authHeader) headers['Authorization'] = authHeader
   return new NextRequest('http://localhost:3000/api/v1/entries', {
@@ -26,6 +26,19 @@ function makeRequest(body: Record<string, unknown>, authHeader?: string) {
     headers,
   })
 }
+
+function makeGetRequest(params?: Record<string, string>, authHeader?: string) {
+  const url = new URL('http://localhost:3000/api/v1/entries')
+  if (params) {
+    for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v)
+  }
+  const headers: Record<string, string> = {}
+  if (authHeader) headers['Authorization'] = authHeader
+  return new NextRequest(url, { method: 'GET', headers })
+}
+
+// Keep old alias for POST tests
+const makeRequest = makePostRequest
 
 describe('POST /api/v1/entries', () => {
   beforeEach(() => {
@@ -124,5 +137,88 @@ describe('POST /api/v1/entries', () => {
     )
     const res = await POST(req)
     expect(res.status).toBe(201)
+  })
+})
+
+describe('GET /api/v1/entries', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('returns 401 without API key', async () => {
+    mockValidateApiKey.mockResolvedValue(null)
+    const req = makeGetRequest()
+    const res = await GET(req)
+    expect(res.status).toBe(401)
+  })
+
+  it('returns entries list', async () => {
+    mockValidateApiKey.mockResolvedValue({ changelog_id: 'cl-1', owner_id: 'u-1' })
+    const entries = [
+      { id: 'e-1', title: 'First', is_published: true, created_at: '2026-01-01' },
+      { id: 'e-2', title: 'Second', is_published: false, created_at: '2026-01-02' },
+    ]
+    const mockRange = vi.fn().mockResolvedValue({ data: entries, error: null, count: 2 })
+    const mockOrder = vi.fn().mockReturnValue({ range: mockRange })
+    const mockEq = vi.fn().mockReturnValue({ order: mockOrder })
+    const mockSelect = vi.fn().mockReturnValue({ eq: mockEq })
+    mockAdminFrom.mockReturnValue({ select: mockSelect })
+
+    const req = makeGetRequest({}, 'Bearer cldev_valid')
+    const res = await GET(req)
+    expect(res.status).toBe(200)
+    const body = await res.json()
+    expect(body.entries).toHaveLength(2)
+    expect(body.total).toBe(2)
+    expect(body.limit).toBe(50)
+    expect(body.offset).toBe(0)
+  })
+
+  it('supports status filter', async () => {
+    mockValidateApiKey.mockResolvedValue({ changelog_id: 'cl-1', owner_id: 'u-1' })
+    const mockEqPublished = vi.fn().mockResolvedValue({ data: [], error: null, count: 0 })
+    const mockRange = vi.fn().mockReturnValue({ eq: mockEqPublished })
+    const mockOrder = vi.fn().mockReturnValue({ range: mockRange })
+    const mockEq = vi.fn().mockReturnValue({ order: mockOrder })
+    const mockSelect = vi.fn().mockReturnValue({ eq: mockEq })
+    mockAdminFrom.mockReturnValue({ select: mockSelect })
+
+    const req = makeGetRequest({ status: 'published' }, 'Bearer cldev_valid')
+    const res = await GET(req)
+    expect(res.status).toBe(200)
+    // Verify is_published filter was called
+    expect(mockEqPublished).toHaveBeenCalledWith('is_published', true)
+  })
+
+  it('respects limit and offset params', async () => {
+    mockValidateApiKey.mockResolvedValue({ changelog_id: 'cl-1', owner_id: 'u-1' })
+    const mockRange = vi.fn().mockResolvedValue({ data: [], error: null, count: 0 })
+    const mockOrder = vi.fn().mockReturnValue({ range: mockRange })
+    const mockEq = vi.fn().mockReturnValue({ order: mockOrder })
+    const mockSelect = vi.fn().mockReturnValue({ eq: mockEq })
+    mockAdminFrom.mockReturnValue({ select: mockSelect })
+
+    const req = makeGetRequest({ limit: '10', offset: '5' }, 'Bearer cldev_valid')
+    const res = await GET(req)
+    expect(res.status).toBe(200)
+    const body = await res.json()
+    expect(body.limit).toBe(10)
+    expect(body.offset).toBe(5)
+    expect(mockRange).toHaveBeenCalledWith(5, 14)
+  })
+
+  it('caps limit at 100', async () => {
+    mockValidateApiKey.mockResolvedValue({ changelog_id: 'cl-1', owner_id: 'u-1' })
+    const mockRange = vi.fn().mockResolvedValue({ data: [], error: null, count: 0 })
+    const mockOrder = vi.fn().mockReturnValue({ range: mockRange })
+    const mockEq = vi.fn().mockReturnValue({ order: mockOrder })
+    const mockSelect = vi.fn().mockReturnValue({ eq: mockEq })
+    mockAdminFrom.mockReturnValue({ select: mockSelect })
+
+    const req = makeGetRequest({ limit: '500' }, 'Bearer cldev_valid')
+    const res = await GET(req)
+    expect(res.status).toBe(200)
+    const body = await res.json()
+    expect(body.limit).toBe(100)
   })
 })
