@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     description:
       'Format, structure, writing style, and real examples. Write a changelog that builds trust and reduces churn.',
     type: 'article',
-    url: 'https://changelog-dev-production.up.railway.app/blog/changelog-best-practices',
+    url: 'https://www.changelogdev.com/blog/changelog-best-practices',
   },
   twitter: {
     card: 'summary_large_image',

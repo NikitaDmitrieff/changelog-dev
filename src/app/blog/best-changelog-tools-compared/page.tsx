@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     description:
       'Comparing the best changelog tools for SaaS products: Beamer, Headway, Changefeed, and Changelog.dev.',
     type: 'article',
-    url: 'https://changelog-dev-production.up.railway.app/blog/best-changelog-tools-compared',
+    url: 'https://www.changelogdev.com/blog/best-changelog-tools-compared',
   },
   twitter: {
     card: 'summary_large_image',

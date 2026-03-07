@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     title: 'Blog | Changelog.dev',
     description: 'Product updates, changelog best practices, and SaaS growth insights.',
     type: 'website',
-    url: 'https://changelog-dev-production.up.railway.app/blog',
+    url: 'https://www.changelogdev.com/blog',
   },
 }
 

@@ -20,10 +20,10 @@ export const metadata: Metadata = {
     title: 'Changelog.dev',
     description: 'Beautiful hosted changelogs your customers actually read',
     type: 'website',
-    url: 'https://changelog-dev-production.up.railway.app',
+    url: 'https://www.changelogdev.com',
     images: [
       {
-        url: 'https://changelog-dev-production.up.railway.app/opengraph-image',
+        url: 'https://www.changelogdev.com/opengraph-image',
         width: 1200,
         height: 630,
         alt: 'Changelog.dev — Beautiful hosted changelogs your customers actually read',
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Changelog.dev',
     description: 'Beautiful hosted changelogs your customers actually read',
-    images: ['https://changelog-dev-production.up.railway.app/opengraph-image'],
+    images: ['https://www.changelogdev.com/opengraph-image'],
   },
 }
 

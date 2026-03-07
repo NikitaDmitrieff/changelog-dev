@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     description:
       'A changelog is the simplest way to reduce churn, build trust, and show your users you are actively shipping.',
     type: 'article',
-    url: 'https://changelog-dev-production.up.railway.app/blog/why-your-saas-needs-a-changelog',
+    url: 'https://www.changelogdev.com/blog/why-your-saas-needs-a-changelog',
   },
   twitter: {
     card: 'summary_large_image',

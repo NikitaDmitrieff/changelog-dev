@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import type { MetadataRoute } from 'next'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://changelog-dev-production.up.railway.app'
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.changelogdev.com'
 
   const supabase = await createClient()
   const { data: changelogs } = await supabase

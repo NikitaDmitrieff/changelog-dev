@@ -308,7 +308,7 @@ export default function LandingPage() {
                 </div>
                 <div className="flex-1 mx-4">
                   <div className="mx-auto max-w-sm flex items-center gap-2 rounded bg-zinc-800 px-3 py-1 text-xs text-zinc-500 font-mono">
-                    changelog-dev-production.up.railway.app/demo
+                    www.changelogdev.com/demo
                   </div>
                 </div>
                 <a href="/demo" target="_blank" className="text-xs text-emerald-400 hover:text-emerald-300 font-medium whitespace-nowrap">

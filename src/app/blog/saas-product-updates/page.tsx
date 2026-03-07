@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     description:
       'Which channels work, what to write, and how to automate product update emails that customers actually open.',
     type: 'article',
-    url: 'https://changelog-dev-production.up.railway.app/blog/saas-product-updates',
+    url: 'https://www.changelogdev.com/blog/saas-product-updates',
   },
   twitter: {
     card: 'summary_large_image',

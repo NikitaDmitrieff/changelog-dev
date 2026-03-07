@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     description:
       'Templates, examples, and a simple framework for turning commits into clear customer-facing release notes.',
     type: 'article',
-    url: 'https://changelog-dev-production.up.railway.app/blog/how-to-write-release-notes',
+    url: 'https://www.changelogdev.com/blog/how-to-write-release-notes',
   },
   twitter: {
     card: 'summary_large_image',
