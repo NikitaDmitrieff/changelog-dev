@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import SubscribeForm from './subscribe-form'
 import EntryList from './entry-list'
+import ViewTracker from './view-tracker'
 import type { Changelog, Entry, Subscriber } from '@/lib/supabase/types'
 import type { Metadata } from 'next'
 
@@ -97,7 +98,10 @@ export default async function PublicChangelogPage({ params }: Props) {
             No entries published yet.
           </div>
         ) : (
-          <EntryList entries={entries} />
+          <>
+            <ViewTracker entryIds={entries.map((e) => e.id)} />
+            <EntryList entries={entries} />
+          </>
         )}
 
         {/* Subscribe form */}

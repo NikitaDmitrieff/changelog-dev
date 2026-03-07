@@ -58,6 +58,7 @@ type ChangelogDevSchema = {
         is_published: boolean
         published_at: string | null
         notified_at: string | null
+        view_count: number
         created_at: string
         updated_at: string
       }
@@ -71,6 +72,7 @@ type ChangelogDevSchema = {
         is_published?: boolean
         published_at?: string | null
         notified_at?: string | null
+        view_count?: number
         created_at?: string
         updated_at?: string
       }
@@ -84,6 +86,7 @@ type ChangelogDevSchema = {
         is_published?: boolean
         published_at?: string | null
         notified_at?: string | null
+        view_count?: number
         created_at?: string
         updated_at?: string
       }
@@ -121,7 +124,12 @@ type ChangelogDevSchema = {
     }
   }
   Views: Record<string, never>
-  Functions: Record<string, never>
+  Functions: {
+    increment_view_count: {
+      Args: { entry_id: string }
+      Returns: undefined
+    }
+  }
 }
 
 export interface Database {
