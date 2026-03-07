@@ -15,6 +15,15 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: 'github-action-automated-changelog',
+    title: 'GitHub Action for Automated Changelogs: Generate Release Notes from Conventional Commits in CI/CD',
+    description:
+      'Automate changelog generation in GitHub Actions. PR comments, release notes, and CHANGELOG.md from conventional commits — one line of YAML, zero config.',
+    category: 'Open Source',
+    date: 'March 2026',
+    readTime: '8 min read',
+  },
+  {
     slug: 'keep-a-changelog-guide',
     title: 'Keep a Changelog: 9 Rules for Writing Changelogs Developers and Users Actually Read',
     description:
