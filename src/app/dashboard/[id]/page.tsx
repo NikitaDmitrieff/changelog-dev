@@ -132,6 +132,31 @@ export default async function ChangelogManagePage({ params }: Props) {
           </div>
         </div>
 
+        {/* Quick-start hints */}
+        {entries.length === 0 && (
+          <div className="mb-8 glass-card rounded-xl p-6">
+            <div className="text-sm font-medium text-white mb-3">Quick start</div>
+            <div className="space-y-3">
+              {!changelog.github_repo && (
+                <div className="flex items-center gap-3 text-sm">
+                  <div className="w-5 h-5 rounded-full border border-white/20 shrink-0" />
+                  <span className="text-zinc-400">
+                    <Link href={`/dashboard/${id}/settings`} className="text-indigo-400 hover:text-indigo-300">Connect a GitHub repo</Link>
+                    {' '}to generate entries with AI
+                  </span>
+                </div>
+              )}
+              <div className="flex items-center gap-3 text-sm">
+                <div className="w-5 h-5 rounded-full border border-white/20 shrink-0" />
+                <span className="text-zinc-400">
+                  <Link href={`/dashboard/${id}/new-entry`} className="text-indigo-400 hover:text-indigo-300">Create your first entry</Link>
+                  {changelog.github_repo ? ' — use "Generate from GitHub" for a head start' : ' — write it manually or connect a repo first'}
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Entries */}
         <div>
           <h2 className="text-sm font-semibold text-white/40 uppercase tracking-widest mb-4">

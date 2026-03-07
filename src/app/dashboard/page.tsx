@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import type { Changelog } from '@/lib/supabase/types'
+import { OnboardingChecklist } from '@/components/onboarding-checklist'
+import type { OnboardingStep } from '@/components/onboarding-checklist'
 
 export const metadata: Metadata = {
   title: 'Dashboard | changelog.dev',
@@ -34,7 +36,7 @@ export default async function DashboardPage({
   const { data: entriesData } = changelogIds.length
     ? await supabase
         .from('entries')
-        .select('changelog_id')
+        .select('changelog_id, is_published')
         .in('changelog_id', changelogIds)
     : { data: [] }
 
@@ -46,7 +48,7 @@ export default async function DashboardPage({
         .eq('confirmed', true)
     : { data: [] }
 
-  const entries = (entriesData ?? []) as { changelog_id: string }[]
+  const entries = (entriesData ?? []) as { changelog_id: string; is_published: boolean }[]
   const subscribers = (subscribersData ?? []) as { changelog_id: string }[]
 
   const entryCounts: Record<string, number> = {}
@@ -61,6 +63,50 @@ export default async function DashboardPage({
 
   const atFreeLimit = !isPro && changelogs.length >= 1
   const isNewUser = changelogs.length === 0
+
+  // Onboarding checklist state
+  const hasChangelog = changelogs.length > 0
+  const hasRepo = changelogs.some((c) => !!c.github_repo)
+  const hasPublishedEntry = entries.some((e) => e.is_published)
+  const hasBranding = changelogs.some((c) => !!c.accent_color || !!c.logo_url)
+
+  const firstChangelog = changelogs[0]
+  const firstChangelogId = firstChangelog?.id
+
+  const onboardingSteps: OnboardingStep[] = [
+    {
+      key: 'create',
+      title: 'Create your changelog',
+      description: 'Give it a name and URL slug. Your page goes live instantly.',
+      done: hasChangelog,
+      href: '/dashboard/new',
+      cta: 'Create changelog',
+    },
+    {
+      key: 'repo',
+      title: 'Connect a GitHub repository',
+      description: 'Link a repo so AI can draft entries from your commits.',
+      done: hasRepo,
+      href: firstChangelogId ? `/dashboard/${firstChangelogId}/settings` : undefined,
+      cta: 'Go to settings',
+    },
+    {
+      key: 'publish',
+      title: 'Publish your first entry',
+      description: 'Write one manually or generate it from GitHub commits.',
+      done: hasPublishedEntry,
+      href: firstChangelogId ? `/dashboard/${firstChangelogId}/new-entry` : undefined,
+      cta: 'Create entry',
+    },
+    {
+      key: 'branding',
+      title: 'Customize your branding',
+      description: 'Pick an accent color or add your logo to make it yours.',
+      done: hasBranding,
+      href: firstChangelogId ? `/dashboard/${firstChangelogId}/settings` : undefined,
+      cta: 'Customize',
+    },
+  ]
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -102,7 +148,31 @@ export default async function DashboardPage({
         )}
 
         {isNewUser ? (
-          <Onboarding email={user.email ?? ''} />
+          <div>
+            <div className="mb-10">
+              <h1 className="text-2xl font-bold">Welcome to changelog.dev</h1>
+              <p className="text-zinc-500 text-sm mt-1">{user.email} · Free plan</p>
+            </div>
+            <OnboardingChecklist steps={onboardingSteps} />
+            <div className="glass-card rounded-xl p-5 flex items-center gap-4">
+              <div className="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center shrink-0">
+                <svg className="w-4 h-4 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <div className="text-sm font-medium text-white">See a live example</div>
+                <div className="text-xs text-zinc-500 mt-0.5">Check out the changelog.dev demo page to see what yours will look like</div>
+              </div>
+              <Link
+                href="/changelog-dev"
+                className="text-sm text-indigo-400 hover:text-indigo-300 transition-colors shrink-0"
+              >
+                View demo →
+              </Link>
+            </div>
+          </div>
         ) : (
           <>
             <div className="flex items-center justify-between mb-8">
@@ -124,6 +194,8 @@ export default async function DashboardPage({
                 </Link>
               )}
             </div>
+
+            <OnboardingChecklist steps={onboardingSteps} changelogId={firstChangelogId} />
 
             <div className="space-y-3">
               {changelogs.map((changelog) => (
@@ -154,97 +226,6 @@ export default async function DashboardPage({
             </div>
           </>
         )}
-      </div>
-    </div>
-  )
-}
-
-function Onboarding({ email }: { email: string }) {
-  const steps = [
-    {
-      num: "1",
-      title: "Create your changelog",
-      desc: "Give it a name and a URL slug. Your page will be live at changelog.dev/your-slug.",
-      action: { href: "/dashboard/new", label: "Create changelog" },
-      done: false,
-    },
-    {
-      num: "2",
-      title: "Connect GitHub & generate entries",
-      desc: "Paste your repo URL. AI will draft changelog entries from your commits.",
-      done: false,
-    },
-    {
-      num: "3",
-      title: "Share your changelog page",
-      desc: "Your changelog is public. Share the link with your users, add it to your footer, embed it anywhere.",
-      done: false,
-    },
-  ]
-
-  return (
-    <div>
-      <div className="mb-10">
-        <h1 className="text-2xl font-bold">Welcome to changelog.dev</h1>
-        <p className="text-zinc-500 text-sm mt-1">{email} · Free plan</p>
-      </div>
-
-      <div className="mb-8 glass-card rounded-2xl p-8">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-8 h-8 bg-indigo-500/20 rounded-lg flex items-center justify-center border border-indigo-500/30">
-            <svg className="w-4 h-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-          </div>
-          <div>
-            <div className="font-semibold text-white">Get started in 3 steps</div>
-            <div className="text-xs text-zinc-500">Takes about 5 minutes</div>
-          </div>
-        </div>
-
-        <div className="space-y-6">
-          {steps.map((step, i) => (
-            <div key={step.num} className="relative flex gap-5">
-              <div className="shrink-0 w-8 h-8 rounded-full border border-indigo-500/40 bg-indigo-500/10 flex items-center justify-center text-indigo-400 text-sm font-semibold mt-0.5">
-                {step.num}
-              </div>
-              <div className="flex-1">
-                <div className="font-medium text-white mb-1">{step.title}</div>
-                <div className="text-sm text-zinc-500 leading-relaxed">{step.desc}</div>
-                {step.action && (
-                  <Link
-                    href={step.action.href}
-                    className="inline-block mt-3 bg-indigo-500 hover:bg-indigo-400 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
-                  >
-                    {step.action.label}
-                  </Link>
-                )}
-              </div>
-              {i < steps.length - 1 && (
-                <div className="absolute left-4 top-9 w-px h-6 bg-white/[0.06]" />
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="glass-card rounded-xl p-5 flex items-center gap-4">
-        <div className="w-8 h-8 bg-white/5 rounded-lg flex items-center justify-center shrink-0">
-          <svg className="w-4 h-4 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-          </svg>
-        </div>
-        <div className="flex-1">
-          <div className="text-sm font-medium text-white">See a live example</div>
-          <div className="text-xs text-zinc-500 mt-0.5">Checkout the changelog.dev demo page to see what yours will look like</div>
-        </div>
-        <Link
-          href="/changelog-dev"
-          className="text-sm text-indigo-400 hover:text-indigo-300 transition-colors shrink-0"
-        >
-          View demo →
-        </Link>
       </div>
     </div>
   )
